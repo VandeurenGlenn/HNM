@@ -21,6 +21,9 @@
   },
   "homepage": "https://github.com/VandeurenGlenn/HNM#readme",
   "dependencies": {
+    "@vandeurenglenn/flex-elements": "^0.1.1",
+    "custom-svg-icon": "^1.0.1",
+    "custom-svg-iconset": "^1.0.1",
     "lit": "^2.6.1"
   },
   "devDependencies": {
