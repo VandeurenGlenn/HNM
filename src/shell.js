@@ -13,24 +13,56 @@ export default customElements.define('app-shell', class AppShell extends LitElem
       bottom: 0;
       display: flex;
       flex-direction: column;
+      font-family: system-ui, "Noto Sans", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     }
 
     header {
       display: flex;
       width: 100%;
-      background: #beb9c0;
+      justify-content: center;
+      // background: #beb9c0;
+    }
+
+    main {      
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      align-items: center;
+    }
+
+    header span, section {
+      max-width: 640px;
+      width: 100%;
+    }
+
+    header span {
+      display: flex;
     }
 
     img {
-      height: 172px;
+      max-width: 640px;
+      width: 100%;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 36px;
     }
   `
 
   render() {
     return html`
     <header>
-    <img src="./assets/banner.jpg">
+      <span>
+      <h1>HNM</h1>
+      </span>
+      
     </header>
+    <main>
+    <img src="./assets/banner.jpg">
+    </main>
+    
     `
+    // <img src="./assets/banner.jpg">
   }
 })
