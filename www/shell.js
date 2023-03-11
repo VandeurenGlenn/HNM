@@ -54,7 +54,7 @@ var shell = customElements.define('app-shell', class AppShell extends s {
   render() {
     return y`
     <header>
-    <img src="./assets/logo.jpeg">
+    <img src="./assets/banner.jpg">
     </header>
     `
   }

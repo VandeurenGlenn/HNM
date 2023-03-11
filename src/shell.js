@@ -29,7 +29,7 @@ export default customElements.define('app-shell', class AppShell extends LitElem
   render() {
     return html`
     <header>
-    <img src="./assets/logo.jpeg">
+    <img src="./assets/banner.jpg">
     </header>
     `
   }
