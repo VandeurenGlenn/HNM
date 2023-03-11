@@ -521,6 +521,18 @@ var shell = customElements.define('app-shell', class AppShell extends s {
     .examples .left, .examples .right {
       width: calc(100% / 2);
     }
+
+    .left {
+      padding-right: 3px;
+    }
+
+    .right {
+      padding-left: 3px;
+    }
+    
+    .left img, .right img {
+      padding-top: 3px;
+    }
   `
 
   render() {
@@ -539,7 +551,7 @@ var shell = customElements.define('app-shell', class AppShell extends s {
       
       <section class="examples">
         <span class="left">
-        <img src="./assets/example2.jpg">
+          <img src="./assets/example2.jpg">
           <img src="./assets/example1.jpg">  
         </span>
 

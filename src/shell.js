@@ -62,6 +62,18 @@ export default customElements.define('app-shell', class AppShell extends LitElem
     .examples .left, .examples .right {
       width: calc(100% / 2);
     }
+
+    .left {
+      padding-right: 3px;
+    }
+
+    .right {
+      padding-left: 3px;
+    }
+    
+    .left img, .right img {
+      padding-top: 3px;
+    }
   `
 
   render() {
@@ -80,7 +92,7 @@ export default customElements.define('app-shell', class AppShell extends LitElem
       
       <section class="examples">
         <span class="left">
-        <img src="./assets/example2.jpg">
+          <img src="./assets/example2.jpg">
           <img src="./assets/example1.jpg">  
         </span>
 
