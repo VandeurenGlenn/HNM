@@ -47,7 +47,7 @@ var shell = customElements.define('app-shell', class AppShell extends s {
     }
 
     img {
-      height: 240px;
+      height: 172px;
     }
   `
 

@@ -22,7 +22,7 @@ export default customElements.define('app-shell', class AppShell extends LitElem
     }
 
     img {
-      height: 240px;
+      height: 172px;
     }
   `
 
