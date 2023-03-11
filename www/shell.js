@@ -483,7 +483,7 @@ var shell = customElements.define('app-shell', class AppShell extends s {
       width: 100%;
       justify-content: center;
       align-items: center; 
-      padding: 6px 24px;
+      padding: 6px 12px;
       // background: #beb9c0;
     }
 
@@ -492,15 +492,15 @@ var shell = customElements.define('app-shell', class AppShell extends s {
       flex-direction: column;
       width: 100%;
       align-items: center;
-      padding: 12px 24px;
+      padding: 6px 12px;
     }
 
     main, header {
       box-sizing: border-box;
     }
 
-    header span, section {
-      max-width: 640px;
+    header span, section, img {
+      max-width: 960px;
       width: 100%;
     }
     header span {
@@ -508,14 +508,18 @@ var shell = customElements.define('app-shell', class AppShell extends s {
       align-items: center;
     }
 
-    img {
-      max-width: 640px;
-      width: 100%;
-    }
-
     h1 {
       margin: 0;
       font-size: 24px;
+    }
+
+    .examples {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .examples .left, .examples .right {
+      width: calc(100% / 2);
     }
   `
 
@@ -529,7 +533,21 @@ var shell = customElements.define('app-shell', class AppShell extends s {
       </span>
     </header>
     <main>
-    <img src="./assets/banner.jpg">
+      <section>
+        <img src="./assets/banner.jpg">  
+      </section>
+      
+      <section class="examples">
+        <span class="left">
+        <img src="./assets/example2.jpg">
+          <img src="./assets/example1.jpg">  
+        </span>
+
+        <span class="right">
+          <img src="./assets/example1.jpg">  
+          <img src="./assets/example2.jpg">
+        </span>
+      </section>
     </main>
     
     `
