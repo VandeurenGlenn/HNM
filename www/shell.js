@@ -487,7 +487,7 @@ var shell = customElements.define('app-shell', class AppShell extends s {
       // background: #beb9c0;
     }
 
-    main {      
+    main, footer {
       display: flex;
       flex-direction: column;
       width: 100%;
@@ -495,11 +495,11 @@ var shell = customElements.define('app-shell', class AppShell extends s {
       padding: 6px 12px;
     }
 
-    main, header {
+    main, header, footer {
       box-sizing: border-box;
     }
 
-    header span, section, img {
+    header span, section, img, footer flex-container {
       max-width: 960px;
       width: 100%;
     }
@@ -508,12 +508,16 @@ var shell = customElements.define('app-shell', class AppShell extends s {
       align-items: center;
     }
 
-    h1 {
+    h1, h2, h3, h4 {
       margin: 0;
+    }
+
+    h1 {
       font-size: 24px;
     }
 
     .examples {
+      padding-top: 3px;
       display: flex;
       flex-direction: row;
     }
@@ -533,6 +537,24 @@ var shell = customElements.define('app-shell', class AppShell extends s {
     .left img, .right img {
       padding-top: 3px;
     }
+
+    footer {
+      padding
+    }
+
+    .branding {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      display: flex;
+      padding: 24px 0;
+      box-sizing: border-box;
+      background: #bcb9c0;
+    }
+
+    .branding img {
+      max-width: 640px;
+    }
   `
 
   render() {
@@ -545,9 +567,44 @@ var shell = customElements.define('app-shell', class AppShell extends s {
       </span>
     </header>
     <main>
-      <section>
-        <img src="./assets/banner.jpg">  
+      <section class="branding">
+        <h4>HELLO NEW ME</h4>
       </section>
+      
+      <section class="examples">
+        <span class="left">
+          <img src="./assets/example2.jpg">
+          <img src="./assets/example1.jpg">  
+        </span>
+
+        <span class="right">
+          <img src="./assets/example1.jpg">  
+          <img src="./assets/example2.jpg">
+        </span>
+      </section>     
+      
+      <section class="branding">
+        <h4>LIFE ISN'T PERFECT</h4>
+      </section>
+
+        
+      <section class="examples">
+        <span class="left">
+          <img src="./assets/example2.jpg">
+          <img src="./assets/example1.jpg">  
+        </span>
+
+        <span class="right">
+          <img src="./assets/example1.jpg">  
+          <img src="./assets/example2.jpg">
+        </span>
+      </section>
+      
+      
+      <section class="branding">
+        <h4>BUT HAIR CAN BE</h4>
+      </section>
+
       
       <section class="examples">
         <span class="left">
@@ -562,6 +619,11 @@ var shell = customElements.define('app-shell', class AppShell extends s {
       </section>
     </main>
     
+    <footer>
+      <flex-container>
+        <a href="mail:info@hellonewme.be">info@hellonewme.be</a>
+      </flex-container>
+    </footer>
     `
     // <img src="./assets/banner.jpg">
   }
