@@ -126,6 +126,13 @@ console.log(this.scrollTop);
     header.small img {
       width: 54px;
       opacity: 0;
+      transition: opacity ease-out 60ms;
+    }
+
+    header.big img {
+      opacity: 1;
+
+      transition: opacity ease-in 120ms;
     }
 
     :host([condensed]) header.small {
@@ -135,6 +142,14 @@ console.log(this.scrollTop);
     }
     :host([condensed]) header.small img {
       opacity: 1;
+
+      transition: opacity ease-in 60ms;
+    }
+
+    :host([condensed]) header.big img {
+      opacity: 0;
+
+      transition: opacity ease-out 16ms;
     }
     .filler {
       display: flex;
