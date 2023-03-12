@@ -141,7 +141,6 @@ console.log(this.scrollTop);
       top: 0;
       position: sticky;
       background: #bdb9c1;
-      // margin-top: 0;
     }
     :host([condensed]) header.small img {
       opacity: 1;
@@ -162,27 +161,47 @@ console.log(this.scrollTop);
 
   render() {
     return html`
-    <header class="big">
-    <img src="./assets/banner.jpg">
-    <span>
-    <!-- <h1>HNM</h1> -->
-    <flex-one></flex-one>
-    
-    </span>
-  </header>
+      <header class="big">
+        <img src="./assets/banner.jpg">
+        <span>
+        <!-- <h1>HNM</h1> -->
+        <flex-one></flex-one>
+        
+        </span>
+      </header>
 
-  <header class="small">
-    <span>
-    <span class="filler"></span>
-    <flex-one></flex-one>
-    <img src="./assets/logo.jpeg">
-    <flex-one></flex-one>
-    <custom-svg-icon icon="menu" style="margin-top: 3px;margin-right: 3px;"></custom-svg-icon>
-    </span>
-  </header>
-    <main>
-      <section>
-          
+      <header class="small">
+        <span>
+        <span class="filler"></span>
+        <flex-one></flex-one>
+        <img src="./assets/logo.jpeg">
+        <flex-one></flex-one>
+        <custom-svg-icon icon="menu" style="margin-top: 3px;margin-right: 3px;"></custom-svg-icon>
+        </span>
+      </header>
+        <main>
+        <section class="examples">
+        <span class="left">
+          <img src="./assets/example2.jpg">
+          <img src="./assets/example1.jpg">  
+        </span>
+
+        <span class="right">
+          <img src="./assets/example1.jpg">  
+          <img src="./assets/example2.jpg">
+        </span>
+      </section>
+
+      <section class="examples">
+        <span class="left">
+          <img src="./assets/example2.jpg">
+          <img src="./assets/example1.jpg">  
+        </span>
+
+        <span class="right">
+          <img src="./assets/example1.jpg">  
+          <img src="./assets/example2.jpg">
+        </span>
       </section>
       
       <section class="examples">
