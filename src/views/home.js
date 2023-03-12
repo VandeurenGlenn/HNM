@@ -1,7 +1,6 @@
 import {LitElement, html, css} from 'lit'
-import 'custom-svg-iconset'
-import 'custom-svg-icon'
 import '@vandeurenglenn/flex-elements'
+
 export default customElements.define('home-view', class HomeView extends LitElement {
   static get properties() {
     return {
@@ -33,20 +32,18 @@ export default customElements.define('home-view', class HomeView extends LitElem
       width: 100%;
       display: flex;
       flex-direction: column;
+      align-items: center;
     }
 
 
     header {
-      // position: absolute;
       display: flex;
       width: 100%;
       justify-content: center;
       align-items: center;
     }
 
-    main {      
-      // top: 345px;
-      // position: absolute;
+    main {
       display: flex;
       flex-direction: column;
       width: 100%;
@@ -74,7 +71,7 @@ export default customElements.define('home-view', class HomeView extends LitElem
 
     .examples {
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
     }
 
     .examples .left, .examples .right {
@@ -122,7 +119,12 @@ export default customElements.define('home-view', class HomeView extends LitElem
       height: 54px;
       box-sieing: border-box;
       z-index: 100;
+      will-change: margin;
       margin-top: -54px;
+    }
+
+    image {
+      will-change: padding;
     }
 
     header.small img {
@@ -153,16 +155,36 @@ export default customElements.define('home-view', class HomeView extends LitElem
 
       transition: opacity ease-out 16ms;
     }
+
+    .examples{
+      box-sizing: border-box;
+      max-width: calc(100% / 2 - 2px);
+    }
+
+    .example1 {
+      max-height: 220px;
+    }
+
+    .example1, .example2 {
+      will-change: padding;
+      padding-top: 4px;
+    }
+
     .filler {
       display: flex;
       width: 32px;
+    }
+
+    flex-wrap-between {
+      max-width: 960px;
     }
   `
 
   render() {
     return html`
+      <link rel="preload" as="image" href="./assets/banner.webp">
       <header class="big">
-        <img src="./assets/banner.jpg">
+        <img alt="banner" src="./assets/banner.webp">
         <span>
         <!-- <h1>HNM</h1> -->
         <flex-one></flex-one>
@@ -174,62 +196,55 @@ export default customElements.define('home-view', class HomeView extends LitElem
         <span>
         <span class="filler"></span>
         <flex-one></flex-one>
-        <img src="./assets/logo.jpeg">
+        <img alt="logo" loading="lazy" src="./assets/logo.webp">
         <flex-one></flex-one>
         <custom-svg-icon icon="menu" style="margin-top: 3px;margin-right: 3px;"></custom-svg-icon>
         </span>
       </header>
-        <main>
-        <section class="examples">
-        <span class="left">
-          <img src="./assets/example2.jpg">
-          <img src="./assets/example1.jpg">  
-        </span>
+        <flex-wrap-between>
+          <section class="examples">
+          <img alt="example2" class="example2" loading="lazy" src="./assets/example2.webp">
+          <img alt="example1" class="example1" loading="lazy" src="./assets/example1.webp">  
+          </section>
 
-        <span class="right">
-          <img src="./assets/example1.jpg">  
-          <img src="./assets/example2.jpg">
-        </span>
-      </section>
+          <section class="examples">
+          <img alt="example1" class="example1" loading="lazy" src="./assets/example1.webp">  
+          <img alt="example2" class="example2" loading="lazy" src="./assets/example2.webp">
+          </section>
 
-      <section class="examples">
-        <span class="left">
-          <img src="./assets/example2.jpg">
-          <img src="./assets/example1.jpg">  
-        </span>
+          <section class="examples">
+          <img alt="example2" class="example2" loading="lazy" src="./assets/example2.webp">
+          <img alt="example1" class="example1" loading="lazy" src="./assets/example1.webp">  
+          </section>
+  
+          <section class="examples">
+          <img alt="example1" class="example1" loading="lazy" src="./assets/example1.webp">  
+          <img alt="example2" class="example2" loading="lazy" src="./assets/example2.webp">
+          </section>
 
-        <span class="right">
-          <img src="./assets/example1.jpg">  
-          <img src="./assets/example2.jpg">
-        </span>
-      </section>
-      
-      <section class="examples">
-        <span class="left">
-          <img src="./assets/example2.jpg">
-          <img src="./assets/example1.jpg">  
-        </span>
+          <section class="examples">
+          <img alt="example2" class="example2" loading="lazy" src="./assets/example2.webp">
+          <img alt="example1" class="example1" loading="lazy" src="./assets/example1.webp">  
+          </section>
 
-        <span class="right">
-          <img src="./assets/example1.jpg">  
-          <img src="./assets/example2.jpg">
-        </span>
-      </section>
-
-      <section class="examples">
-        <span class="left">
-          <img src="./assets/example2.jpg">
-          <img src="./assets/example1.jpg">  
-        </span>
-
-        <span class="right">
-          <img src="./assets/example1.jpg">  
-          <img src="./assets/example2.jpg">
-        </span>
-      </section>
-    </main>
+          <section class="examples">
+          <img alt="example1" class="example1" loading="lazy" src="./assets/example1.webp">  
+          <img alt="example2" class="example2" loading="lazy" src="./assets/example2.webp">
+          </section>
+          
+          <section class="examples">
+          <img alt="example2" class="example2" loading="lazy" src="./assets/example2.webp">
+          <img alt="example1" class="example1" loading="lazy" src="./assets/example1.webp">  
+          </section>
+  
+          <section class="examples">
+          <img alt="example1" class="example1" loading="lazy" src="./assets/example1.webp">  
+          <img alt="example2" class="example2" loading="lazy" src="./assets/example2.webp">
+          </section>
+        </flex-wrap-between>
+       
     
     `
-    // <img src="./assets/banner.jpg">
+    // <img alt="banner" loading="lazy" src="./assets/banner.webp">
   }
 })

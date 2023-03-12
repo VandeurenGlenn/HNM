@@ -26,6 +26,7 @@
     "custom-pages": "^0.12.1",
     "custom-svg-icon": "^1.0.1",
     "custom-svg-iconset": "^1.0.1",
+    "koa-compress": "^5.1.0",
     "lit": "^2.6.1"
   },
   "devDependencies": {

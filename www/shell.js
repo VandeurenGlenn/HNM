@@ -1,4 +1,254 @@
-import { s, i, y } from './flex-container-1a520fd9.js';
+import { s, i, y } from './lit-element-84ca1571.js';
+
+/**
+ * @extends HTMLElement
+ */
+((base = HTMLElement) => {
+  globalThis.svgIconset = globalThis.svgIconset || {};
+
+  customElements.define('custom-svg-iconset', class CustomSvgIconset extends base {
+    #icons = {}
+    constructor() {
+      super();
+      this.#icons = this.#createIconMap();
+    }
+    connectedCallback() {
+      !this.name && this.setAttribute('name', 'icons');
+      globalThis.svgIconset[this.name] = this;
+      globalThis.dispatchEvent(new CustomEvent('svg-iconset-update'));
+      globalThis.dispatchEvent(new CustomEvent('svg-iconset-added', {detail: this.name}));
+
+      this.style.display = 'none';
+    }
+    /**
+     * The name of the iconset
+     * @default {string} icons
+     */
+    get name() {
+      return this.getAttribute('name');
+    }
+
+    /**
+     * The width of the viewBox
+     * @default {Number} 24
+     */
+    get width() {
+      return this.getAttribute('width') || 24
+    }
+
+    /**
+     * The height of the viewBox
+     * @default {Number} 24
+     */
+    get height() {
+      return this.getAttribute('height') || 24
+    }
+
+    /* from https://github.com/PolymerElements/iron-iconset-svg */
+    /**
+     * Applies an icon to given element
+     * @param {HTMLElement} element the element appending the icon to
+     * @param {string} icon The name of the icon to show
+     */
+    applyIcon(element, icon) {
+      element = element.shadowRoot || element;
+      this.removeIcon(element);
+      this.#cloneIcon(icon).then(icon => {
+        element.insertBefore(icon, element.childNodes[0]);
+        element._iconSetIcon = icon;
+      });
+    }
+    /**
+     * Remove an icon from the given element by undoing the changes effected
+     * by `applyIcon`.
+     *
+     * @param {Element} element The element from which the icon is removed.
+     */
+    removeIcon(element) {
+      // Remove old svg element
+      element = element.shadowRoot || element;
+      if (element._iconSetIcon) {
+        element.removeChild(element._iconSetIcon);
+        element._iconSetIcon = null;
+      }
+    }
+    /**
+     * Produce installable clone of the SVG element matching `id` in this
+     * iconset, or `undefined` if there is no matching element.
+     *
+     * @return {Element} Returns an installable clone of the SVG element
+     * matching `id`.
+     * @private
+     */
+    #cloneIcon(id) {
+      return new Promise((resolve, reject) => {
+        try {
+          let svgClone = this.#prepareSvgClone(this.#icons[id]);
+          resolve(svgClone);
+        } catch (error) {
+          reject(error);
+        }
+      });
+    }
+    // TODO: Update icon-map on child changes
+    /**
+     * Create a map of child SVG elements by id.
+     *
+     * @return {!Object} Map of id's to SVG elements.
+     * @private
+     */
+    #createIconMap() {
+      const icons = {};
+      for (const icon of Array.from(this.querySelectorAll('[id]'))) {
+        icons[icon.id] = icon;
+      }
+      return icons;
+    }
+    /**
+     * @private
+     */
+    #prepareSvgClone(sourceSvg) {
+      if (sourceSvg) {
+        var content = sourceSvg.cloneNode(true),
+            svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'),
+            viewBox = content.getAttribute('viewBox') || '0 0 ' + this.width + ' ' + this.height,
+            cssText = 'pointer-events: none; display: block; width: 100%; height: 100%;';
+        svg.setAttribute('viewBox', viewBox);
+        svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+        svg.style.cssText = cssText;
+        svg.appendChild(content).removeAttribute('id');
+        return svg;
+      }
+      return null;
+    }
+  });
+})();
+
+((base = HTMLElement) => {
+  customElements.define('custom-svg-icon', class CustomSvgIcon extends base {
+    #lastIcon
+    /**
+     * Attributes observer
+     * @return {Array} ['icon']
+     */
+    static get observedAttributes() {
+      return ['icon'];
+    }
+
+    /**
+     * Iconset
+     * @return {object} globalThis.svgIconset
+     * [checkout](svg-iconset.html) for more info.
+     */
+    get iconset() {
+      return globalThis.svgIconset
+    }
+
+    /**
+     * icon
+     * @param {string} value icon to display.
+     * optional: you can create multiple iconsets
+     * by setting a different name on svg-iconset.
+     *
+     * **example:** ```html
+     * <svg-iconset name="my-icons">
+     *   <g id="menu">....</g>
+     * </svg-iconset>
+     * ```
+     * This means we can ask for the icon using a prefix
+     * **example:** ```html
+     * <reef-icon-button icon="my-icons::menu"></reef-icon-button>
+     * ```
+     */
+    set icon(value) {
+      this.__iconChanged__({value: value});
+    }
+
+    get icon() {
+      return this.getAttribute('icon');
+    }
+
+    get template() {
+      return `
+        <style>
+          :host {
+            width: var(--svg-icon-size, 24px);
+            height: var(--svg-icon-size, 24px);
+            display: inline-flex;
+            display: -ms-inline-flexbox;
+            display: -webkit-inline-flex;
+            display: inline-flex;
+            -ms-flex-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+            -ms-flex-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            position: relative;
+            vertical-align: middle;
+            fill: var(--svg-icon-color, #111);
+            stroke: var(--svg-icon-stroke, none);
+          }
+        </style>
+      `;
+    }
+
+    constructor() {
+      super();
+      this.attachShadow({mode: 'open'});
+      this._onIconsetReady = this._onIconsetReady.bind(this);
+    }
+
+    /**
+     * Basic render template, can be called from host using super.render() or extended
+     *
+     * @example ```js
+     * const iconTempl = super.template();
+     * ```
+     */
+    render() {
+      this.shadowRoot.innerHTML = this.template;
+    }
+
+    connectedCallback() {
+      this.icon = this.getAttribute('icon') || null;
+      if (!super.render) this.render();
+    }
+
+    _onIconsetReady() {
+      globalThis.removeEventListener('svg-iconset-added', this._onIconsetReady);
+      this.__iconChanged__({value: this.icon});
+    }
+
+    __iconChanged__(change) {
+      if (!this.iconset) {
+        globalThis.addEventListener('svg-iconset-added', this._onIconsetReady);
+        return;
+      }
+      if (this.#lastIcon === change.value) return
+      if (!change.value) return
+      if (this.#lastIcon) this.shadowRoot.removeChild(this.shadowRoot.querySelector('svg'));
+
+      let parts = change.value.split('::');
+      if (parts.length === 1) {
+        this.iconset['icons'].applyIcon(this, change.value);
+      } else if (this.iconset[parts[0]]) {
+        this.iconset[parts[0]].applyIcon(this, parts[1]);
+      }
+      this.#lastIcon = change.value;
+    }
+
+    /**
+     * Runs when attribute changes.
+     * @param {string} name The name of the attribute that changed.
+     * @param {string|object|array} oldValue
+     * @param {string|object|array} newValue
+     */
+    attributeChangedCallback(name, oldValue, newValue) {
+      if (oldValue !== newValue) this[name] = newValue;
+    }
+  });
+})();
 
 window.Backed = window.Backed || {};
 // binding does it's magic using the propertyStore ...
@@ -332,7 +582,7 @@ var shell = customElements.define('app-shell', class AppShell extends s {
     globalThis.onhashchange = this.#hashchange.bind(this);
   }
 
-  connectedCallback() {
+  async connectedCallback() {
     super.connectedCallback();
     if (!location.hash) location.hash = '#!/home';
     this.#hashchange();
@@ -351,8 +601,11 @@ var shell = customElements.define('app-shell', class AppShell extends s {
   }
 
   async #select(selected) {
-    !customElements.get(`${selected}-view`) && await import(`./${selected}.js`);
-    this.#pages.select(selected);
+    requestAnimationFrame(async () => {
+      !customElements.get(`${selected}-view`) && await import(`./${selected}.js`);
+      this.#pages.select(selected);
+    });
+    
   }
 
   async select(selected) {

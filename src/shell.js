@@ -1,8 +1,8 @@
 import {LitElement, html, css} from 'lit'
 import 'custom-svg-iconset'
 import 'custom-svg-icon'
-import '@vandeurenglenn/flex-elements'
 import 'custom-pages'
+
 export default customElements.define('app-shell', class AppShell extends LitElement {
 
   constructor() {
@@ -11,7 +11,7 @@ export default customElements.define('app-shell', class AppShell extends LitElem
     globalThis.onhashchange = this.#hashchange.bind(this)
   }
 
-  connectedCallback() {
+  async connectedCallback() {
     super.connectedCallback();
     if (!location.hash) location.hash = '#!/home'
     this.#hashchange()
@@ -30,8 +30,11 @@ export default customElements.define('app-shell', class AppShell extends LitElem
   }
 
   async #select(selected) {
-    !customElements.get(`${selected}-view`) && await import(`./${selected}.js`)
-    this.#pages.select(selected)
+    requestAnimationFrame(async () => {
+      !customElements.get(`${selected}-view`) && await import(`./${selected}.js`)
+      this.#pages.select(selected)
+    })
+    
   }
 
   async select(selected) {

@@ -1,4 +1,191 @@
-import { s, i, y } from './flex-container-1a520fd9.js';
+import { s, i, y } from './lit-element-84ca1571.js';
+
+customElements.define('flex-column', class FlexColumn extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({mode: 'open'});
+    this.shadowRoot.innerHTML = this.template;
+  }
+  get template() {
+    return `<style>
+      :host {
+        display: flex;
+        flex-direction: column;
+      }      
+    </style>
+    <slot></slot>
+    `
+  }
+});
+
+customElements.define('flex-row', class FlexRow extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({mode: 'open'});
+    this.shadowRoot.innerHTML = this.template;
+  }
+  get template() {
+    return `<style>
+      :host {
+        display: flex;
+        flex-direction: row;
+      }      
+    </style>
+    <slot></slot>
+    `
+  }
+});
+
+customElements.define('flex-one', class FlexOne extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({mode: 'open'});
+    this.shadowRoot.innerHTML = this.template;
+  }
+  get template() {
+    return `<style>
+      :host {
+        flex: 1;
+      }
+    </style>
+    
+    <slot></slot>`
+  }
+});
+
+customElements.define('flex-two', class FlexTwo extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({mode: 'open'});
+    this.shadowRoot.innerHTML = this.template;
+  }
+  get template() {
+    return `<style>
+      :host {
+        flex: 2;
+      }
+    </style>
+    
+    <slot></slot>`
+  }
+});
+
+customElements.define('flex-three', class FlexThree extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({mode: 'open'});
+    this.shadowRoot.innerHTML = this.template;
+  }
+  get template() {
+    return `<style>
+      :host {
+        flex: 3;
+      }
+    </style>
+    
+    <slot></slot>`
+  }
+});
+
+customElements.define('flex-four', class FlexFour extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({mode: 'open'});
+    this.shadowRoot.innerHTML = this.template;
+  }
+  get template() {
+    return `<style>
+      :host {
+        flex: 4;
+      }
+    </style>
+    
+    <slot></slot>`
+  }
+});
+
+customElements.define('flex-wrap-around', class FlexWrapAround extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({mode: 'open'});
+    this.shadowRoot.innerHTML = this.template;
+  }
+  get template() {
+    return `<style>
+      :host {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-around;
+      }      
+    </style>
+    <slot></slot>
+    `
+  }
+});
+
+customElements.define('flex-wrap-evenly', class FlexWrapEvenly extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({mode: 'open'});
+    this.shadowRoot.innerHTML = this.template;
+  }
+  get template() {
+    return `<style>
+      :host {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-evenly;
+      }      
+    </style>
+    <slot></slot>
+    `
+  }
+});
+
+customElements.define('flex-wrap-between', class FlexWrapBetween extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({mode: 'open'});
+    this.shadowRoot.innerHTML = this.template;
+  }
+  get template() {
+    return `<style>
+      :host {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-between;
+      }      
+    </style>
+    <slot></slot>
+    `
+  }
+});
+
+customElements.define('flex-container', class FlexContainer extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({mode: 'open'});
+    this.maxWidth = this.getAttribute('max-width') || 640;
+    this.minWidth = this.getAttribute('min-width') || 320;
+    this.shadowRoot.innerHTML = this.template;
+  }
+  get template() {
+    return `<style>
+      :host {
+        display: flex;
+        flex-direction: column;
+        max-width: ${this.maxWidth}px;
+        min-width: ${this.minWidth}px;
+        width: 100%;
+      }
+      :host([row]) {
+        flex-direction: row;
+      }
+    </style>
+    <slot></slot>
+    `
+  }
+});
 
 var home = customElements.define('home-view', class HomeView extends s {
   static get properties() {
@@ -31,20 +218,18 @@ var home = customElements.define('home-view', class HomeView extends s {
       width: 100%;
       display: flex;
       flex-direction: column;
+      align-items: center;
     }
 
 
     header {
-      // position: absolute;
       display: flex;
       width: 100%;
       justify-content: center;
       align-items: center;
     }
 
-    main {      
-      // top: 345px;
-      // position: absolute;
+    main {
       display: flex;
       flex-direction: column;
       width: 100%;
@@ -72,7 +257,7 @@ var home = customElements.define('home-view', class HomeView extends s {
 
     .examples {
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
     }
 
     .examples .left, .examples .right {
@@ -120,7 +305,12 @@ var home = customElements.define('home-view', class HomeView extends s {
       height: 54px;
       box-sieing: border-box;
       z-index: 100;
+      will-change: margin;
       margin-top: -54px;
+    }
+
+    image {
+      will-change: padding;
     }
 
     header.small img {
@@ -151,16 +341,36 @@ var home = customElements.define('home-view', class HomeView extends s {
 
       transition: opacity ease-out 16ms;
     }
+
+    .examples{
+      box-sizing: border-box;
+      max-width: calc(100% / 2 - 2px);
+    }
+
+    .example1 {
+      max-height: 220px;
+    }
+
+    .example1, .example2 {
+      will-change: padding;
+      padding-top: 4px;
+    }
+
     .filler {
       display: flex;
       width: 32px;
+    }
+
+    flex-wrap-between {
+      max-width: 960px;
     }
   `
 
   render() {
     return y`
+      <link rel="preload" as="image" href="./assets/banner.webp">
       <header class="big">
-        <img src="./assets/banner.jpg">
+        <img alt="banner" src="./assets/banner.webp">
         <span>
         <!-- <h1>HNM</h1> -->
         <flex-one></flex-one>
@@ -172,63 +382,56 @@ var home = customElements.define('home-view', class HomeView extends s {
         <span>
         <span class="filler"></span>
         <flex-one></flex-one>
-        <img src="./assets/logo.jpeg">
+        <img alt="logo" loading="lazy" src="./assets/logo.webp">
         <flex-one></flex-one>
         <custom-svg-icon icon="menu" style="margin-top: 3px;margin-right: 3px;"></custom-svg-icon>
         </span>
       </header>
-        <main>
-        <section class="examples">
-        <span class="left">
-          <img src="./assets/example2.jpg">
-          <img src="./assets/example1.jpg">  
-        </span>
+        <flex-wrap-between>
+          <section class="examples">
+          <img alt="example2" class="example2" loading="lazy" src="./assets/example2.webp">
+          <img alt="example1" class="example1" loading="lazy" src="./assets/example1.webp">  
+          </section>
 
-        <span class="right">
-          <img src="./assets/example1.jpg">  
-          <img src="./assets/example2.jpg">
-        </span>
-      </section>
+          <section class="examples">
+          <img alt="example1" class="example1" loading="lazy" src="./assets/example1.webp">  
+          <img alt="example2" class="example2" loading="lazy" src="./assets/example2.webp">
+          </section>
 
-      <section class="examples">
-        <span class="left">
-          <img src="./assets/example2.jpg">
-          <img src="./assets/example1.jpg">  
-        </span>
+          <section class="examples">
+          <img alt="example2" class="example2" loading="lazy" src="./assets/example2.webp">
+          <img alt="example1" class="example1" loading="lazy" src="./assets/example1.webp">  
+          </section>
+  
+          <section class="examples">
+          <img alt="example1" class="example1" loading="lazy" src="./assets/example1.webp">  
+          <img alt="example2" class="example2" loading="lazy" src="./assets/example2.webp">
+          </section>
 
-        <span class="right">
-          <img src="./assets/example1.jpg">  
-          <img src="./assets/example2.jpg">
-        </span>
-      </section>
-      
-      <section class="examples">
-        <span class="left">
-          <img src="./assets/example2.jpg">
-          <img src="./assets/example1.jpg">  
-        </span>
+          <section class="examples">
+          <img alt="example2" class="example2" loading="lazy" src="./assets/example2.webp">
+          <img alt="example1" class="example1" loading="lazy" src="./assets/example1.webp">  
+          </section>
 
-        <span class="right">
-          <img src="./assets/example1.jpg">  
-          <img src="./assets/example2.jpg">
-        </span>
-      </section>
-
-      <section class="examples">
-        <span class="left">
-          <img src="./assets/example2.jpg">
-          <img src="./assets/example1.jpg">  
-        </span>
-
-        <span class="right">
-          <img src="./assets/example1.jpg">  
-          <img src="./assets/example2.jpg">
-        </span>
-      </section>
-    </main>
+          <section class="examples">
+          <img alt="example1" class="example1" loading="lazy" src="./assets/example1.webp">  
+          <img alt="example2" class="example2" loading="lazy" src="./assets/example2.webp">
+          </section>
+          
+          <section class="examples">
+          <img alt="example2" class="example2" loading="lazy" src="./assets/example2.webp">
+          <img alt="example1" class="example1" loading="lazy" src="./assets/example1.webp">  
+          </section>
+  
+          <section class="examples">
+          <img alt="example1" class="example1" loading="lazy" src="./assets/example1.webp">  
+          <img alt="example2" class="example2" loading="lazy" src="./assets/example2.webp">
+          </section>
+        </flex-wrap-between>
+       
     
     `
-    // <img src="./assets/banner.jpg">
+    // <img alt="banner" loading="lazy" src="./assets/banner.webp">
   }
 });
 
