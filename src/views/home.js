@@ -1,6 +1,8 @@
 import {LitElement, html, css} from 'lit'
 import '@vandeurenglenn/flex-elements'
 
+import '@material/web/fab/fab.js'
+
 export default customElements.define('home-view', class HomeView extends LitElement {
   static get properties() {
     return {
@@ -27,12 +29,14 @@ export default customElements.define('home-view', class HomeView extends LitElem
   static styles = css`
     :host {
       overflow-y: auto;
-      position: relative;
+      position: absolute;
       height: 100%;
       width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
+
+      --md-text-button-with-icon-icon-size: 24px;
     }
 
 
@@ -41,6 +45,7 @@ export default customElements.define('home-view', class HomeView extends LitElem
       width: 100%;
       justify-content: center;
       align-items: center;
+      box-sizing: border-box;
     }
 
     main {
@@ -198,7 +203,7 @@ export default customElements.define('home-view', class HomeView extends LitElem
         <flex-one></flex-one>
         <img alt="logo" loading="lazy" src="./assets/logo.webp">
         <flex-one></flex-one>
-        <custom-svg-icon icon="menu" style="margin-top: 3px;margin-right: 3px;"></custom-svg-icon>
+      
         </span>
       </header>
         <flex-wrap-between>
@@ -243,7 +248,7 @@ export default customElements.define('home-view', class HomeView extends LitElem
           </section>
         </flex-wrap-between>
        
-    
+       
     `
     // <img alt="banner" loading="lazy" src="./assets/banner.webp">
   }
