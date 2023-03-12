@@ -1,7 +1,6 @@
 import {LitElement, html, css} from 'lit'
 import '@vandeurenglenn/flex-elements'
 
-import '@material/web/fab/fab.js'
 
 export default customElements.define('home-view', class HomeView extends LitElement {
   static get properties() {

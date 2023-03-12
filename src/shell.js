@@ -33,13 +33,13 @@ export default customElements.define('app-shell', class AppShell extends LitElem
   }
 
   async #hashchange() {
+    if (this.menuShown) this.menuShown = false
     const parts = location.hash.split('#!/')
     console.log(parts);
     this.#select(parts[1])
   }
 
   async #select(selected) {
-    if (this.menuShown) this.menuShown = false
     requestAnimationFrame(async () => {
       !customElements.get(`${selected}-view`) && await import(`./${selected}.js`)
       this.#pages.select(selected)
@@ -151,6 +151,11 @@ export default customElements.define('app-shell', class AppShell extends LitElem
       color: #eee;
       --md-elevation-level: 2;
     }
+    
+    flex-container {
+      padding-top: 24px;
+      min-width: auto;
+    }
   `
 
   render() {
@@ -160,9 +165,12 @@ export default customElements.define('app-shell', class AppShell extends LitElem
     <aside dir="rtl">
       <md-elevation shadow>
       </md-elevation>
+      <custom-svg-icon icon="close" @click="${() => (this.menuShown = !this.menuShown)}"></custom-svg-icon>
+      <flex-container>
       <a href="#!/services">services</a>
       <a href="#!/team">team</a>
       <a href="#!/home">home</a>
+      </flex-container>
     </aside>
     <button extended label="gratis offerte">
 
