@@ -3,33 +3,50 @@ import 'custom-svg-iconset'
 import 'custom-svg-icon'
 import '@vandeurenglenn/flex-elements'
 export default customElements.define('home-view', class HomeView extends LitElement {
+  static get properties() {
+    return {
+      condensed: {
+        type: Boolean,
+        reflect: true
+      },
+    };
+  }
+
   constructor() {
     super()
+
+    this.onscroll = this.#onscroll.bind(this)
+  }
+
+  #onscroll(event) {
+    event.preventDefault()
+console.log(this.scrollTop);
+    if (this.scrollTop > 290) this.condensed = true
+    else this.condensed = false
   }
 
   static styles = css`
     :host {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      overflow-y: auto;
+      position: relative;
+      height: 100%;
+      width: 100%;
       display: flex;
       flex-direction: column;
-      font-family: system-ui, "Noto Sans", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     }
+
 
     header {
       position: absolute;
       display: flex;
       width: 100%;
       justify-content: center;
-      align-items: center; 
-      padding: 6px 12px;
-      // background: #beb9c0;
+      align-items: center;
     }
 
     main {      
+      top: 345px;
+      position: absolute;
       display: flex;
       flex-direction: column;
       width: 100%;
@@ -75,10 +92,78 @@ export default customElements.define('home-view', class HomeView extends LitElem
     .left img, .right img {
       padding-top: 3px;
     }
+
+
+    main, header {
+      box-sizing: border-box;
+    }
+
+    header span, section, img {
+      max-width: 960px;
+      width: 100%;
+    }
+    header span {
+      display: flex;
+      align-items: center;
+    }
+
+    header.big {
+
+      background: #bdb9c1;
+    }
+
+    header.big span {
+      top: 0;
+      position: absolute;
+
+    }
+
+    header.small {
+      height: 54px;
+      box-sieing: border-box;
+      z-index: 100;
+      top: calc(345px - 54px);
+    }
+
+    header.small img {
+      width: 54px;
+      opacity: 0;
+    }
+
+    :host([condensed]) header.small {
+      top: 0;
+      position: sticky;
+      background: #bdb9c1;
+    }
+    :host([condensed]) header.small img {
+      opacity: 1;
+    }
+    .filler {
+      display: flex;
+      width: 32px;
+    }
   `
 
   render() {
     return html`
+    <header class="big">
+    <img src="./assets/banner.jpg">
+    <span>
+    <!-- <h1>HNM</h1> -->
+    <flex-one></flex-one>
+    
+    </span>
+  </header>
+
+  <header class="small">
+    <span>
+    <span class="filler"></span>
+    <flex-one></flex-one>
+    <img src="./assets/logo.jpeg">
+    <flex-one></flex-one>
+    <custom-svg-icon icon="menu" style="margin-top: 3px;margin-right: 3px;"></custom-svg-icon>
+    </span>
+  </header>
     <main>
       <section>
           
