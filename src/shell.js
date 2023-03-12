@@ -39,6 +39,7 @@ export default customElements.define('app-shell', class AppShell extends LitElem
   }
 
   async #select(selected) {
+    if (this.menuShown) this.menuShown = false
     requestAnimationFrame(async () => {
       !customElements.get(`${selected}-view`) && await import(`./${selected}.js`)
       this.#pages.select(selected)
