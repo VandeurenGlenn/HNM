@@ -4,14 +4,6 @@ import 'custom-svg-icon'
 import '@vandeurenglenn/flex-elements'
 import 'custom-pages'
 export default customElements.define('app-shell', class AppShell extends LitElement {
-  static get properties() {
-    return {
-      condensed: {
-        type: Boolean,
-        reflect: true
-      }
-    }
-  }
   constructor() {
     super()
 
@@ -20,44 +12,12 @@ export default customElements.define('app-shell', class AppShell extends LitElem
 
   connectedCallback() {
     super.connectedCallback();
-    this.onscroll = this.#onscroll.bind(this)
+    // this.onscroll = this.#onscroll.bind(this)
     if (!location.hash) location.hash = '#!/home'
     this.#hashchange()
   }
 
-  #onscroll(event) {
-    event.preventDefault()
-    const max = 348
-
-    // if (this.scrollTop > max) return
-    const value = max - this.scrollTop
-
-    if (this.scrollTop > 264) {
-      this.condensed = true
-    } else {
-      this.condensed = false
-    }
-    // if (value < 250) return
-    console.log(this.scrollTop);
-    const scale = ((100 - (this.scrollTop / 4) - this.lastScroll / 100) / 100)
-    console.log(scale)
-
-    const img = this.renderRoot.querySelector('header.big img')
-    const header = this.renderRoot.querySelector('header.big')
-   
-    if (scale < 0) {
-      return img.style = `transform: scale(0) translateY(0) translateX(0);`
-    }
-    if (scale > 1) return
-    
-
-    // header.style = `transform: translateY(-${110 - (scale * 100)}%);`
-    img.style = `transform: scale(${scale}) translateY(${(100 - (scale * 100))*2}px) translateX(-${(100 - (scale * 100)) * 2.5}px);`
-    this.lastScroll = this.scrollTop / 4
-    // console.log(img.style);
-    // console.log(this.scrollTop);
-  }
-
+  
   get #pages() {
     return this.renderRoot.querySelector('custom-pages')
   }
@@ -160,23 +120,11 @@ export default customElements.define('app-shell', class AppShell extends LitElem
     }
 
     header.small {
-      height: 86px;
-      padding: 12px 24px;
       opacity: 0;
-      position: fixed;
-      z-index: 1000;
-      background: #bdb9c1;
     }
 
-    header.small img{
-      max-width: 86px
-    }
     :host([condensed]) header.small {
       opacity: 1;
-    }
-
-    :host([condensed]) header.big {
-      opacity: 0;
     }
   `
 
@@ -184,7 +132,7 @@ export default customElements.define('app-shell', class AppShell extends LitElem
     return html`
     <header class="small">
       <span>
-      <img src="./assets/logo.jpeg">
+      <!-- <h1>HNM</h1> -->
       <flex-one></flex-one>
       <custom-svg-icon icon="menu" style="margin-top: 3px;margin-right: 3px;"></custom-svg-icon>
       </span>
