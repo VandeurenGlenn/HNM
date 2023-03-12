@@ -20,6 +20,7 @@ export default customElements.define('app-shell', class AppShell extends LitElem
     }
 
     header {
+      position: absolute;
       display: flex;
       width: 100%;
       justify-content: center;
@@ -80,9 +81,9 @@ export default customElements.define('app-shell', class AppShell extends LitElem
     return html`
     <header>
       <span>
-      <h1>HNM</h1>
+      <!-- <h1>HNM</h1> -->
       <flex-one></flex-one>
-      <custom-svg-icon icon="menu"></custom-svg-icon>
+      <custom-svg-icon icon="menu" style="margin-top: 3px;margin-right: 3px;"></custom-svg-icon>
       </span>
     </header>
     <main>

@@ -479,6 +479,7 @@ var shell = customElements.define('app-shell', class AppShell extends s {
     }
 
     header {
+      position: absolute;
       display: flex;
       width: 100%;
       justify-content: center;
@@ -539,9 +540,9 @@ var shell = customElements.define('app-shell', class AppShell extends s {
     return y`
     <header>
       <span>
-      <h1>HNM</h1>
+      <!-- <h1>HNM</h1> -->
       <flex-one></flex-one>
-      <custom-svg-icon icon="menu"></custom-svg-icon>
+      <custom-svg-icon icon="menu" style="margin-top: 3px;margin-right: 3px;"></custom-svg-icon>
       </span>
     </header>
     <main>
