@@ -20,8 +20,8 @@ export default customElements.define('home-view', class HomeView extends LitElem
 
   #onscroll(event) {
     event.preventDefault()
-console.log(this.scrollTop);
-    if (this.scrollTop > 290) this.condensed = true
+    const {height} = this.renderRoot.querySelector('header.big').getBoundingClientRect()
+    if (this.scrollTop > height - 54) this.condensed = true
     else this.condensed = false
   }
 
