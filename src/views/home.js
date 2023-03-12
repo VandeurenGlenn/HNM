@@ -37,7 +37,7 @@ console.log(this.scrollTop);
 
 
     header {
-      position: absolute;
+      // position: absolute;
       display: flex;
       width: 100%;
       justify-content: center;
@@ -45,8 +45,8 @@ console.log(this.scrollTop);
     }
 
     main {      
-      top: 345px;
-      position: absolute;
+      // top: 345px;
+      // position: absolute;
       display: flex;
       flex-direction: column;
       width: 100%;
@@ -122,7 +122,7 @@ console.log(this.scrollTop);
       height: 54px;
       box-sieing: border-box;
       z-index: 100;
-      top: calc(345px - 54px);
+      margin-top: -54px;
     }
 
     header.small img {
@@ -141,6 +141,7 @@ console.log(this.scrollTop);
       top: 0;
       position: sticky;
       background: #bdb9c1;
+      // margin-top: 0;
     }
     :host([condensed]) header.small img {
       opacity: 1;
