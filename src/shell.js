@@ -2,6 +2,10 @@ import {LitElement, html, css} from 'lit'
 import 'custom-svg-iconset'
 import 'custom-svg-icon'
 import 'custom-pages'
+
+import '@material/web/fab/fab.js'
+
+import '@material/web/fab/fab-extended.js'
 export default customElements.define('app-shell', class AppShell extends LitElement {
   static get properties() {
     return {
@@ -134,7 +138,18 @@ export default customElements.define('app-shell', class AppShell extends LitElem
     :host([menuShown]) md-fab {
       opacity: 0;
     }
-
+    button {
+      border: none;
+      z-index: 10001;
+      position: absolute;
+      right: 24px;
+      bottom: 24px;
+      padding: 12px 24px;
+      border-radius: 12px;
+      background: #364857;
+      color: #eee;
+      --md-elevation-level: 2;
+    }
   `
 
   render() {
@@ -148,7 +163,12 @@ export default customElements.define('app-shell', class AppShell extends LitElem
       <a href="#!/team">team</a>
       <a href="#!/home">home</a>
     </aside>
+    <button extended label="gratis offerte">
 
+    <md-elevation shadow>
+    </md-elevation>
+      <span>gratis advies</span>
+    </button>
     <main>
       <custom-pages attr-for-selected="data-route">
         <home-view data-route="home"></home-view>
