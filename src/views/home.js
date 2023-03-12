@@ -204,6 +204,10 @@ export default customElements.define('home-view', class HomeView extends LitElem
         <img alt="logo" loading="lazy" src="./assets/logo.webp">
         <flex-one></flex-one>
       
+
+    <!-- <md-fab @click="${() => (this.menuShown = !this.menuShown)}">-->
+    <custom-svg-icon @click="${() => document.dispatchEvent(new CustomEvent('menu-click'))}" icon="menu" slot="icon" style="padding-right: 12px"></custom-svg-icon>
+  <!--</md-fab>-->
         </span>
       </header>
         <flex-wrap-between>

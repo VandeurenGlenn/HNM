@@ -17,6 +17,7 @@ export default customElements.define('app-shell', class AppShell extends LitElem
 
   async connectedCallback() {
     super.connectedCallback();
+    document.addEventListener('menu-click', () => (this.menuShown = !this.menuShown));
     if (!location.hash) location.hash = '#!/home'
     this.#hashchange()
   }
@@ -91,10 +92,10 @@ export default customElements.define('app-shell', class AppShell extends LitElem
       box-sizing: border-box;
       padding: 12px 24px;
       border-radius: 12px;
-      background: rgb(238, 232, 244);
+      background: rgb(187 185 190);
       position: absolute;
       opacity: 0;
-      
+      top: 12px;
       
       bottom: 12px;
       right: 12px;
@@ -139,16 +140,10 @@ export default customElements.define('app-shell', class AppShell extends LitElem
   render() {
     return html`
 
-    <md-fab @click="${() => (this.menuShown = !this.menuShown)}">
-      <custom-svg-icon icon="menu" slot="icon"></custom-svg-icon>
-    </md-fab>
-
     
     <aside dir="rtl">
-    <md-elevation shadow surface>
-    </md-elevation>
-    <md-ripple shadow surface>
-    </md-ripple>
+      <md-elevation shadow>
+      </md-elevation>
       <a href="#!/services">services</a>
       <a href="#!/team">team</a>
       <a href="#!/home">home</a>
