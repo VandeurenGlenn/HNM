@@ -112,7 +112,8 @@ export default customElements.define('home-view', class HomeView extends LitElem
     header.small {
       box-sizing: border-box;
       padding: 12px;
-      height: 108px;
+      min-height: 108px;
+      height: 100%;
       box-sizing: border-box;
       z-index: 100;
       will-change: margin;
