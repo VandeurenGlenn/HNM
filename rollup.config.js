@@ -5,6 +5,7 @@ import rimraf from 'rimraf'
 rimraf.sync('www/*.js')
 
 const views = (await readdir('./src/views')).map(view => `./src/views/${view}`)
+const themes = (await readdir('./src/themes')).map(theme => `./src/themes/${theme}`)
 
 export default [{
   input: ['./src/shell.js', ...views],
@@ -15,5 +16,10 @@ export default [{
   plugins: [
     nodeResolve()
   ]
-
+}, {
+  input: themes,
+  output: [{
+    dir: 'www/themes',
+    format: 'es'
+  }]
 }]

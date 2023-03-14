@@ -12,10 +12,16 @@ export default customElements.define('home-view', class HomeView extends LitElem
     };
   }
 
+  darkmode(enabled) {
+    this.renderRoot.querySelector(`img[alt="logo"]`).src = './assets/logo-dark.svg'
+    this.renderRoot.querySelector(`img[alt="banner"]`).src = './assets/banner-dark.svg'
+  }
+
   constructor() {
     super()
 
     this.onscroll = this.#onscroll.bind(this)
+    document.addEventListener('theme-change', this.darkmode.bind(this))
   }
 
   #onscroll(event) {
@@ -34,7 +40,7 @@ export default customElements.define('home-view', class HomeView extends LitElem
       display: flex;
       flex-direction: column;
       align-items: center;
-      --svg-icon-color: #555;
+      --svg-icon-color: var(--main-color);
       --md-text-button-with-icon-icon-size: 24px;
     }
 
@@ -138,7 +144,7 @@ export default customElements.define('home-view', class HomeView extends LitElem
 
     :host([condensed]) header.small {
       top: 0;
-      background: #fff;
+      background: var(--main-background-color);
       position: sticky;
     }
     :host([condensed]) header.small img {

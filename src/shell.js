@@ -2,6 +2,7 @@ import {LitElement, html, css} from 'lit'
 import 'custom-svg-iconset'
 import 'custom-svg-icon'
 import 'custom-pages'
+import './elements/darkmode/element.js'
 
 import '@material/web/fab/fab.js'
 
@@ -63,18 +64,10 @@ export default customElements.define('app-shell', class AppShell extends LitElem
       display: flex;
       flex-direction: row;
       font-family: system-ui, "Noto Sans", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+      color: var(--main-color);
+      background-color: var(--main-background-color);
     }
-
-
-    md-fab {
-      position: absolute;
-      bottom: 12px;
-      right: 12px;
-      z-index: 10001;
-
-      --svg-icon-color: #555;
-    }
-
+    
     main {
       overflow-y: auto;
       position: absolute;
@@ -97,7 +90,9 @@ export default customElements.define('app-shell', class AppShell extends LitElem
       box-sizing: border-box;
       padding: 12px 24px;
       border-radius: 12px;
-      background: rgb(187 185 190);
+      background: var(--main-background-color);
+      color: var(--main-color);
+      --svg-icon-color: var(--main-color);
       position: absolute;
       opacity: 0;
       top: 12px;
@@ -127,7 +122,8 @@ export default customElements.define('app-shell', class AppShell extends LitElem
       height: 44px;
       box-sizing: border-box;
       font-weight: 500;
-      color: #555;
+
+      color: var(--main-color);
       padding: 6px 12px;
     }
 
@@ -156,21 +152,33 @@ export default customElements.define('app-shell', class AppShell extends LitElem
       padding-top: 24px;
       min-width: auto;
     }
+
+    aside flex-container {
+      align-items: flex-end;
+    }
   `
 
   render() {
     return html`
 
     
-    <aside dir="rtl">
+    <aside>
       <md-elevation shadow>
       </md-elevation>
-      <custom-svg-icon icon="close" @click="${() => (this.menuShown = !this.menuShown)}"></custom-svg-icon>
+      <flex-row>
+        <flex-one></flex-one>
+        <custom-svg-icon icon="close" @click="${() => (this.menuShown = !this.menuShown)}"></custom-svg-icon>
+      </flex-row>
+      
       <flex-container>
-      <a href="#!/services">services</a>
-      <a href="#!/team">team</a>
-      <a href="#!/home">home</a>
+        <a href="#!/services">services</a>
+        <a href="#!/team">team</a>
+        <a href="#!/home">home</a>
       </flex-container>
+      <flex-one></flex-one>
+      <flex-row style="padding-bottom: 64px;">
+        <darkmode-element></darkmode-element>
+      </flex-row>
     </aside>
     <button extended label="gratis offerte">
 

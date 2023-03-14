@@ -20,6 +20,21 @@
       overflow: hidden;
     }
   </style>
+  <script>
+    const theme = localStorage.getItem('selected-theme')
+    globalThis.setTheme = async (theme) => {
+      theme = (await import(`./themes/${theme}.js`)).default
+      const body = document.querySelector('body')
+      for (const [key, value] of Object.entries(theme)) {
+        console.log(key);
+        body.style.setProperty(`--${key}`, value)
+      }
+
+      document.dispatchEvent(new CustomEvent('theme-change', {detail : theme}))
+    }
+
+    setTheme(theme || 'light')
+  </script>
   <custom-svg-iconset>
     <svg>
       <defs>
