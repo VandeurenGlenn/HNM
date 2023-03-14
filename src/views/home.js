@@ -34,7 +34,7 @@ export default customElements.define('home-view', class HomeView extends LitElem
       display: flex;
       flex-direction: column;
       align-items: center;
-
+      --svg-icon-color: #555;
       --md-text-button-with-icon-icon-size: 24px;
     }
 
@@ -44,6 +44,7 @@ export default customElements.define('home-view', class HomeView extends LitElem
       width: 100%;
       justify-content: center;
       align-items: center;
+      padding: 12px;
       box-sizing: border-box;
     }
 
@@ -59,7 +60,7 @@ export default customElements.define('home-view', class HomeView extends LitElem
       box-sizing: border-box;
     }
 
-    header span, section, img {
+    header, section, img {
       max-width: 960px;
       width: 100%;
     }
@@ -105,26 +106,17 @@ export default customElements.define('home-view', class HomeView extends LitElem
     }
     header span {
       display: flex;
-      align-items: center;
-    }
-
-    header.big {
-
-      background: #bdb9c1;
-    }
-
-    header.big span {
-      top: 0;
-      position: absolute;
-
+      align-items: flex-end;
     }
 
     header.small {
-      height: 54px;
-      box-sieing: border-box;
+      box-sizing: border-box;
+      padding: 12px;
+      height: 108px;
+      box-sizing: border-box;
       z-index: 100;
       will-change: margin;
-      margin-top: -54px;
+      margin-top: -108px;
     }
 
     image {
@@ -145,18 +137,16 @@ export default customElements.define('home-view', class HomeView extends LitElem
 
     :host([condensed]) header.small {
       top: 0;
+      background: #fff;
       position: sticky;
-      background: #bdb9c1;
     }
     :host([condensed]) header.small img {
       opacity: 1;
-
       transition: opacity ease-in 60ms;
     }
 
     :host([condensed]) header.big img {
       opacity: 0;
-
       transition: opacity ease-out 16ms;
     }
 
@@ -186,27 +176,22 @@ export default customElements.define('home-view', class HomeView extends LitElem
 
   render() {
     return html`
-      <link rel="preload" as="image" href="./assets/banner.webp">
+      <link rel="preload" as="image" href="./assets/banner.svg">
       <header class="big">
-        <img alt="banner" src="./assets/banner.webp">
-        <span>
-        <!-- <h1>HNM</h1> -->
-        <flex-one></flex-one>
-        
-        </span>
+        <img alt="banner" src="./assets/banner.svg">
       </header>
 
       <header class="small">
         <span>
         <span class="filler"></span>
         <flex-one></flex-one>
-        <img alt="logo" loading="lazy" src="./assets/logo.webp">
+        <img alt="logo" loading="lazy" src="./assets/logo-hnm.svg">
         <flex-one></flex-one>
       
 
-    <!-- <md-fab @click="${() => (this.menuShown = !this.menuShown)}">-->
-    <custom-svg-icon @click="${() => document.dispatchEvent(new CustomEvent('menu-click'))}" icon="menu" slot="icon" style="padding-right: 12px"></custom-svg-icon>
-  <!--</md-fab>-->
+   
+        <custom-svg-icon @click="${() => document.dispatchEvent(new CustomEvent('menu-click'))}" icon="menu" slot="icon"></custom-svg-icon>
+ 
         </span>
       </header>
         <flex-wrap-between>
