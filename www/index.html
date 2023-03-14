@@ -23,14 +23,16 @@
   <script>
     const theme = localStorage.getItem('selected-theme')
     globalThis.setTheme = async (theme) => {
+      const themeName = theme
       theme = (await import(`./themes/${theme}.js`)).default
       const body = document.querySelector('body')
       for (const [key, value] of Object.entries(theme)) {
         console.log(key);
         body.style.setProperty(`--${key}`, value)
       }
+      localStorage.setItem('selected-theme', themeName)
 
-      document.dispatchEvent(new CustomEvent('theme-change', {detail : theme}))
+      document.dispatchEvent(new CustomEvent('theme-change', {detail : themeName}))
     }
 
     setTheme(theme || 'light')

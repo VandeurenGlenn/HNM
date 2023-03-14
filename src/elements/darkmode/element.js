@@ -11,6 +11,13 @@ export default customElements.define('darkmode-element', class DarkmodeElement e
     this.addEventListener('click', this.#click.bind(this))
   }
 
+  async connectedCallback() {
+    super.connectedCallback()
+    await this.updateComplete
+    this.enabled = localStorage.getItem('selected-theme') === 'dark' ? true : false
+    this.enabled ? this.renderRoot.querySelector('custom-toggle').enable() : this.renderRoot.querySelector('custom-toggle').disable()
+  }
+
   get #toggleElement() {
     return this.renderRoot.querySelector('custom-toggle')
   }
