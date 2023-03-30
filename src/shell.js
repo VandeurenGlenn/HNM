@@ -134,7 +134,7 @@ export default customElements.define('app-shell', class AppShell extends LitElem
     :host([menuShown]) aside {
       opacity: 1;
       pointer-events: auto;
-      transition: transform ease-in 240ms, opacity ease-in 240ms;
+      transition: transform ease-in 120ms, opacity ease-in 60ms;
       transform-origin: top;
       transform: translate(0, 0);
     }
