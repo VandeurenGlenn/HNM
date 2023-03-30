@@ -91,7 +91,7 @@ export default customElements.define('app-shell', class AppShell extends LitElem
       z-index: 10001;
       box-sizing: border-box;
       padding: 24px;
-      border-radius: 12px;
+      border-radius: 24px;
       background: var(--main-background-color);
       color: var(--main-color);
       --svg-icon-color: var(--main-color);
@@ -103,6 +103,8 @@ export default customElements.define('app-shell', class AppShell extends LitElem
       right: 12px;
       width: 320px;
       pointer-events: none;
+      transform: translateY(110%);
+      transition: transform ease-out 160ms, opacity ease-out 160ms;
     }
 
     md-elevation, md-ripple {
@@ -132,6 +134,26 @@ export default customElements.define('app-shell', class AppShell extends LitElem
     :host([menuShown]) aside {
       opacity: 1;
       pointer-events: auto;
+      transition: transform ease-in 240ms, opacity ease-in 240ms;
+      transform-origin: top;
+      transform: translate(0, 0);
+    }
+
+    .backdrop {
+      z-index: 10000;
+      opacity: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+    }
+
+    :host([menuShown]) .backdrop {
+      opacity: 1;
+      pointer-events: auto;
+      background: #000000a1
     }
 
     :host([menuShown]) md-fab {
@@ -162,7 +184,7 @@ export default customElements.define('app-shell', class AppShell extends LitElem
 
   render() {
     return html`
-
+    <span class="backdrop" @click="${() => this.menuShown = false}"></span>
     
     <aside>
       <md-elevation shadow>
@@ -173,9 +195,9 @@ export default customElements.define('app-shell', class AppShell extends LitElem
       </flex-row>
       
       <flex-container>
-        <a href="#!/services">services</a>
-        <a href="#!/team">team</a>
-        <a href="#!/home">home</a>
+        <a @click="${() => this.menuShown = false}" href="#!/services">services</a>
+        <a @click="${() => this.menuShown = false}" href="#!/team">team</a>
+        <a @click="${() => this.menuShown = false}" href="#!/home">home</a>
       </flex-container>
       <flex-one></flex-one>
       <flex-row style="padding-bottom: 64px;">
