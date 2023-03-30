@@ -90,7 +90,7 @@ export default customElements.define('app-shell', class AppShell extends LitElem
       flex-direction: column;
       z-index: 10001;
       box-sizing: border-box;
-      padding: 12px 24px;
+      padding: 24px;
       border-radius: 12px;
       background: var(--main-background-color);
       color: var(--main-color);
@@ -101,7 +101,7 @@ export default customElements.define('app-shell', class AppShell extends LitElem
       
       bottom: 12px;
       right: 12px;
-      width: 256px;
+      width: 320px;
       pointer-events: none;
     }
 
