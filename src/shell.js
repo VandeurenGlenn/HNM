@@ -2,8 +2,8 @@ import {LitElement, html, css} from 'lit'
 import 'custom-svg-iconset'
 import 'custom-svg-icon'
 import 'custom-pages'
-import './elements/darkmode/element.js'
-
+import './elements/drawer.js'
+import './elements/button.js'
 import '@material/web/fab/fab.js'
 
 import '@material/web/fab/fab-extended.js'
@@ -22,9 +22,27 @@ export default customElements.define('app-shell', class AppShell extends LitElem
     globalThis.onhashchange = this.#hashchange.bind(this)
   }
 
+  get #drawer() {
+    return this.renderRoot.querySelector('drawer-element')
+  }
+
+  set menuShown(value) {
+    if (this.#drawer) this.#drawer.shown = value
+    else this.updateComplete.then(() => {
+      this.#drawer.shown = value
+    })
+    if (value) this.setAttribute('menuShown', '')
+    else this.removeAttribute('menuShown')
+  }
+
+  get menuShown() {
+    return this.#drawer?.shown
+  }
+
   async connectedCallback() {
     super.connectedCallback();
     document.addEventListener('menu-click', () => (this.menuShown = !this.menuShown));
+    document.addEventListener('menu-shown', ({detail}) => this.menuShown = detail);
     if (!location.hash) location.hash = '#!/home'
     this.#hashchange()
   }
@@ -55,6 +73,21 @@ export default customElements.define('app-shell', class AppShell extends LitElem
   }
 
   static styles = css`
+    @font-face {
+      font-family: americanTypewriter;
+      src: url("./fonts/American Typewriter Regular.ttf");
+    }
+
+    * {
+      pointer-events: none;
+      user-select: none;
+      outline: none;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
     :host {
       overflow-y: auto;
       position: relative;
@@ -68,6 +101,8 @@ export default customElements.define('app-shell', class AppShell extends LitElem
       font-family: system-ui, "Noto Sans", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
       color: var(--main-color);
       background-color: var(--main-background-color);
+      overflow: hidden;
+      font-family: americanTypewriter;
     }
     
     main {
@@ -83,60 +118,6 @@ export default customElements.define('app-shell', class AppShell extends LitElem
     h1 {
       margin: 0;
       font-size: 24px;
-    }
-
-    aside {
-      display: flex;
-      flex-direction: column;
-      z-index: 10001;
-      box-sizing: border-box;
-      padding: 24px;
-      border-radius: 24px;
-      background: var(--main-background-color);
-      color: var(--main-color);
-      --svg-icon-color: var(--main-color);
-      position: absolute;
-      opacity: 0;
-      top: 12px;
-      
-      bottom: 12px;
-      right: 12px;
-      width: 320px;
-      pointer-events: none;
-      transform: translateY(110%);
-      transition: transform ease-out 160ms, opacity ease-out 160ms;
-    }
-
-    md-elevation, md-ripple {
-      position: absolute;
-      z-index: -1;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      --md-elevation-level: 4;
-    }
-    a {
-      text-decoration: none;
-      user-select: none;
-      outline: none;
-    }
-
-    aside a {
-      height: 44px;
-      box-sizing: border-box;
-      font-weight: 500;
-
-      color: var(--main-color);
-      padding: 6px 12px;
-    }
-
-    :host([menuShown]) aside {
-      opacity: 1;
-      pointer-events: auto;
-      transition: transform ease-in 120ms, opacity ease-in 60ms;
-      transform-origin: top;
-      transform: translate(0, 0);
     }
 
     .backdrop {
@@ -159,17 +140,9 @@ export default customElements.define('app-shell', class AppShell extends LitElem
     :host([menuShown]) md-fab {
       opacity: 0;
     }
-    button {
-      border: none;
-      z-index: 10001;
-      position: absolute;
-      right: 24px;
-      bottom: 24px;
-      padding: 12px 24px;
-      border-radius: 12px;
-      background: #364857;
-      color: #eee;
-      --md-elevation-level: 2;
+    
+    button-element {
+      pointer-events: auto;
     }
     
     flex-container {
@@ -180,36 +153,22 @@ export default customElements.define('app-shell', class AppShell extends LitElem
     aside flex-container {
       align-items: flex-end;
     }
+
+    button-element {
+      --button-background: #2b2a2c;
+    }
   `
 
   render() {
     return html`
     <span class="backdrop" @click="${() => this.menuShown = false}"></span>
     
-    <aside>
-      <md-elevation shadow>
-      </md-elevation>
-      <flex-row>
-        <flex-one></flex-one>
-        <custom-svg-icon icon="close" @click="${() => (this.menuShown = !this.menuShown)}"></custom-svg-icon>
-      </flex-row>
-      
-      <flex-container>
-        <a @click="${() => this.menuShown = false}" href="#!/services">services</a>
-        <a @click="${() => this.menuShown = false}" href="#!/team">team</a>
-        <a @click="${() => this.menuShown = false}" href="#!/home">home</a>
-      </flex-container>
-      <flex-one></flex-one>
-      <flex-row style="padding-bottom: 64px;">
-        <darkmode-element></darkmode-element>
-      </flex-row>
-    </aside>
-    <button extended label="gratis offerte" name="advies">
+    <drawer-element></drawer-element>
+    
+    <button-element fab extended label="gratis offerte" name="advies" class="fab">
+      gratis advies
+    </button-element>
 
-    <md-elevation shadow>
-    </md-elevation>
-      <span>gratis advies</span>
-    </button>
     <main>
       <custom-pages attr-for-selected="data-route">
         <home-view data-route="home"></home-view>

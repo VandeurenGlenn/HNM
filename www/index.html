@@ -47,8 +47,18 @@
 
       document.dispatchEvent(new CustomEvent('theme-change', {detail : themeName}))
     }
+    const dark = window.matchMedia('(prefers-color-scheme: dark)')
 
-    setTheme(theme || 'light')
+    const isDark = localStorage.getItem('selected-theme') === 'dark' || dark.matches 
+
+    const changeMode = ({matches}) => {
+      const isDark = localStorage.getItem('selected-theme') === 'dark' || matches 
+      if (isDark) setTheme('dark')
+      else setTheme('light')
+    }
+    dark.addListener(changeMode)
+    
+    setTheme(isDark ? 'dark' : 'light')
   </script>
   <custom-svg-iconset>
     <svg>

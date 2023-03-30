@@ -29,6 +29,7 @@ export default customElements.define('custom-toggle', class CustomToggle extends
       display: inline-flex;
       width: 38px;
       align-items: center;
+      cursor: pointer;
     }
     button {
       position: absolute;
@@ -39,7 +40,6 @@ export default customElements.define('custom-toggle', class CustomToggle extends
       box-sizing: border-box;
       padding: 6px;
       transition: transform 60ms ease-out;
-      // transform: scale(0.50);
     }
 
     .ride {
@@ -52,7 +52,7 @@ export default customElements.define('custom-toggle', class CustomToggle extends
       background-color: var(--accent-color);
       transform: translateX(115%);
       transition: transform 60ms ease-in;
-      // transform: scale(1);
+      
     }
   `
 

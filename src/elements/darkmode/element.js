@@ -31,6 +31,7 @@ export default customElements.define('darkmode-element', class DarkmodeElement e
     :host {
       display: inline-flex;
       width: 100%;
+      pointer-events: auto;
     }
   `
 
