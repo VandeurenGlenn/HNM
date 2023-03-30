@@ -13,7 +13,6 @@ export default customElements.define('home-view', class HomeView extends LitElem
   }
 
   darkmode({detail}) {
-    console.log(detail);
     if (detail === 'dark') {
       this.renderRoot.querySelector(`img[alt="logo"]`).src = './assets/sciccors-dark.svg'
       this.renderRoot.querySelector(`img[alt="banner"]`).src = './assets/banner-dark.svg'
@@ -127,7 +126,7 @@ export default customElements.define('home-view', class HomeView extends LitElem
     }
 
     header.small {
-      box-sizing: border-box;
+      position: sticky;
       padding: 12px;
       min-height: 76px;
       max-height: 76px;
@@ -195,13 +194,21 @@ export default customElements.define('home-view', class HomeView extends LitElem
 
   render() {
     return html`
-      <link rel="preload" as="image" href="./assets/banner.svg">
+    <link rel="preload" as="image" href="./assets/example2.webp">
+    <link rel="preload" as="image" href="./assets/example1.webp">
+
+    ${localStorage.getItem('theme') === 'dark' ?
+      html`<link rel="preload" as="image" href="./assets/banner-dark.svg">` :
+      html`<link rel="preload" as="image" href="./assets/banner.svg">`
+    }
+      
+      
       <header class="big">
         <img alt="banner" src="./assets/banner.svg">
       </header>
 
       <header class="small">
-        <span>
+        <span style="display:contents;">
         <span class="filler"></span>
         <flex-one></flex-one>
         <img alt="logo" loading="lazy" src="./assets/sciccors.svg">

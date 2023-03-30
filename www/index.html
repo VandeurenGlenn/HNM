@@ -5,8 +5,21 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hello New Me</title>
+
+  <meta name="keywords" content="hello, new, me, hair, systems">
   <meta name="description" lang="en" content="Hello New Me is your hairsystems specialist">
   <meta name="description" lang="nl" content="Hello New Me is uw hairsystems specialist">
+  
+  <meta name="theme-color" content="#000">
+  <link rel="icon" href="./favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <script>
+    const startServiceWorker = () => {
+      navigator.serviceWorker.register('./sw.js')
+    }
+    navigator.serviceWorker && startServiceWorker()
+  </script>
 </head>
 <body>
   <style>

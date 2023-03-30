@@ -182,7 +182,7 @@ export default customElements.define('app-shell', class AppShell extends LitElem
         <darkmode-element></darkmode-element>
       </flex-row>
     </aside>
-    <button extended label="gratis offerte">
+    <button extended label="gratis offerte" name="advies">
 
     <md-elevation shadow>
     </md-elevation>

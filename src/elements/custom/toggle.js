@@ -58,7 +58,7 @@ export default customElements.define('custom-toggle', class CustomToggle extends
 
   render(){
     return html`
-    <button>
+    <button name="toggle button">
     </button>
     <span class="ride"></span>
     `

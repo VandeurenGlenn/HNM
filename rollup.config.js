@@ -1,8 +1,24 @@
 import nodeResolve from "@rollup/plugin-node-resolve";
-import {readdir} from 'fs/promises'
-import rimraf from 'rimraf'
+import terser from "@rollup/plugin-terser";
+import {readdir, unlink} from 'fs/promises'
+import { join } from "path";
 
-rimraf.sync('www/*.js')
+const cleanWWW = async () => {
+  return {
+    name: 'clean-www', // this name will show up in warnings and errors
+    generateBundle: async ()=> {
+      const files = await readdir('www')
+      for (const file of files) {
+        if (file.endsWith('.js') && !file.includes('sw.js') && !file.includes('workbox')) await unlink(join('www', file))
+        
+      }
+      return 
+    }
+  };
+  
+  
+}
+
 
 const views = (await readdir('./src/views')).map(view => `./src/views/${view}`)
 const themes = (await readdir('./src/themes')).map(theme => `./src/themes/${theme}`)
@@ -14,7 +30,9 @@ export default [{
     format: 'es'
   }],
   plugins: [
-    nodeResolve()
+    cleanWWW(),
+    nodeResolve(),
+    terser()
   ]
 }, {
   input: themes,
