@@ -7,6 +7,8 @@ import './elements/darkmode/element.js'
 import '@material/web/fab/fab.js'
 
 import '@material/web/fab/fab-extended.js'
+import '@material/web/button/filled-button.js'
+
 export default customElements.define('app-shell', class AppShell extends LitElement {
   static get properties() {
     return {

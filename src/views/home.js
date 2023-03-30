@@ -15,10 +15,10 @@ export default customElements.define('home-view', class HomeView extends LitElem
   darkmode({detail}) {
     console.log(detail);
     if (detail === 'dark') {
-      this.renderRoot.querySelector(`img[alt="logo"]`).src = './assets/logo-dark.svg'
+      this.renderRoot.querySelector(`img[alt="logo"]`).src = './assets/sciccors-dark.svg'
       this.renderRoot.querySelector(`img[alt="banner"]`).src = './assets/banner-dark.svg'
     } else {
-      this.renderRoot.querySelector(`img[alt="logo"]`).src = './assets/logo.svg'
+      this.renderRoot.querySelector(`img[alt="logo"]`).src = './assets/sciccors.svg'
       this.renderRoot.querySelector(`img[alt="banner"]`).src = './assets/banner.svg'
     }
   }
@@ -129,12 +129,13 @@ export default customElements.define('home-view', class HomeView extends LitElem
     header.small {
       box-sizing: border-box;
       padding: 12px;
-      min-height: 108px;
+      min-height: 76px;
+      max-height: 76px;
       height: 100%;
       box-sizing: border-box;
       z-index: 100;
       will-change: margin;
-      margin-top: -108px;
+      margin-top: -34px;
     }
 
     image {
@@ -149,7 +150,7 @@ export default customElements.define('home-view', class HomeView extends LitElem
 
     header.big img {
       opacity: 1;
-
+      max-height: 316px;
       transition: opacity ease-in 120ms;
     }
 
@@ -203,11 +204,11 @@ export default customElements.define('home-view', class HomeView extends LitElem
         <span>
         <span class="filler"></span>
         <flex-one></flex-one>
-        <img alt="logo" loading="lazy" src="./assets/logo-hnm.svg">
+        <img alt="logo" loading="lazy" src="./assets/sciccors.svg">
         <flex-one></flex-one>
       
 
-   
+        <!-- <md-filled-button label="SHOP"></md-filled-button>-->
         <custom-svg-icon @click="${() => document.dispatchEvent(new CustomEvent('menu-click'))}" icon="menu" slot="icon"></custom-svg-icon>
  
         </span>
