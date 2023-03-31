@@ -79,7 +79,6 @@ export default customElements.define('app-shell', class AppShell extends LitElem
     }
 
     * {
-      pointer-events: none;
       user-select: none;
       outline: none;
     }
