@@ -52,6 +52,7 @@ export default customElements.define('home-view', class HomeView extends LitElem
       align-items: center;
       --svg-icon-color: var(--main-color);
       --md-text-button-with-icon-icon-size: 24px;
+      pointer-events: auto;
     }
 
 
