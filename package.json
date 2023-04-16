@@ -24,7 +24,13 @@
   },
   "homepage": "https://github.com/VandeurenGlenn/HNM#readme",
   "dependencies": {
+    "@material/mwc-button": "^0.27.0",
     "@material/mwc-drawer": "^0.27.0",
+    "@material/mwc-fab": "^0.27.0",
+    "@material/mwc-icon-button": "^0.27.0",
+    "@material/mwc-list": "^0.27.0",
+    "@material/mwc-switch": "^0.27.0",
+    "@material/mwc-top-app-bar-fixed": "^0.27.0",
     "@material/web": "^1.0.0-pre.4",
     "@vandeurenglenn/flex-elements": "^0.1.1",
     "custom-pages": "^0.12.1",

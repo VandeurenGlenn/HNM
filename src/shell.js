@@ -2,51 +2,96 @@ import {LitElement, html, css} from 'lit'
 import 'custom-svg-iconset'
 import 'custom-svg-icon'
 import 'custom-pages'
-import './elements/drawer.js'
-import './elements/button.js'
-import '@material/web/fab/fab.js'
+import '@material/mwc-drawer'
+import '@material/mwc-fab'
+import '@material/mwc-button'
+import '@material/mwc-icon-button'
+import '@material/mwc-top-app-bar-fixed'
 
-import '@material/web/fab/fab-extended.js'
-import '@material/web/button/filled-button.js'
-
+import './elements/darkmode/element.js'
+import '@material/mwc-list'
+import '@vandeurenglenn/flex-elements'
 export default customElements.define('app-shell', class AppShell extends LitElement {
   static get properties() {
     return {
       menuShown: { type: Boolean, reflect: true },
+      isMobile: { type: Boolean, reflect: true },
     };
   }
 
   constructor() {
     super()
 
-    globalThis.onhashchange = this.#hashchange.bind(this)
+    this.init()
   }
 
-  get #drawer() {
-    return this.renderRoot.querySelector('drawer-element')
+  async init() {
+    globalThis.onhashchange = this.#hashchange.bind(this)
+    let media = matchMedia("(min-width: 1200px)");
+    const onMedia = ({matches}) => {
+      this.isMobile = !matches
+    }
+    await this.updateComplete
+
+    this.#darkmode({detail: localStorage.getItem('selected-theme') || 'light'})
+    if (!location.hash) location.hash = '#!/home'
+    const elemStyleSheets = this.#drawer.shadowRoot.adoptedStyleSheets;
+
+    const sheet = new CSSStyleSheet()
+    sheet.replaceSync('.mdc-drawer { z-index: 1000; }')
+    this.#drawer.shadowRoot.adoptedStyleSheets = [...elemStyleSheets, sheet];
+    media.addEventListener('change', onMedia)
+    onMedia(media)
+  }
+
+  set isMobile(value) {
+    if (this._isMobile === value) return
+    this._isMobile = value
+    if (value) {
+      this.#drawer.setAttribute('type', 'modal')
+      this.menuShown = false
+    } else {
+      this.#drawer.setAttribute('type', 'dismissible')
+      this.menuShown = true
+    }
   }
 
   set menuShown(value) {
-    if (this.#drawer) this.#drawer.shown = value
-    else this.updateComplete.then(() => {
-      this.#drawer.shown = value
-    })
-    if (value) this.setAttribute('menuShown', '')
-    else this.removeAttribute('menuShown')
+    if (this._menuShown === value) return
+    this._menuShown = value
+
+
+    this.#drawer.open = value
   }
 
   get menuShown() {
-    return this.#drawer?.shown
+    return this._menuShown
   }
+
+  get isMobile() {
+    return this._isMobile
+  }
+
+  get #drawer() {
+    return this.renderRoot.querySelector('mwc-drawer')
+  }
+
 
   async connectedCallback() {
     super.connectedCallback();
     document.addEventListener('menu-click', () => (this.menuShown = !this.menuShown));
     document.addEventListener('menu-shown', ({detail}) => this.menuShown = detail);
-    if (!location.hash) location.hash = '#!/home'
+    document.addEventListener('theme-change', this.#darkmode.bind(this))
     this.#hashchange()
   }
 
+  #darkmode({detail}) {
+    if (detail === 'dark') {
+      this.renderRoot.querySelector(`img[alt="logo"]`).src = './assets/sciccors-dark.svg'
+    } else {
+      this.renderRoot.querySelector(`img[alt="logo"]`).src = './assets/sciccors.svg'
+    }
+  }
 
 
   get #pages() {
@@ -54,7 +99,7 @@ export default customElements.define('app-shell', class AppShell extends LitElem
   }
 
   async #hashchange() {
-    if (this.menuShown) this.menuShown = false
+    if (this.menuShown && this.isMobile) this.menuShown = false
     const parts = location.hash.split('#!/')
     console.log(parts);
     this.#select(parts[1])
@@ -113,6 +158,11 @@ export default customElements.define('app-shell', class AppShell extends LitElem
       // align-items: center;
       height: 100%;
     }
+    
+    mwc-drawer {
+      width: 100%;
+      z-index: 10000;
+    }
 
     h1 {
       margin: 0;
@@ -130,7 +180,7 @@ export default customElements.define('app-shell', class AppShell extends LitElem
       pointer-events: none;
     }
 
-    :host([menuShown]) .backdrop {
+    :host([isMobile][menuShown]) .backdrop {
       opacity: 1;
       pointer-events: auto;
       background: #000000a1
@@ -145,7 +195,6 @@ export default customElements.define('app-shell', class AppShell extends LitElem
     }
     
     flex-container {
-      padding-top: 24px;
       min-width: auto;
     }
 
@@ -156,23 +205,54 @@ export default customElements.define('app-shell', class AppShell extends LitElem
     button-element {
       --button-background: #2b2a2c;
     }
+
+    mwc-drawer mwc-icon-button {
+      color: #555;
+    }
+
+    img {
+      width: 100%;
+      transition: opacity ease-in 120ms;
+    }
   `
 
   render() {
     return html`
     <span class="backdrop" @click="${() => this.menuShown = false}"></span>
     
-    <drawer-element></drawer-element>
-    
-    <button-element fab extended label="gratis offerte" name="advies" class="fab">
-      gratis advies
-    </button-element>
+    <mwc-drawer type="" hasHeader>
+    <span slot="title">
+      <img alt="logo" loading="lazy" src="./assets/sciccors-dark.svg"></span>
+      <span slot="subtitle" style="padding-bottom: 24px;"></span>
+      
+      <flex-container style="height: 100%; align-items: center; padding-bottom: 24px; box-sizing: border-box;">
+        <darkmode-element></darkmode-element>
+        
+        <mwc-list activatable style="width: 100%;">
+          <li divider role="separator"></li>
+          <mwc-list-item @click="${() => location.hash = '#!/home'}" selected activated>home</mwc-list-item>
+          <mwc-list-item @click="${() => location.hash = '#!/services'}">services</mwc-list-item>
+          <mwc-list-item @click="${() => location.hash = '#!/team'}">team</mwc-list-item>
+          </mwc-list>
+        <flex-one></flex-one>
+        
+          
+        
+        <mwc-fab fab extended label="gratis advies" name="advies" class="fab" icon="contact_support"></mwc-fab>
+      </flex-container>
+     
+      
+      <main slot="appContent">
+        <custom-pages attr-for-selected="data-route">
+          <home-view data-route="home"></home-view>
+        </custom-pages>
+      </main>
 
-    <main>
-      <custom-pages attr-for-selected="data-route">
-        <home-view data-route="home"></home-view>
-      </custom-pages>
-    </main>
+      </mwc-drawer>
+   
+    
+
+    
     `
     // <img src="./assets/banner.jpg">
   }

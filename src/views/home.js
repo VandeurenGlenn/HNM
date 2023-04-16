@@ -215,7 +215,7 @@ export default customElements.define('home-view', class HomeView extends LitElem
         <flex-one></flex-one>
         <!-- <md-filled-button label="SHOP"></md-filled-button>-->
         <button-element icon>
-          <custom-svg-icon @click="${() => document.dispatchEvent(new CustomEvent('menu-click'))}" icon="menu"></custom-svg-icon>
+          <mwc-icon-button @click="${() => document.dispatchEvent(new CustomEvent('menu-click'))}" icon="menu"></mwc-icon-button>
         </button-element>
  
         </span>

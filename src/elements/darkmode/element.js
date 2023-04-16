@@ -1,5 +1,6 @@
 import {html, css, LitElement} from 'lit'
 import '../custom/toggle.js'
+import '@material/mwc-switch'
 export default customElements.define('darkmode-element', class DarkmodeElement extends LitElement {
   static properties = {
   
@@ -14,32 +15,40 @@ export default customElements.define('darkmode-element', class DarkmodeElement e
   async connectedCallback() {
     super.connectedCallback()
     await this.updateComplete
-    this.enabled = localStorage.getItem('selected-theme') === 'dark' ? true : false
-    this.enabled ? this.renderRoot.querySelector('custom-toggle').enable() : this.renderRoot.querySelector('custom-toggle').disable()
+    this.selected = localStorage.getItem('selected-theme') === 'dark' ? true : false
+    this.#toggleElement.selected = this.selected
+    this.#toggleElement.addEventListener('click', this.#click.bind(this))
   }
 
   get #toggleElement() {
-    return this.renderRoot.querySelector('custom-toggle')
+    return this.renderRoot.querySelector('mwc-switch')
   }
  
   #click() {
-    this.#toggleElement.toggle()
-    globalThis.setTheme(this.#toggleElement.enabled ? 'dark' : 'light')
+    globalThis.setTheme(this.#toggleElement.selected ? 'dark' : 'light')
   }
 
   static styles = css`
     :host {
       display: inline-flex;
       width: 100%;
+      max-width: 320px;
       pointer-events: auto;
+      box-sizing: border-box;
+    }
+
+    mwc-list-item {
+      width: 100%;
+      padding-right: 24px;
     }
   `
 
   render(){
     return html`
-    <span>darkmode</span>
-    <flex-one></flex-one>
-    <custom-toggle></custom-toggle>
+    <mwc-list-item hasMeta nonInteractive>
+      <span>darkmode</span>
+      <mwc-switch slot="meta"></mwc-switch>
+    </mwc-list-item>
     `
   }
 });
