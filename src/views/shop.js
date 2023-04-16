@@ -1,8 +1,15 @@
 import {LitElement, html, css} from 'lit'
+import { map } from 'lit/directives/map.js'
 import '@vandeurenglenn/flex-elements'
-
+import './../elements/search-input.js'
+import './../elements/shop-item.js'
 
 export default customElements.define('shop-view', class ShopView extends LitElement {
+  static get properties() {
+    return {
+      items: { type: Array },
+    };
+  }
 
   constructor() {
     super()
@@ -13,15 +20,35 @@ export default customElements.define('shop-view', class ShopView extends LitElem
     await this.updateComplete
     document.addEventListener('theme-change', this.#darkmode.bind(this))
     this.#darkmode({detail: localStorage.getItem('selected-theme') || 'light'})
-
+    this.items = [
+      {
+        image: './assets/pantene.webp'
+      }, {
+        image: './assets/pantene.webp'
+      }, {
+        image: './assets/pantene.webp'
+      }, {
+        image: './assets/pantene.webp'
+      }, {
+        image: './assets/pantene.webp'
+      }, {
+        image: './assets/pantene.webp'
+      }, {
+        image: './assets/pantene.webp'
+      }, {
+        image: './assets/pantene.webp'
+      }, {
+        image: './assets/pantene.webp'
+      }
+    ]
   }
 
   #darkmode({detail}) {
-    if (detail === 'dark') {
-      this.renderRoot.querySelector(`img[alt="logo"]`).src = './assets/sciccors-dark.svg'
-    } else {
-      this.renderRoot.querySelector(`img[alt="logo"]`).src = './assets/sciccors.svg'
-    }
+    // if (detail === 'dark') {
+    //   this.renderRoot.querySelector(`img[alt="logo"]`).src = './assets/sciccors-dark.svg'
+    // } else {
+    //   this.renderRoot.querySelector(`img[alt="logo"]`).src = './assets/sciccors.svg'
+    // }
   }
 
   static styles = css`
@@ -152,8 +179,18 @@ export default customElements.define('shop-view', class ShopView extends LitElem
       width: 32px;
     }
 
-    flex-wrap-between {
+    flex-wrap-evenly {
+      margin-top: 24px;
       max-width: 960px;
+      width: 100%;
+      overflow-y: auto;
+    }
+
+    shop-item {
+      width: 300px;
+      height: 300px;
+
+      margin-bottom: 12px;
     }
   `
 
@@ -166,17 +203,21 @@ export default customElements.define('shop-view', class ShopView extends LitElem
       <drawer-menu-button></drawer-menu-button>
         
         <flex-one></flex-one>
-        <img alt="logo" loading="lazy" src="./assets/sciccors.svg">
+        <search-input></search-input>
         <flex-one></flex-one>
         <!-- <md-filled-button label="SHOP"></md-filled-button>-->
         
-        <span class="filler"></span>
+        <mwc-icon-button icon="shopping_cart"></mwc-icon-button>
         </span>
       </header>
-        <flex-wrap-between>
-
+        <flex-wrap-evenly>
+          ${map(this.items, item => html`
+            <shop-item image="${item.image}">
+          `)}
+          
+          </shop-item>
         
-        </flex-wrap-between>
+        </flex-wrap-evenly>
        
        
     `
