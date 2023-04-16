@@ -1,5 +1,6 @@
 import {LitElement, html, css} from 'lit'
 import '@vandeurenglenn/flex-elements'
+import './../elements/drawer-menu-button.js'
 
 
 export default customElements.define('home-view', class HomeView extends LitElement {
@@ -208,14 +209,14 @@ export default customElements.define('home-view', class HomeView extends LitElem
       </header>
 
       <header class="small">
-        <span style="display:contents;">
-        <span class="filler"></span>
+        <drawer-menu-button></drawer-menu-button>
+        
         <flex-one></flex-one>
         <img alt="logo" loading="lazy" src="./assets/sciccors.svg">
         <flex-one></flex-one>
         <!-- <md-filled-button label="SHOP"></md-filled-button>-->
-        
-        <mwc-icon-button @click="${() => document.dispatchEvent(new CustomEvent('menu-click'))}" icon="menu"></mwc-icon-button>
+        <span class="filler"></span>
+       
         
  
         </span>

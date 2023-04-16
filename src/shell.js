@@ -44,12 +44,13 @@ export default customElements.define('app-shell', class AppShell extends LitElem
     onMedia(media)
 
 
-    document.addEventListener('menu-click', () => (this.menuShown = !this.menuShown));
+    document.addEventListener('drawer-menu-click', () => (this.menuShown = !this.menuShown));
     document.addEventListener('theme-change', this.#darkmode.bind(this))
     this.#hashchange()
   }
 
   set isMobile(value) {
+    console.log('isMobile');
     if (this._isMobile === value) return
     this._isMobile = value
     if (value) {
@@ -64,6 +65,8 @@ export default customElements.define('app-shell', class AppShell extends LitElem
       this.#drawer.open = true
       
     }
+    console.log('isMobile');
+    document.dispatchEvent(new CustomEvent('layout-change', { detail: value ? 'mobile' : 'desktop'}))
   }
 
   set menuShown(value) {
