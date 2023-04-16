@@ -214,9 +214,9 @@ export default customElements.define('home-view', class HomeView extends LitElem
         <img alt="logo" loading="lazy" src="./assets/sciccors.svg">
         <flex-one></flex-one>
         <!-- <md-filled-button label="SHOP"></md-filled-button>-->
-        <button-element icon>
-          <mwc-icon-button @click="${() => document.dispatchEvent(new CustomEvent('menu-click'))}" icon="menu"></mwc-icon-button>
-        </button-element>
+        
+        <mwc-icon-button @click="${() => document.dispatchEvent(new CustomEvent('menu-click'))}" icon="menu"></mwc-icon-button>
+        
  
         </span>
       </header>

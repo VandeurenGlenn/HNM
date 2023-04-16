@@ -45,7 +45,6 @@ export default customElements.define('app-shell', class AppShell extends LitElem
 
 
     document.addEventListener('menu-click', () => (this.menuShown = !this.menuShown));
-    document.addEventListener('menu-shown', ({detail}) => this.menuShown = detail);
     document.addEventListener('theme-change', this.#darkmode.bind(this))
     this.#hashchange()
   }
@@ -55,23 +54,27 @@ export default customElements.define('app-shell', class AppShell extends LitElem
     this._isMobile = value
     if (value) {
       this.#drawer.setAttribute('type', 'modal')
-      this.menuShown = false
+      this.#drawer.open = false
     } else {
       this.#drawer.setAttribute('type', 'dismissible')
-      this.menuShown = true
+      const children = Array.from(this.#drawer.shadowRoot.children)
+      for (const child of children) {
+        if (child.hasAttribute('inert')) child.removeAttribute('inert')
+      }
+      this.#drawer.open = true
+      
     }
   }
 
   set menuShown(value) {
-    if (this._menuShown === value) return
-    this._menuShown = value
+    if (this.#drawer.open === value) return
 
 
     this.#drawer.open = value
   }
 
   get menuShown() {
-    return this._menuShown
+    return this.#drawer.open
   }
 
   get isMobile() {
@@ -226,7 +229,7 @@ export default customElements.define('app-shell', class AppShell extends LitElem
 
   render() {
     return html`
-    <span class="backdrop" @click="${() => this.menuShown = false}"></span>
+    <span class="backdrop" @click="${() => this.#drawer.open = false}"></span>
     
     <mwc-drawer type="" hasHeader>
     <span slot="title">
@@ -252,6 +255,7 @@ export default customElements.define('app-shell', class AppShell extends LitElem
      
       
       <main slot="appContent">
+      
         <custom-pages attr-for-selected="data-route">
           <home-view data-route="home"></home-view>
           <shop-view data-route="shop"></shop-view>
