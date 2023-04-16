@@ -42,6 +42,12 @@ export default customElements.define('app-shell', class AppShell extends LitElem
     this.#drawer.shadowRoot.adoptedStyleSheets = [...elemStyleSheets, sheet];
     media.addEventListener('change', onMedia)
     onMedia(media)
+
+
+    document.addEventListener('menu-click', () => (this.menuShown = !this.menuShown));
+    document.addEventListener('menu-shown', ({detail}) => this.menuShown = detail);
+    document.addEventListener('theme-change', this.#darkmode.bind(this))
+    this.#hashchange()
   }
 
   set isMobile(value) {
@@ -76,13 +82,8 @@ export default customElements.define('app-shell', class AppShell extends LitElem
     return this.renderRoot.querySelector('mwc-drawer')
   }
 
-
-  async connectedCallback() {
-    super.connectedCallback();
-    document.addEventListener('menu-click', () => (this.menuShown = !this.menuShown));
-    document.addEventListener('menu-shown', ({detail}) => this.menuShown = detail);
-    document.addEventListener('theme-change', this.#darkmode.bind(this))
-    this.#hashchange()
+  get #drawerNav() {
+    return this.#drawer.querySelector('mwc-list')
   }
 
   #darkmode({detail}) {
@@ -106,6 +107,13 @@ export default customElements.define('app-shell', class AppShell extends LitElem
   }
 
   async #select(selected) {
+    const elements = Array.from(this.#drawer.querySelectorAll(`[data-route]`))
+    for (const element of elements) {
+      if (element.dataset.route === selected) {
+        this.#drawerNav.select(elements.indexOf(element))
+        break
+      }
+    }
     requestAnimationFrame(async () => {
       !customElements.get(`${selected}-view`) && await import(`./${selected}.js`)
       this.#pages.select(selected)
@@ -230,9 +238,10 @@ export default customElements.define('app-shell', class AppShell extends LitElem
         
         <mwc-list activatable style="width: 100%;">
           <li divider role="separator"></li>
-          <mwc-list-item @click="${() => location.hash = '#!/home'}" selected activated>home</mwc-list-item>
-          <mwc-list-item @click="${() => location.hash = '#!/services'}">services</mwc-list-item>
-          <mwc-list-item @click="${() => location.hash = '#!/team'}">team</mwc-list-item>
+          <mwc-list-item data-route="home" @click="${() => location.hash = '#!/home'}" selected activated>home</mwc-list-item>
+          <mwc-list-item data-route="shop" @click="${() => location.hash = '#!/shop'}">shop</mwc-list-item>
+          <mwc-list-item data-route="services" @click="${() => location.hash = '#!/services'}">services</mwc-list-item>
+          <mwc-list-item data-route="team" @click="${() => location.hash = '#!/team'}">team</mwc-list-item>
           </mwc-list>
         <flex-one></flex-one>
         
@@ -245,6 +254,9 @@ export default customElements.define('app-shell', class AppShell extends LitElem
       <main slot="appContent">
         <custom-pages attr-for-selected="data-route">
           <home-view data-route="home"></home-view>
+          <shop-view data-route="shop"></shop-view>
+          <services-view data-route="services"></services-view>
+          <team-view data-route="team"></team-view>
         </custom-pages>
       </main>
 
