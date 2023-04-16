@@ -52,6 +52,9 @@ export default customElements.define('shop-view', class ShopView extends LitElem
   }
 
   static styles = css`
+    * {
+      pointer-events: scroll;
+    }
     :host {
 
       display: flex;
@@ -180,7 +183,7 @@ export default customElements.define('shop-view', class ShopView extends LitElem
     }
 
     flex-wrap-evenly {
-      margin-top: 24px;
+      margin: 24px 0;
       max-width: 960px;
       width: 100%;
       overflow-y: auto;
@@ -203,8 +206,6 @@ export default customElements.define('shop-view', class ShopView extends LitElem
       <drawer-menu-button></drawer-menu-button>
         
         <flex-one></flex-one>
-        <search-input></search-input>
-        <flex-one></flex-one>
         <!-- <md-filled-button label="SHOP"></md-filled-button>-->
         
         <mwc-icon-button icon="shopping_cart"></mwc-icon-button>
@@ -219,6 +220,7 @@ export default customElements.define('shop-view', class ShopView extends LitElem
         
         </flex-wrap-evenly>
        
+        <search-input></search-input>
        
     `
     // <img alt="banner" loading="lazy" src="./assets/banner.webp">

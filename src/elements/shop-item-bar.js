@@ -22,7 +22,9 @@ export class ShopItemBar extends LitElement {
         padding: 12px;
         height: 44px;
       }
-
+      mwc-icon-button, mwc-button {
+        pointer-events: auto;
+      }
       
     `
   ];
