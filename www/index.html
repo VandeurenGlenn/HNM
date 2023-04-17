@@ -34,6 +34,11 @@
       right: 0;
       overflow: hidden;
     }
+    #wa_btn-content {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+    }
   </style>
   <script>
     const theme = localStorage.getItem('selected-theme')
@@ -62,6 +67,15 @@
     
     setTheme(isDark ? 'dark' : 'light')
   </script>
+  <script async src='https://d2mpatx37cqexb.cloudfront.net/delightchat-whatsapp-widget/embeds/embed.min.js'></script>
+  <script>
+    var wa_btnSetting = {"btnColor":"#16BE45","ctaText":"","cornerRadius":40,"marginBottom":"","marginLeft":"","marginRight":"","btnPosition":"right","whatsAppNumber":"32473711123","welcomeMessage":"Hey daar!\nHoe kunnen we u helpen?","zIndex":999999,"btnColorScheme":"light"};
+    window.onload = () => {
+      _waEmbed(wa_btnSetting);
+    };
+  </script>
+
+
   <custom-svg-iconset>
     <svg>
       <defs>
