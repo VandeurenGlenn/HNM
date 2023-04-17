@@ -22,23 +22,23 @@ export default customElements.define('shop-view', class ShopView extends LitElem
     this.#darkmode({detail: localStorage.getItem('selected-theme') || 'light'})
     this.items = [
       {
-        image: './assets/pantene.webp'
+        image: './assets/example2.webp'
       }, {
-        image: './assets/pantene.webp'
+        image: './assets/example2.webp'
       }, {
-        image: './assets/pantene.webp'
+        image: './assets/example2.webp'
       }, {
-        image: './assets/pantene.webp'
+        image: './assets/example2.webp'
       }, {
-        image: './assets/pantene.webp'
+        image: './assets/example2.webp'
       }, {
-        image: './assets/pantene.webp'
+        image: './assets/example2.webp'
       }, {
-        image: './assets/pantene.webp'
+        image: './assets/example2.webp'
       }, {
-        image: './assets/pantene.webp'
+        image: './assets/example2.webp'
       }, {
-        image: './assets/pantene.webp'
+        image: './assets/example2.webp'
       }
     ]
   }
