@@ -3,6 +3,7 @@ import { map } from 'lit/directives/map.js'
 import '@vandeurenglenn/flex-elements'
 import './../elements/search-input.js'
 import './../elements/shop-item.js'
+import './../elements/drawer-menu-button.js'
 
 export default customElements.define('shop-view', class ShopView extends LitElement {
   static get properties() {
