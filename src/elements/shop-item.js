@@ -37,7 +37,7 @@ export class ShopItem extends LitElement {
       }
       flex-row {
         width: 100%;
-        padding: 0 12px;
+        padding: 0px 22px 0 12px;
         box-sizing: border-box;
       }
     `
