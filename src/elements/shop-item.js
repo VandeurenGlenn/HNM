@@ -30,7 +30,8 @@ export class ShopItem extends LitElement {
       }
 
       h4 {
-        padding-left: 12px;
+        box-sizing: border-box;
+        padding-left: 24px;
         width: 100%;
         margin: 0;
       }
