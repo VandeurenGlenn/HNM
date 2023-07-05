@@ -5,6 +5,7 @@ export class ShopItem extends LitElement {
   static get properties() {
     return {
       image: { type: String },
+      name: { type: String }
     };
   }
   static styles = [
@@ -20,11 +21,10 @@ export class ShopItem extends LitElement {
       }
 
       img {
-        
         box-sizing: border-box;
-        padding: 24px;
-    height: calc(100% - 48px);
-
+        padding: 0px 24px 24px;
+        height: calc(100% - 76px);
+        overflow: hidden;
       }
     `
   ];
@@ -33,6 +33,7 @@ export class ShopItem extends LitElement {
     return html`
 
     <img src="${this.image}">
+    <h4>${this.name}</h4>
     <shop-item-bar></shop-item-bar>
     `;
   }

@@ -22,22 +22,31 @@ export default customElements.define('shop-view', class ShopView extends LitElem
     this.#darkmode({detail: localStorage.getItem('selected-theme') || 'light'})
     this.items = [
       {
+        name: 'some shop item name',
         image: './assets/example2.webp'
       }, {
+        name: 'some shop item name',
         image: './assets/example2.webp'
       }, {
+        name: 'some shop item name',
         image: './assets/example2.webp'
       }, {
+        name: 'some shop item name',
         image: './assets/example2.webp'
       }, {
+        name: 'some shop item name',
         image: './assets/example2.webp'
       }, {
+        name: 'some shop item name',
         image: './assets/example2.webp'
       }, {
+        name: 'some shop item name',
         image: './assets/example2.webp'
       }, {
+        name: 'some shop item name',
         image: './assets/example2.webp'
       }, {
+        name: 'some shop item name',
         image: './assets/example2.webp'
       }
     ]
@@ -213,7 +222,7 @@ export default customElements.define('shop-view', class ShopView extends LitElem
       </header>
         <flex-wrap-evenly>
           ${map(this.items, item => html`
-            <shop-item image="${item.image}">
+            <shop-item image="${item.image}" name="${item.name}">
           `)}
           
           </shop-item>

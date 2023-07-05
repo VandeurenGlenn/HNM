@@ -43,7 +43,6 @@ export default customElements.define('app-shell', class AppShell extends LitElem
     media.addEventListener('change', onMedia)
     onMedia(media)
 
-
     document.addEventListener('drawer-menu-click', () => (this.menuShown = !this.menuShown));
     document.addEventListener('theme-change', this.#darkmode.bind(this))
     this.#hashchange()
