@@ -18,13 +18,19 @@ export class ShopItem extends LitElement {
         box-sizing: border-box;
         border: 1px solid #555;
         border-radius: 24px;
+
+        overflow: hidden;
       }
 
       img {
         box-sizing: border-box;
         padding: 0px 24px 24px;
         height: calc(100% - 76px);
-        overflow: hidden;
+      }
+
+      h4 {
+        width: 100%;
+        margin: 0;
       }
     `
   ];
@@ -34,6 +40,7 @@ export class ShopItem extends LitElement {
 
     <img src="${this.image}">
     <h4>${this.name}</h4>
+    <flex-one></flex-one>
     <shop-item-bar></shop-item-bar>
     `;
   }
