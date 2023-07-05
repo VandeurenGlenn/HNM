@@ -232,7 +232,7 @@ export default customElements.define('shop-view', class ShopView extends LitElem
       </header>
         <flex-wrap-evenly>
           ${map(this.items, item => html`
-            <shop-item image="${item.image}" name="${item.name}">
+            <shop-item .image=${item.image} .name=${item.name} .price=${item.price}>
           `)}
           
           </shop-item>

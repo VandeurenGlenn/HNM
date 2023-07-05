@@ -43,7 +43,7 @@ export class ShopItem extends LitElement {
     return html`
 
     <img src="${this.image}">
-    <flex-row>
+    <flex-row style="width: 100%;">
       <h4>${this.name}</h4>
       <flex-one></flex-one>
       <strong>${this.price}</strong>
