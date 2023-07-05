@@ -33,8 +33,11 @@ export class ShopItem extends LitElement {
       h4 {
         font-weight: 400;
         box-sizing: border-box;
-        padding-left: 6px;
         margin: 0;
+      }
+      flex-row {
+        width: 100%;
+        padding: 0 12px;
       }
     `
   ];
@@ -43,7 +46,7 @@ export class ShopItem extends LitElement {
     return html`
 
     <img src="${this.image}">
-    <flex-row style="width: 100%;">
+    <flex-row>
       <h4>${this.name}</h4>
       <flex-one></flex-one>
       <strong>${this.price}</strong>
