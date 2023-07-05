@@ -20,6 +20,7 @@ export class ShopItem extends LitElement {
         border-radius: 24px;
 
         overflow: hidden;
+        --mdc-icon-button-size: 40px;
       }
 
       img {
@@ -29,6 +30,7 @@ export class ShopItem extends LitElement {
       }
 
       h4 {
+        padding-left: 12px;
         width: 100%;
         margin: 0;
       }
