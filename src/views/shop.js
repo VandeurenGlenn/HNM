@@ -24,31 +24,40 @@ export default customElements.define('shop-view', class ShopView extends LitElem
     this.items = [
       {
         name: 'some shop item name',
-        image: './assets/example2.webp'
+        image: './assets/example2.webp',
+        price: '100 eur'
       }, {
         name: 'some shop item name',
-        image: './assets/example2.webp'
+        image: './assets/example2.webp',
+        price: '100 eur'
       }, {
         name: 'some shop item name',
-        image: './assets/example2.webp'
+        image: './assets/example2.webp',
+        price: '100 eur'
       }, {
         name: 'some shop item name',
-        image: './assets/example2.webp'
+        image: './assets/example2.webp',
+        price: '100 eur'
       }, {
         name: 'some shop item name',
-        image: './assets/example2.webp'
+        image: './assets/example2.webp',
+        price: '100 eur'
       }, {
         name: 'some shop item name',
-        image: './assets/example2.webp'
+        image: './assets/example2.webp',
+        price: '100 eur'
       }, {
         name: 'some shop item name',
-        image: './assets/example2.webp'
+        image: './assets/example2.webp',
+        price: '100 eur'
       }, {
         name: 'some shop item name',
-        image: './assets/example2.webp'
+        image: './assets/example2.webp',
+        price: '100 eur'
       }, {
         name: 'some shop item name',
-        image: './assets/example2.webp'
+        image: './assets/example2.webp',
+        price: '100 eur'
       }
     ]
   }

@@ -19,7 +19,7 @@ export class ShopItemBar extends LitElement {
         position: relative;
         box-sizing: border-box;
         width: 100%;
-        padding: 12px;
+        padding: 12px 12px 12px 3px;
         height: 44px;
       }
       mwc-icon-button, mwc-button {
