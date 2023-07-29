@@ -1,5 +1,5 @@
 import { LitElement, html, css } from 'lit';
-import '@material/mwc-button' 
+import '@material/web/iconbutton/standard-icon-button.js' 
 
 export class ShopItemBar extends LitElement {
   #amount;
@@ -51,10 +51,10 @@ export class ShopItemBar extends LitElement {
 
   render() {
     return html`
-    <mwc-icon-button icon="add" @click="${() => this.amount += 1}"></mwc-icon-button>
-    <mwc-icon-button icon="remove" @click="${() => this.amount -= 1}"></mwc-icon-button>
+    <md-standard-icon-button @click="${() => this.amount += 1}"><md-icon>add</md-icon></md-standard-icon-button>
+    <md-standard-icon-button @click="${() => this.amount -= 1}"><md-icon>remove</md-icon></md-standard-icon-button>
     <flex-one></flex-one>
-    <mwc-button>add ${this.amount} to cart</mwc-button>
+    <md-button>add ${this.amount} to cart</md-button>
     `;
   }
 }

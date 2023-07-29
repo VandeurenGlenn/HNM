@@ -2,6 +2,7 @@ import nodeResolve from "@rollup/plugin-node-resolve";
 import terser from "@rollup/plugin-terser";
 import {readdir, unlink} from 'fs/promises'
 import { join } from "path";
+import inline from 'rollup-plugin-material-symbols'
 
 const cleanWWW = async () => {
   return {
@@ -31,6 +32,9 @@ export default [{
   }],
   plugins: [
     cleanWWW(),
+    inline({
+      elements: ['md-icon']
+    }),
     nodeResolve(),
     terser()
   ]
