@@ -21,7 +21,6 @@ export class ShopItem extends LitElement {
         border-radius: 24px;
 
         overflow: hidden;
-        --mdc-icon-button-size: 40px;
       }
 
       img {

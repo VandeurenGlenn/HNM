@@ -1,15 +1,15 @@
 import {html, css, LitElement} from 'lit'
-import {TextField} from '@material/mwc-textfield'
-export default customElements.define('search-input', class SearchInput extends TextField {
+import {MdOutlinedTextField} from '@material/web/textfield/outlined-text-field.js'
 
+export default customElements.define('search-input', class SearchInput extends MdOutlinedTextField {
 
   async connectedCallback() {
     super.connectedCallback();
-    this.outlined = true
-    this.iconTrailing = 'search'
+    this.hasTrailingIcon = true
+    this.innerHTML = `<md-icon slot="trailingicon">search</md-icon>`
     this.label = 'search'
     this.type = 'search'
-    this.style.setProperty('--mdc-shape-small', '28px')
+    this.style.setProperty('--_container-shape', '28px')
 
     const elemStyleSheets = this.shadowRoot.adoptedStyleSheets;
 
@@ -19,14 +19,11 @@ export default customElements.define('search-input', class SearchInput extends T
         max-width: 320px;
         width: 100%;
       }
-
-      .mdc-text-field:not(.mdc-text-field--disabled) .mdc-text-field__icon--trailing {
-        color: var(--main-color);
+      ::slotted([slot="trailingicon"]) {
+        cursor: pointer;
       }
     `)
     
     this.shadowRoot.adoptedStyleSheets = [...elemStyleSheets, sheet];
-
-    
   }
 });

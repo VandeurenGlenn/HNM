@@ -1,6 +1,4 @@
 import {LitElement, html, css} from 'lit'
-import 'custom-svg-iconset'
-import 'custom-svg-icon'
 import 'custom-pages'
 import '@material/mwc-drawer'
 import '@material/mwc-fab'
@@ -11,6 +9,10 @@ import '@material/mwc-top-app-bar-fixed'
 import './elements/darkmode/element.js'
 import '@material/mwc-list'
 import '@vandeurenglenn/flex-elements'
+import '@vandeurenglenn/lit-elements/theme.js'
+import '@material/web/fab/branded-fab.js'
+import '@material/web/icon/icon.js'
+
 export default customElements.define('app-shell', class AppShell extends LitElement {
   static get properties() {
     return {
@@ -219,7 +221,7 @@ export default customElements.define('app-shell', class AppShell extends LitElem
       --button-background: #2b2a2c;
     }
 
-    mwc-drawer mwc-icon-button {
+    mwc-drawer md-standard-icon-button {
       color: #555;
     }
 
@@ -231,6 +233,8 @@ export default customElements.define('app-shell', class AppShell extends LitElem
 
   render() {
     return html`
+
+    <custom-theme load-symbols="false"></custom-theme>
     <span class="backdrop" @click="${() => this.#drawer.open = false}"></span>
     
     <mwc-drawer type="" hasHeader>
@@ -252,7 +256,9 @@ export default customElements.define('app-shell', class AppShell extends LitElem
         
           
         
-        <mwc-fab fab extended label="gratis advies" name="advies" class="fab" icon="contact_support"></mwc-fab>
+        <md-branded-fab branded-fab extended label="gratis advies" name="advies" class="fab">
+        <md-icon slot="icon">contact_support</md-icon>
+        </md-branded-fab>
       </flex-container>
      
       

@@ -1,8 +1,10 @@
 import nodeResolve from "@rollup/plugin-node-resolve";
 import terser from "@rollup/plugin-terser";
+import typescript from "@rollup/plugin-typescript";
+import { cpSync } from "fs";
 import {readdir, unlink} from 'fs/promises'
 import { join } from "path";
-import inline from 'rollup-plugin-material-symbols'
+import inline from 'rollup-plugin-md-icon-inline'
 
 const cleanWWW = async () => {
   return {
@@ -16,27 +18,24 @@ const cleanWWW = async () => {
       return 
     }
   };
-  
-  
 }
 
-
+cpSync('./node_modules/@vandeurenglenn/lit-elements/exports/themes', 'www/themes', { recursive: true })
 const views = (await readdir('./src/views')).map(view => `./src/views/${view}`)
 const themes = (await readdir('./src/themes')).map(theme => `./src/themes/${theme}`)
 
 export default [{
-  input: ['./src/shell.js', ...views],
+  input: ['./src/shell.ts', ...views],
   output: [{
     dir: 'www',
     format: 'es'
   }],
   plugins: [
     cleanWWW(),
-    inline({
-      elements: ['md-icon']
-    }),
+    inline(),
     nodeResolve(),
-    terser()
+    terser({keep_classnames: true}),
+    typescript()
   ]
 }, {
   input: themes,

@@ -4,6 +4,8 @@ import '@vandeurenglenn/flex-elements'
 import './../elements/search-input.js'
 import './../elements/shop-item.js'
 import './../elements/drawer-menu-button.js'
+import '@material/web/iconbutton/standard-icon-button.js'
+import '@material/web/icon/icon.js'
 
 export default customElements.define('shop-view', class ShopView extends LitElement {
   static get properties() {
@@ -226,8 +228,9 @@ export default customElements.define('shop-view', class ShopView extends LitElem
         
         <flex-one></flex-one>
         <!-- <md-filled-button label="SHOP"></md-filled-button>-->
-        
-        <mwc-icon-button icon="shopping_cart"></mwc-icon-button>
+        <md-standard-icon-button>
+          <md-icon>shopping_cart</md-icon>
+        </md-standard-icon-button>
         </span>
       </header>
         <flex-wrap-evenly>
