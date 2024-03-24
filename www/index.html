@@ -1,79 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hello New Me</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hello New Me</title>
 
-  <meta name="keywords" content="hello, new, me, hair, systems">
-  <meta name="description" lang="en" content="Hello New Me is your hairsystems specialist">
-  <meta name="description" lang="nl" content="Hello New Me is uw hairsystems specialist">
-  
-  <meta name="theme-color" content="#000">
-  <link rel="icon" href="./favicon.ico" sizes="any">
-  <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png">
-  <link rel="manifest" href="./manifest.webmanifest">
-  <script>
-    const startServiceWorker = () => {
-      navigator.serviceWorker.register('./sw.js')
-    }
-    navigator.serviceWorker && startServiceWorker()
-  </script>
-</head>
+    <meta name="keywords" content="hello, new, me, hair, systems" />
+    <meta
+      name="description"
+      lang="en"
+      content="Hello New Me is your hairsystems specialist"
+    />
+    <meta
+      name="description"
+      lang="nl"
+      content="Hello New Me is uw hairsystems specialist"
+    />
 
-<body>
-  <style>
-    html, body {
-      margin: 0;
-      position: absolute;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      right: 0;
-      overflow: hidden;
-    }
-    #wa_btn-content {
-      position: fixed;
-      right: 24px;
-      bottom: 24px;
-    }
-  </style>
-  <script>
-    const theme = localStorage.getItem('selected-theme')
-    globalThis.setTheme = async (theme) => {
-      const themeName = theme
-      theme = (await import(`./themes/${theme}.js`)).default
-      const body = document.querySelector('body')
-      for (const [key, value] of Object.entries(theme)) {
-        console.log(key);
-        body.style.setProperty(`--${key}`, value)
+    <meta name="theme-color" content="#000" />
+    <link rel="icon" href="./favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <script>
+      const startServiceWorker = () => {
+        navigator.serviceWorker.register('./sw.js');
+      };
+      navigator.serviceWorker && startServiceWorker();
+    </script>
+  </head>
+
+  <body>
+    <style>
+      html,
+      body {
+        margin: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        overflow: hidden;
       }
-      localStorage.setItem('selected-theme', themeName)
+      #wa_btn-content {
+        position: fixed;
+        right: 24px;
+        bottom: 24px;
+      }
+    </style>
+    <script>
+      const theme = localStorage.getItem('selected-theme');
+      globalThis.setTheme = async (theme) => {
+        const themeName = theme;
+        // theme = (await import(`./themes/${theme}.js`)).default;
+        // const body = document.querySelector('body');
+        // for (const [key, value] of Object.entries(theme)) {
+        //   body.style.setProperty(`--${key}`, value);
+        // }
+        localStorage.setItem('selected-theme', themeName);
 
-      document.dispatchEvent(new CustomEvent('theme-change', {detail : themeName}))
-    }
-    const dark = window.matchMedia('(prefers-color-scheme: dark)')
+        document.dispatchEvent(
+          new CustomEvent('theme-change', { detail: themeName })
+        );
+      };
+      const dark = window.matchMedia('(prefers-color-scheme: dark)');
 
-    const isDark = localStorage.getItem('selected-theme') === 'dark' || dark.matches 
+      const isDark =
+        localStorage.getItem('selected-theme') === 'dark' || dark.matches;
 
-    const changeMode = ({matches}) => {
-      const isDark = localStorage.getItem('selected-theme') === 'dark' || matches 
-      if (isDark) setTheme('dark')
-      else setTheme('light')
-    }
-    dark.addListener(changeMode)
-    
-    setTheme(isDark ? 'dark' : 'light')
-  </script>
-  <script async src='https://d2mpatx37cqexb.cloudfront.net/delightchat-whatsapp-widget/embeds/embed.min.js'></script>
-  <script>
-    var wa_btnSetting = {"btnColor":"#16BE45","ctaText":"","cornerRadius":40,"marginBottom":"","marginLeft":"","marginRight":"","btnPosition":"right","whatsAppNumber":"32473711123","welcomeMessage":"Hey daar!\nHoe kunnen we u helpen?","zIndex":999999,"btnColorScheme":"light"};
-    window.onload = () => {
-      _waEmbed(wa_btnSetting);
-    };
-  </script>
-  <app-shell></app-shell>
-  <script src="./shell.js" type="module"></script>
-</body>
+      const changeMode = ({ matches }) => {
+        const isDark =
+          localStorage.getItem('selected-theme') === 'dark' || matches;
+        if (isDark) setTheme('dark');
+        else setTheme('light');
+      };
+      dark.addListener(changeMode);
+
+      setTheme(isDark ? 'dark' : 'light');
+    </script>
+    <script
+      async
+      src="https://d2mpatx37cqexb.cloudfront.net/delightchat-whatsapp-widget/embeds/embed.min.js"
+    ></script>
+    <script>
+      var wa_btnSetting = {
+        btnColor: '#16BE45',
+        ctaText: '',
+        cornerRadius: 40,
+        marginBottom: '',
+        marginLeft: '',
+        marginRight: '',
+        btnPosition: 'right',
+        whatsAppNumber: '32473711123',
+        welcomeMessage: 'Hey daar!\nHoe kunnen we u helpen?',
+        zIndex: 999999,
+        btnColorScheme: 'light',
+      };
+      window.onload = () => {
+        _waEmbed(wa_btnSetting);
+      };
+    </script>
+    <app-shell></app-shell>
+    <script src="./shell.js" type="module"></script>
+  </body>
 </html>

@@ -1,12 +1,12 @@
 import { LitElement, html, css } from 'lit';
-import './shop-item-bar.js'
+import './shop-item-bar.js';
 
 export class ShopItem extends LitElement {
   static get properties() {
     return {
       image: { type: String },
       name: { type: String },
-      price: { type: String }
+      price: { type: String },
     };
   }
   static styles = [
@@ -39,20 +39,19 @@ export class ShopItem extends LitElement {
         padding: 0px 22px 0 12px;
         box-sizing: border-box;
       }
-    `
+    `,
   ];
 
   render() {
     return html`
-
-    <img src="${this.image}">
-    <flex-row>
-      <h4>${this.name}</h4>
-      <flex-one></flex-one>
-      <strong>${this.price}</strong>
-    </flex-row>
-    <flex-one></flex-one>
-    <shop-item-bar></shop-item-bar>
+      <img src="${this.image}" />
+      <flex-row>
+        <h4>${this.name}</h4>
+        <flex-it></flex-it>
+        <strong>${this.price}</strong>
+      </flex-row>
+      <flex-it></flex-it>
+      <shop-item-bar></shop-item-bar>
     `;
   }
 }

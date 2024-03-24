@@ -1,283 +1,403 @@
-import {LitElement, html, css} from 'lit'
-import 'custom-pages'
-import '@material/mwc-drawer'
-import '@material/mwc-fab'
-import '@material/mwc-button'
-import '@material/mwc-icon-button'
-import '@material/mwc-top-app-bar-fixed'
+import { LitElement, html, css } from 'lit';
+import '@vandeurenglenn/lite-elements/drawer-layout.js';
+import '@vandeurenglenn/lite-elements/pages.js';
+import '@vandeurenglenn/lite-elements/theme.js';
+import '@vandeurenglenn/lite-elements/selector.js';
 
-import './elements/darkmode/element.js'
-import '@material/mwc-list'
-import '@vandeurenglenn/flex-elements'
-import '@vandeurenglenn/lit-elements/theme.js'
-import '@material/web/fab/branded-fab.js'
-import '@material/web/icon/icon.js'
+import './elements/darkmode/element.js';
+import '@material/web/fab/branded-fab.js';
+import { query, LiteElement, property } from '@vandeurenglenn/lite';
 
-export default customElements.define('app-shell', class AppShell extends LitElement {
-  static get properties() {
-    return {
-      menuShown: { type: Boolean, reflect: true },
-      isMobile: { type: Boolean, reflect: true },
-    };
-  }
+import icons from './icons.js';
 
-  constructor() {
-    super()
+export default customElements.define(
+  'app-shell',
+  class AppShell extends LiteElement {
+    @query('custom-drawer-layout')
+    accessor #drawerLayout;
 
-    this.init()
-  }
+    @query('custom-pages')
+    accessor #pages;
 
-  async init() {
-    globalThis.onhashchange = this.#hashchange.bind(this)
-    let media = matchMedia("(min-width: 1200px)");
-    const onMedia = ({matches}) => {
-      this.isMobile = !matches
+    @query('custom-selector')
+    accessor #selector;
+
+    @property({ reflect: true }) accessor darkmode;
+
+    @property({ reflect: true, attribute: 'menu-shown', Boolean: true })
+    accessor menuShown;
+
+    @property({ reflect: true, attribute: 'is-mobile', Boolean: true })
+    accessor isMobile;
+
+    constructor() {
+      super();
+
+      this.init();
     }
-    await this.updateComplete
 
-    this.#darkmode({detail: localStorage.getItem('selected-theme') || 'light'})
-    if (!location.hash) location.hash = '#!/home'
-    const elemStyleSheets = this.#drawer.shadowRoot.adoptedStyleSheets;
+    async init() {
+      globalThis.onhashchange = this.#hashchange.bind(this);
+      let media = matchMedia('(min-width: 1200px)');
+      const onMedia = ({ matches }) => {
+        this.isMobile = !matches;
+      };
 
-    const sheet = new CSSStyleSheet()
-    sheet.replaceSync('.mdc-drawer { z-index: 1000; }')
-    this.#drawer.shadowRoot.adoptedStyleSheets = [...elemStyleSheets, sheet];
-    media.addEventListener('change', onMedia)
-    onMedia(media)
+      this.#darkmode({
+        detail: localStorage.getItem('selected-theme') || 'light',
+      });
+      if (!location.hash) location.hash = '#!/home';
 
-    document.addEventListener('drawer-menu-click', () => (this.menuShown = !this.menuShown));
-    document.addEventListener('theme-change', this.#darkmode.bind(this))
-    this.#hashchange()
-  }
+      media.addEventListener('change', onMedia);
+      onMedia(media);
 
-  set isMobile(value) {
-    console.log('isMobile');
-    if (this._isMobile === value) return
-    this._isMobile = value
-    if (value) {
-      this.#drawer.setAttribute('type', 'modal')
-      this.#drawer.open = false
-    } else {
-      this.#drawer.setAttribute('type', 'dismissible')
-      const children = Array.from(this.#drawer.shadowRoot.children)
-      for (const child of children) {
-        if (child.hasAttribute('inert')) child.removeAttribute('inert')
+      document.addEventListener(
+        'drawer-menu-click',
+        () => (this.menuShown = !this.menuShown)
+      );
+      document.addEventListener('theme-change', this.#darkmode.bind(this));
+      this.#hashchange();
+    }
+
+    #darkmode({ detail }) {
+      if (detail === 'dark') {
+        this.shadowRoot.querySelector(`img[alt="logo"]`).src =
+          './assets/sciccors-dark.svg';
+      } else {
+        this.shadowRoot.querySelector(`img[alt="logo"]`).src =
+          './assets/sciccors.svg';
       }
-      this.#drawer.open = true
-      
+      this.darkmode = detail === 'dark' ? true : false;
     }
-    console.log('isMobile');
-    document.dispatchEvent(new CustomEvent('layout-change', { detail: value ? 'mobile' : 'desktop'}))
+    async #hashchange() {
+      if (this.menuShown && this.isMobile) this.menuShown = false;
+      const parts = location.hash.split('#!/');
+      this.#select(parts[1]);
+    }
+
+    async #select(selected) {
+      requestAnimationFrame(async () => {
+        !customElements.get(`${selected}-view`) &&
+          (await import(`./${selected}.js`));
+        this.#pages.select(selected);
+        this.#selector.select(selected);
+      });
+    }
+
+    async select(selected) {
+      location.hash = `#!/${selected}`;
+    }
+
+    static styles = [
+      css`
+        @font-face {
+          font-family: americanTypewriter;
+          src: url('./fonts/American Typewriter Regular.ttf');
+        }
+
+        * {
+          user-select: none;
+          outline: none;
+        }
+
+        a {
+          text-decoration: none;
+        }
+
+        :host(:not([darkmode])) {
+          --md-sys-color-primary: var(--md-sys-color-primary-light);
+          --md-sys-color-on-primary: var(--md-sys-color-on-primary-light);
+          --md-sys-color-primary-container: var(
+            --md-sys-color-primary-container-light
+          );
+          --md-sys-color-on-primary-container: var(
+            --md-sys-color-on-primary-container-light
+          );
+          --md-sys-color-secondary: var(--md-sys-color-secondary-light);
+          --md-sys-color-on-secondary: var(--md-sys-color-on-secondary-light);
+          --md-sys-color-secondary-container: var(
+            --md-sys-color-secondary-container-light
+          );
+          --md-sys-color-secondary-container-hover: var(
+            --md-sys-color-secondary-container-hover-light
+          );
+          --md-sys-color-on-secondary-container: var(
+            --md-sys-color-on-secondary-container-light
+          );
+          --md-sys-color-tertiary: var(--md-sys-color-tertiary-light);
+          --md-sys-color-on-tertiary: var(--md-sys-color-on-tertiary-light);
+          --md-sys-color-tertiary-container: var(
+            --md-sys-color-tertiary-container-light
+          );
+          --md-sys-color-on-tertiary-container: var(
+            --md-sys-color-on-tertiary-container-light
+          );
+          --md-sys-color-error: var(--md-sys-color-error-light);
+          --md-sys-color-on-error: var(--md-sys-color-on-error-light);
+          --md-sys-color-error-container: var(
+            --md-sys-color-error-container-light
+          );
+          --md-sys-color-on-error-container: var(
+            --md-sys-color-on-error-container-light
+          );
+          --md-sys-color-outline: var(--md-sys-color-outline-light);
+          --md-sys-color-background: var(--md-sys-color-background-light);
+          --md-sys-color-on-background: var(--md-sys-color-on-background-light);
+          --md-sys-color-surface: var(--md-sys-color-surface-light);
+          --md-sys-color-on-surface: var(--md-sys-color-on-surface-light);
+          --md-sys-color-surface-variant: var(
+            --md-sys-color-surface-variant-light
+          );
+          --md-sys-color-on-surface-variant: var(
+            --md-sys-color-on-surface-variant-light
+          );
+          --md-sys-color-inverse-surface: var(
+            --md-sys-color-inverse-surface-light
+          );
+          --md-sys-color-inverse-on-surface: var(
+            --md-sys-color-inverse-on-surface-light
+          );
+          --md-sys-color-inverse-primary: var(
+            --md-sys-color-inverse-primary-light
+          );
+          --md-sys-color-shadow: var(--md-sys-color-shadow-light);
+          --md-sys-color-surface-tint: var(--md-sys-color-surface-tint-light);
+          --md-sys-color-outline-variant: var(
+            --md-sys-color-outline-variant-light
+          );
+          --md-sys-color-scrim: var(--md-sys-color-scrim-light);
+        }
+
+        :host([darkmode]) {
+          --md-sys-color-primary: var(--md-sys-color-primary-dark);
+          --md-sys-color-on-primary: var(--md-sys-color-on-primary-dark);
+          --md-sys-color-primary-container: var(
+            --md-sys-color-primary-container-dark
+          );
+          --md-sys-color-on-primary-container: var(
+            --md-sys-color-on-primary-container-dark
+          );
+          --md-sys-color-secondary: var(--md-sys-color-secondary-dark);
+          --md-sys-color-on-secondary: var(--md-sys-color-on-secondary-dark);
+          --md-sys-color-secondary-container: var(
+            --md-sys-color-secondary-container-dark
+          );
+          --md-sys-color-secondary-container-hover: var(
+            --md-sys-color-secondary-container-hover-dark
+          );
+          --md-sys-color-on-secondary-container: var(
+            --md-sys-color-on-secondary-container-dark
+          );
+          --md-sys-color-tertiary: var(--md-sys-color-tertiary-dark);
+          --md-sys-color-on-tertiary: var(--md-sys-color-on-tertiary-dark);
+          --md-sys-color-tertiary-container: var(
+            --md-sys-color-tertiary-container-dark
+          );
+          --md-sys-color-on-tertiary-container: var(
+            --md-sys-color-on-tertiary-container-dark
+          );
+          --md-sys-color-error: var(--md-sys-color-error-dark);
+          --md-sys-color-on-error: var(--md-sys-color-on-error-dark);
+          --md-sys-color-error-container: var(
+            --md-sys-color-error-container-dark
+          );
+          --md-sys-color-on-error-container: var(
+            --md-sys-color-on-error-container-dark
+          );
+          --md-sys-color-outline: var(--md-sys-color-outline-dark);
+          --md-sys-color-background: var(--md-sys-color-background-dark);
+          --md-sys-color-on-background: var(--md-sys-color-on-background-dark);
+          --md-sys-color-surface: var(--md-sys-color-surface-dark);
+          --md-sys-color-on-surface: var(--md-sys-color-on-surface-dark);
+          --md-sys-color-surface-variant: var(
+            --md-sys-color-surface-variant-dark
+          );
+          --md-sys-color-on-surface-variant: var(
+            --md-sys-color-on-surface-variant-dark
+          );
+          --md-sys-color-inverse-surface: var(
+            --md-sys-color-inverse-surface-dark
+          );
+          --md-sys-color-inverse-on-surface: var(
+            --md-sys-color-inverse-on-surface-dark
+          );
+          --md-sys-color-inverse-primary: var(
+            --md-sys-color-inverse-primary-dark
+          );
+          --md-sys-color-shadow: var(--md-sys-color-shadow-dark);
+          --md-sys-color-surface-tint: var(--md-sys-color-surface-tint-dark);
+          --md-sys-color-outline-variant: var(
+            --md-sys-color-outline-variant-dark
+          );
+          --md-sys-color-scrim: var(--md-sys-color-scrim-dark);
+        }
+        :host {
+          overflow-y: auto;
+          position: relative;
+          height: 100%;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          display: flex;
+          flex-direction: row;
+          font-family: system-ui, 'Noto Sans', Roboto, Helvetica, Arial,
+            sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+          overflow: hidden;
+          font-family: americanTypewriter;
+        }
+
+        main {
+          overflow-y: auto;
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+          // align-items: center;
+          height: 100%;
+        }
+
+        h1 {
+          margin: 0;
+          font-size: 24px;
+        }
+
+        .backdrop {
+          z-index: 10000;
+          opacity: 0;
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          pointer-events: none;
+        }
+
+        :host([isMobile][menuShown]) .backdrop {
+          opacity: 1;
+          pointer-events: auto;
+          background: #000000a1;
+        }
+
+        :host([menuShown]) md-fab {
+          opacity: 0;
+        }
+
+        button-element {
+          pointer-events: auto;
+        }
+
+        flex-container {
+          min-width: auto;
+        }
+
+        aside flex-container {
+          align-items: flex-end;
+        }
+
+        button-element {
+          --button-background: #2b2a2c;
+        }
+
+        img {
+          width: 100%;
+          transition: opacity ease-in 120ms;
+        }
+
+        custom-drawer-item.custom-selected {
+          background: var(--md-sys-color-secondary);
+          color: var(--md-sys-color-on-secondary);
+        }
+
+        custom-drawer-item.custom-selected custom-icon {
+          --custom-icon-color: var(--md-sys-color-on-secondary);
+        }
+
+        ::slotted(:not(.custom-selected):not([non-interactive]):hover)
+          custom-icon {
+          --custom-icon-color: var(--md-sys-color-on-secondary);
+        }
+
+        ::slotted(:not(.custom-selected):not([non-interactive]):hover) {
+          background: var(--md-sys-color-secondary-container-hover);
+          color: var(--md-sys-color-on-secondary-container);
+        }
+
+        custom-selector {
+          text-transform: capitalize;
+          width: 100%;
+        }
+      `,
+    ];
+
+    render() {
+      return html`
+        <link rel="preload" href="./assets/banner-dark.svg" as="image" />
+        ${icons}
+        <custom-theme load-symbols="false"></custom-theme>
+        <span
+          class="backdrop"
+          @click="${() => (this.#drawerLayout.drawerOpen = false)}"
+        ></span>
+
+        <custom-drawer-layout .drawerOpen=${this.menuShown}>
+          <flex-container slot="drawer-content">
+            <span>
+              <img alt="logo" loading="lazy" src="./assets/sciccors-dark.svg"
+            /></span>
+
+            <custom-selector
+              attr-for-selected="data-route"
+              @selected=${({ detail }) => this.select(detail)}
+            >
+              <custom-drawer-item data-route="home">
+                home
+                <flex-it></flex-it>
+                <custom-icon icon="home"></custom-icon>
+              </custom-drawer-item>
+
+              <custom-drawer-item data-route="shop">
+                shop
+                <flex-it></flex-it>
+                <custom-icon icon="shopping_basket"></custom-icon>
+              </custom-drawer-item>
+
+              <custom-drawer-item data-route="services">
+                services
+                <flex-it></flex-it>
+                <custom-icon icon="linked_services"></custom-icon>
+              </custom-drawer-item>
+
+              <custom-drawer-item data-route="team">
+                team
+                <flex-it></flex-it>
+                <custom-icon icon="groups"></custom-icon>
+              </custom-drawer-item>
+            </custom-selector>
+
+            <flex-it></flex-it>
+            <darkmode-element slot="drawer-footer"></darkmode-element>
+          </flex-container>
+
+          <md-branded-fab
+            branded-fab
+            extended
+            label="gratis advies"
+            name="advies"
+            class="fab"
+          >
+            <md-icon slot="icon">contact_support</md-icon>
+          </md-branded-fab>
+          <main slot="content">
+            <custom-pages attr-for-selected="data-route">
+              <home-view data-route="home"></home-view>
+              <shop-view data-route="shop"></shop-view>
+              <services-view data-route="services"></services-view>
+              <team-view data-route="team"></team-view>
+            </custom-pages>
+          </main>
+        </custom-drawer-layout>
+      `;
+      // <img src="./assets/banner.jpg">
+    }
   }
-
-  set menuShown(value) {
-    if (this.#drawer.open === value) return
-
-
-    this.#drawer.open = value
-  }
-
-  get menuShown() {
-    return this.#drawer.open
-  }
-
-  get isMobile() {
-    return this._isMobile
-  }
-
-  get #drawer() {
-    return this.renderRoot.querySelector('mwc-drawer')
-  }
-
-  get #drawerNav() {
-    return this.#drawer.querySelector('mwc-list')
-  }
-
-  #darkmode({detail}) {
-    if (detail === 'dark') {
-      this.renderRoot.querySelector(`img[alt="logo"]`).src = './assets/sciccors-dark.svg'
-    } else {
-      this.renderRoot.querySelector(`img[alt="logo"]`).src = './assets/sciccors.svg'
-    }
-  }
-
-
-  get #pages() {
-    return this.renderRoot.querySelector('custom-pages')
-  }
-
-  async #hashchange() {
-    if (this.menuShown && this.isMobile) this.menuShown = false
-    const parts = location.hash.split('#!/')
-    console.log(parts);
-    this.#select(parts[1])
-  }
-
-  async #select(selected) {
-    const elements = Array.from(this.#drawer.querySelectorAll(`[data-route]`))
-    for (const element of elements) {
-      if (element.dataset.route === selected) {
-        this.#drawerNav.select(elements.indexOf(element))
-        break
-      }
-    }
-    requestAnimationFrame(async () => {
-      !customElements.get(`${selected}-view`) && await import(`./${selected}.js`)
-      this.#pages.select(selected)
-    })
-    
-  }
-
-  async select(selected) {
-    location.hash = `#!/${selected}`
-  }
-
-  static styles = css`
-    @font-face {
-      font-family: americanTypewriter;
-      src: url("./fonts/American Typewriter Regular.ttf");
-    }
-
-    * {
-      user-select: none;
-      outline: none;
-    }
-
-    a {
-      text-decoration: none;
-    }
-
-    :host {
-      overflow-y: auto;
-      position: relative;
-      height: 100%;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      display: flex;
-      flex-direction: row;
-      font-family: system-ui, "Noto Sans", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-      color: var(--main-color);
-      background-color: var(--main-background-color);
-      overflow: hidden;
-      font-family: americanTypewriter;
-    }
-    
-    main {
-      overflow-y: auto;
-      position: absolute;
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      // align-items: center;
-      height: 100%;
-    }
-    
-    mwc-drawer {
-      width: 100%;
-      z-index: 10000;
-    }
-
-    h1 {
-      margin: 0;
-      font-size: 24px;
-    }
-
-    .backdrop {
-      z-index: 10000;
-      opacity: 0;
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      pointer-events: none;
-    }
-
-    :host([isMobile][menuShown]) .backdrop {
-      opacity: 1;
-      pointer-events: auto;
-      background: #000000a1
-    }
-
-    :host([menuShown]) md-fab {
-      opacity: 0;
-    }
-    
-    button-element {
-      pointer-events: auto;
-    }
-    
-    flex-container {
-      min-width: auto;
-    }
-
-    aside flex-container {
-      align-items: flex-end;
-    }
-
-    button-element {
-      --button-background: #2b2a2c;
-    }
-
-    mwc-drawer md-standard-icon-button {
-      color: #555;
-    }
-
-    img {
-      width: 100%;
-      transition: opacity ease-in 120ms;
-    }
-  `
-
-  render() {
-    return html`
-
-    <custom-theme load-symbols="false"></custom-theme>
-    <span class="backdrop" @click="${() => this.#drawer.open = false}"></span>
-    
-    <mwc-drawer type="" hasHeader>
-    <span slot="title">
-      <img alt="logo" loading="lazy" src="./assets/sciccors-dark.svg"></span>
-      <span slot="subtitle" style="padding-bottom: 24px;"></span>
-      
-      <flex-container style="height: 100%; align-items: center; padding-bottom: 24px; box-sizing: border-box;">
-        <darkmode-element></darkmode-element>
-        
-        <mwc-list activatable style="width: 100%;">
-          <li divider role="separator"></li>
-          <mwc-list-item data-route="home" @click="${() => location.hash = '#!/home'}" selected activated>home</mwc-list-item>
-          <mwc-list-item data-route="shop" @click="${() => location.hash = '#!/shop'}">shop</mwc-list-item>
-          <mwc-list-item data-route="services" @click="${() => location.hash = '#!/services'}">services</mwc-list-item>
-          <mwc-list-item data-route="team" @click="${() => location.hash = '#!/team'}">team</mwc-list-item>
-          </mwc-list>
-        <flex-one></flex-one>
-        
-          
-        
-        <md-branded-fab branded-fab extended label="gratis advies" name="advies" class="fab">
-        <md-icon slot="icon">contact_support</md-icon>
-        </md-branded-fab>
-      </flex-container>
-     
-      
-      <main slot="appContent">
-      
-        <custom-pages attr-for-selected="data-route">
-          <home-view data-route="home"></home-view>
-          <shop-view data-route="shop"></shop-view>
-          <services-view data-route="services"></services-view>
-          <team-view data-route="team"></team-view>
-        </custom-pages>
-      </main>
-
-      </mwc-drawer>
-   
-    
-
-    
-    `
-    // <img src="./assets/banner.jpg">
-  }
-})
+);
