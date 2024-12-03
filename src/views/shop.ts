@@ -1,71 +1,72 @@
-import { LiteElement, html, css, property } from '@vandeurenglenn/lite';
-import { map } from 'lit/directives/map.js';
-import '../elements/search-input.js';
-import '../elements/shop-item.js';
-import '@material/web/iconbutton/icon-button.js';
-import '@material/web/icon/icon.js';
+import { LiteElement, html, css, property } from '@vandeurenglenn/lite'
+import { map } from 'lit/directives/map.js'
+import '../elements/search-input.js'
+import '../elements/shop-item.js'
+import '@material/web/iconbutton/icon-button.js'
+import '@material/web/icon/icon.js'
 
-import '@vandeurenglenn/flex-elements/it.js';
-import '@vandeurenglenn/flex-elements/wrap-evenly.js';
+import '@vandeurenglenn/flex-elements/it.js'
+import '@vandeurenglenn/flex-elements/wrap-evenly.js'
+import { scrollbar } from '../mixins/styles.js'
 
 export default customElements.define(
   'shop-view',
   class ShopView extends LiteElement {
     @property({ type: Array })
-    accessor items;
+    accessor items
 
     async connectedCallback() {
-      document.addEventListener('theme-change', this.#darkmode.bind(this));
+      document.addEventListener('theme-change', this.#darkmode.bind(this))
       this.#darkmode({
-        detail: localStorage.getItem('selected-theme') || 'light',
-      });
+        detail: localStorage.getItem('selected-theme') || 'light'
+      })
       this.items = [
         {
           name: 'some shop item name',
           image: './assets/example2.webp',
-          price: '100 eur',
+          price: '100 eur'
         },
         {
           name: 'some shop item name',
           image: './assets/example2.webp',
-          price: '100 eur',
+          price: '100 eur'
         },
         {
           name: 'some shop item name',
           image: './assets/example2.webp',
-          price: '100 eur',
+          price: '100 eur'
         },
         {
           name: 'some shop item name',
           image: './assets/example2.webp',
-          price: '100 eur',
+          price: '100 eur'
         },
         {
           name: 'some shop item name',
           image: './assets/example2.webp',
-          price: '100 eur',
+          price: '100 eur'
         },
         {
           name: 'some shop item name',
           image: './assets/example2.webp',
-          price: '100 eur',
+          price: '100 eur'
         },
         {
           name: 'some shop item name',
           image: './assets/example2.webp',
-          price: '100 eur',
+          price: '100 eur'
         },
         {
           name: 'some shop item name',
           image: './assets/example2.webp',
-          price: '100 eur',
+          price: '100 eur'
         },
         {
           name: 'some shop item name',
           image: './assets/example2.webp',
-          price: '100 eur',
-        },
-      ];
+          price: '100 eur'
+        }
+      ]
     }
 
     #darkmode({ detail }) {
@@ -226,15 +227,17 @@ export default customElements.define(
 
           margin-bottom: 12px;
         }
-      `,
-    ];
+
+        ${scrollbar}
+      `
+    ]
 
     render() {
       return html`
-    
-    
 
-      <header class="small">        
+
+
+      <header class="small">
         <flex-it></flex-it>
         <!-- <md-filled-button label="SHOP"></md-filled-button>-->
         <md-icon-button>
@@ -249,19 +252,18 @@ export default customElements.define(
               <shop-item
                 .image=${item.image}
                 .name=${item.name}
-                .price=${item.price}
-              >
+                .price=${item.price}>
               </shop-item>
             `
           )}
-          
-        
+
+
         </flex-wrap-evenly>
-       
+
         <search-input></search-input>
-       
-    `;
+
+    `
       // <img alt="banner" loading="lazy" src="./assets/banner.webp">
     }
   }
-);
+)

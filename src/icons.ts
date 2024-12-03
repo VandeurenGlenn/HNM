@@ -5,7 +5,7 @@ export default html` <custom-icon-set>
   <template>
     <span name="add">@symbol-add</span>
     <span name="home">@symbol-home</span>
-    <span name="expand_more">@symbol-expand_more</span>
+    <span name="expand_more">@symbol-unfold_more</span>
     <span name="menu">@symbol-menu</span>
     <span name="delete">@symbol-delete</span>
     <span name="menu_open">@symbol-menu_open</span>
@@ -17,7 +17,7 @@ export default html` <custom-icon-set>
     <span name="check_box">@symbol-check_box</span>
     <span name="check_box_outline_blank">@symbol-check_box_outline_blank</span>
     <span name="save">@symbol-save</span>
-    <span name="done">@symbol-done</span>
+    <span name="done">@symbol-check</span>
     <span name="mail">@symbol-mail</span>
     <span name="arrow_back">@symbol-arrow_back</span>
     <span name="shopping_basket">@symbol-shopping_basket</span>

@@ -1,91 +1,85 @@
-import { LitElement, html, css } from 'lit';
-import '@vandeurenglenn/lite-elements/drawer-layout.js';
-import '@vandeurenglenn/lite-elements/pages.js';
-import '@vandeurenglenn/lite-elements/theme.js';
-import '@vandeurenglenn/lite-elements/selector.js';
+import { LitElement, html, css } from 'lit'
+import '@vandeurenglenn/lite-elements/drawer-layout.js'
+import '@vandeurenglenn/lite-elements/pages.js'
+import '@vandeurenglenn/lite-elements/theme.js'
+import '@vandeurenglenn/lite-elements/selector.js'
 
-import './elements/darkmode/element.js';
-import '@material/web/fab/branded-fab.js';
-import { query, LiteElement, property } from '@vandeurenglenn/lite';
-
-import icons from './icons.js';
+import './elements/darkmode/element.js'
+import '@material/web/fab/branded-fab.js'
+import { query, LiteElement, property } from '@vandeurenglenn/lite'
+import { scrollbar } from './mixins/styles.js'
+import icons from './icons.js'
 
 export default customElements.define(
   'app-shell',
   class AppShell extends LiteElement {
     @query('custom-drawer-layout')
-    accessor #drawerLayout;
+    accessor #drawerLayout
 
     @query('custom-pages')
-    accessor #pages;
+    accessor #pages
 
     @query('custom-selector')
-    accessor #selector;
+    accessor #selector
 
-    @property({ reflect: true }) accessor darkmode;
+    @property({ reflect: true }) accessor darkmode
 
     @property({ reflect: true, attribute: 'menu-shown', Boolean: true })
-    accessor menuShown;
+    accessor menuShown
 
     @property({ reflect: true, attribute: 'is-mobile', Boolean: true })
-    accessor isMobile;
+    accessor isMobile
 
     constructor() {
-      super();
+      super()
 
-      this.init();
+      this.init()
     }
 
     async init() {
-      globalThis.onhashchange = this.#hashchange.bind(this);
-      let media = matchMedia('(min-width: 1200px)');
+      globalThis.onhashchange = this.#hashchange.bind(this)
+      let media = matchMedia('(min-width: 1200px)')
       const onMedia = ({ matches }) => {
-        this.isMobile = !matches;
-      };
+        this.isMobile = !matches
+      }
 
       this.#darkmode({
-        detail: localStorage.getItem('selected-theme') || 'light',
-      });
-      if (!location.hash) location.hash = '#!/home';
+        detail: localStorage.getItem('selected-theme') || 'light'
+      })
+      if (!location.hash) location.hash = '#!/home'
 
-      media.addEventListener('change', onMedia);
-      onMedia(media);
+      media.addEventListener('change', onMedia)
+      onMedia(media)
 
-      document.addEventListener(
-        'drawer-menu-click',
-        () => (this.menuShown = !this.menuShown)
-      );
-      document.addEventListener('theme-change', this.#darkmode.bind(this));
-      this.#hashchange();
+      document.addEventListener('drawer-menu-click', () => (this.menuShown = !this.menuShown))
+      document.addEventListener('theme-change', this.#darkmode.bind(this))
+      this.#hashchange()
     }
 
     #darkmode({ detail }) {
       if (detail === 'dark') {
-        this.shadowRoot.querySelector(`img[alt="logo"]`).src =
-          './assets/sciccors-dark.svg';
+        this.shadowRoot.querySelector(`img[alt="logo"]`).src = './assets/sciccors-dark.svg'
       } else {
-        this.shadowRoot.querySelector(`img[alt="logo"]`).src =
-          './assets/sciccors.svg';
+        this.shadowRoot.querySelector(`img[alt="logo"]`).src = './assets/sciccors.svg'
       }
-      this.darkmode = detail === 'dark' ? true : false;
+      this.darkmode = detail === 'dark' ? true : false
     }
     async #hashchange() {
-      if (this.menuShown && this.isMobile) this.menuShown = false;
-      const parts = location.hash.split('#!/');
-      this.#select(parts[1]);
+      if (this.menuShown && this.isMobile) this.menuShown = false
+      const parts = location.hash.split('#!/')
+      this.#select(parts[1])
     }
 
     async #select(selected) {
       requestAnimationFrame(async () => {
-        !customElements.get(`${selected}-view`) &&
-          (await import(`./${selected}.js`));
-        this.#pages.select(selected);
-        this.#selector.select(selected);
-      });
+        !customElements.get(`${selected}-view`) && (await import(`./${selected}.js`))
+        this.#pages.select(selected)
+        this.#selector.select(selected)
+      })
     }
 
     async select(selected) {
-      location.hash = `#!/${selected}`;
+      location.hash = `#!/${selected}`
     }
 
     static styles = [
@@ -107,128 +101,68 @@ export default customElements.define(
         :host(:not([darkmode])) {
           --md-sys-color-primary: var(--md-sys-color-primary-light);
           --md-sys-color-on-primary: var(--md-sys-color-on-primary-light);
-          --md-sys-color-primary-container: var(
-            --md-sys-color-primary-container-light
-          );
-          --md-sys-color-on-primary-container: var(
-            --md-sys-color-on-primary-container-light
-          );
+          --md-sys-color-primary-container: var(--md-sys-color-primary-container-light);
+          --md-sys-color-on-primary-container: var(--md-sys-color-on-primary-container-light);
           --md-sys-color-secondary: var(--md-sys-color-secondary-light);
           --md-sys-color-on-secondary: var(--md-sys-color-on-secondary-light);
-          --md-sys-color-secondary-container: var(
-            --md-sys-color-secondary-container-light
-          );
-          --md-sys-color-secondary-container-hover: var(
-            --md-sys-color-secondary-container-hover-light
-          );
-          --md-sys-color-on-secondary-container: var(
-            --md-sys-color-on-secondary-container-light
-          );
+          --md-sys-color-secondary-container: var(--md-sys-color-secondary-container-light);
+          --md-sys-color-secondary-container-hover: var(--md-sys-color-secondary-container-hover-light);
+          --md-sys-color-on-secondary-container: var(--md-sys-color-on-secondary-container-light);
           --md-sys-color-tertiary: var(--md-sys-color-tertiary-light);
           --md-sys-color-on-tertiary: var(--md-sys-color-on-tertiary-light);
-          --md-sys-color-tertiary-container: var(
-            --md-sys-color-tertiary-container-light
-          );
-          --md-sys-color-on-tertiary-container: var(
-            --md-sys-color-on-tertiary-container-light
-          );
+          --md-sys-color-tertiary-container: var(--md-sys-color-tertiary-container-light);
+          --md-sys-color-on-tertiary-container: var(--md-sys-color-on-tertiary-container-light);
           --md-sys-color-error: var(--md-sys-color-error-light);
           --md-sys-color-on-error: var(--md-sys-color-on-error-light);
-          --md-sys-color-error-container: var(
-            --md-sys-color-error-container-light
-          );
-          --md-sys-color-on-error-container: var(
-            --md-sys-color-on-error-container-light
-          );
+          --md-sys-color-error-container: var(--md-sys-color-error-container-light);
+          --md-sys-color-on-error-container: var(--md-sys-color-on-error-container-light);
           --md-sys-color-outline: var(--md-sys-color-outline-light);
           --md-sys-color-background: var(--md-sys-color-background-light);
           --md-sys-color-on-background: var(--md-sys-color-on-background-light);
           --md-sys-color-surface: var(--md-sys-color-surface-light);
           --md-sys-color-on-surface: var(--md-sys-color-on-surface-light);
-          --md-sys-color-surface-variant: var(
-            --md-sys-color-surface-variant-light
-          );
-          --md-sys-color-on-surface-variant: var(
-            --md-sys-color-on-surface-variant-light
-          );
-          --md-sys-color-inverse-surface: var(
-            --md-sys-color-inverse-surface-light
-          );
-          --md-sys-color-inverse-on-surface: var(
-            --md-sys-color-inverse-on-surface-light
-          );
-          --md-sys-color-inverse-primary: var(
-            --md-sys-color-inverse-primary-light
-          );
+          --md-sys-color-surface-variant: var(--md-sys-color-surface-variant-light);
+          --md-sys-color-on-surface-variant: var(--md-sys-color-on-surface-variant-light);
+          --md-sys-color-inverse-surface: var(--md-sys-color-inverse-surface-light);
+          --md-sys-color-inverse-on-surface: var(--md-sys-color-inverse-on-surface-light);
+          --md-sys-color-inverse-primary: var(--md-sys-color-inverse-primary-light);
           --md-sys-color-shadow: var(--md-sys-color-shadow-light);
           --md-sys-color-surface-tint: var(--md-sys-color-surface-tint-light);
-          --md-sys-color-outline-variant: var(
-            --md-sys-color-outline-variant-light
-          );
+          --md-sys-color-outline-variant: var(--md-sys-color-outline-variant-light);
           --md-sys-color-scrim: var(--md-sys-color-scrim-light);
         }
 
         :host([darkmode]) {
           --md-sys-color-primary: var(--md-sys-color-primary-dark);
           --md-sys-color-on-primary: var(--md-sys-color-on-primary-dark);
-          --md-sys-color-primary-container: var(
-            --md-sys-color-primary-container-dark
-          );
-          --md-sys-color-on-primary-container: var(
-            --md-sys-color-on-primary-container-dark
-          );
+          --md-sys-color-primary-container: var(--md-sys-color-primary-container-dark);
+          --md-sys-color-on-primary-container: var(--md-sys-color-on-primary-container-dark);
           --md-sys-color-secondary: var(--md-sys-color-secondary-dark);
           --md-sys-color-on-secondary: var(--md-sys-color-on-secondary-dark);
-          --md-sys-color-secondary-container: var(
-            --md-sys-color-secondary-container-dark
-          );
-          --md-sys-color-secondary-container-hover: var(
-            --md-sys-color-secondary-container-hover-dark
-          );
-          --md-sys-color-on-secondary-container: var(
-            --md-sys-color-on-secondary-container-dark
-          );
+          --md-sys-color-secondary-container: var(--md-sys-color-secondary-container-dark);
+          --md-sys-color-secondary-container-hover: var(--md-sys-color-secondary-container-hover-dark);
+          --md-sys-color-on-secondary-container: var(--md-sys-color-on-secondary-container-dark);
           --md-sys-color-tertiary: var(--md-sys-color-tertiary-dark);
           --md-sys-color-on-tertiary: var(--md-sys-color-on-tertiary-dark);
-          --md-sys-color-tertiary-container: var(
-            --md-sys-color-tertiary-container-dark
-          );
-          --md-sys-color-on-tertiary-container: var(
-            --md-sys-color-on-tertiary-container-dark
-          );
+          --md-sys-color-tertiary-container: var(--md-sys-color-tertiary-container-dark);
+          --md-sys-color-on-tertiary-container: var(--md-sys-color-on-tertiary-container-dark);
           --md-sys-color-error: var(--md-sys-color-error-dark);
           --md-sys-color-on-error: var(--md-sys-color-on-error-dark);
-          --md-sys-color-error-container: var(
-            --md-sys-color-error-container-dark
-          );
-          --md-sys-color-on-error-container: var(
-            --md-sys-color-on-error-container-dark
-          );
+          --md-sys-color-error-container: var(--md-sys-color-error-container-dark);
+          --md-sys-color-on-error-container: var(--md-sys-color-on-error-container-dark);
           --md-sys-color-outline: var(--md-sys-color-outline-dark);
           --md-sys-color-background: var(--md-sys-color-background-dark);
           --md-sys-color-on-background: var(--md-sys-color-on-background-dark);
           --md-sys-color-surface: var(--md-sys-color-surface-dark);
           --md-sys-color-on-surface: var(--md-sys-color-on-surface-dark);
-          --md-sys-color-surface-variant: var(
-            --md-sys-color-surface-variant-dark
-          );
-          --md-sys-color-on-surface-variant: var(
-            --md-sys-color-on-surface-variant-dark
-          );
-          --md-sys-color-inverse-surface: var(
-            --md-sys-color-inverse-surface-dark
-          );
-          --md-sys-color-inverse-on-surface: var(
-            --md-sys-color-inverse-on-surface-dark
-          );
-          --md-sys-color-inverse-primary: var(
-            --md-sys-color-inverse-primary-dark
-          );
+          --md-sys-color-surface-variant: var(--md-sys-color-surface-variant-dark);
+          --md-sys-color-on-surface-variant: var(--md-sys-color-on-surface-variant-dark);
+          --md-sys-color-inverse-surface: var(--md-sys-color-inverse-surface-dark);
+          --md-sys-color-inverse-on-surface: var(--md-sys-color-inverse-on-surface-dark);
+          --md-sys-color-inverse-primary: var(--md-sys-color-inverse-primary-dark);
           --md-sys-color-shadow: var(--md-sys-color-shadow-dark);
           --md-sys-color-surface-tint: var(--md-sys-color-surface-tint-dark);
-          --md-sys-color-outline-variant: var(
-            --md-sys-color-outline-variant-dark
-          );
+          --md-sys-color-outline-variant: var(--md-sys-color-outline-variant-dark);
           --md-sys-color-scrim: var(--md-sys-color-scrim-dark);
         }
         :host {
@@ -241,8 +175,8 @@ export default customElements.define(
           bottom: 0;
           display: flex;
           flex-direction: row;
-          font-family: system-ui, 'Noto Sans', Roboto, Helvetica, Arial,
-            sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+          font-family: system-ui, 'Noto Sans', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji',
+            'Segoe UI Emoji', 'Segoe UI Symbol';
           overflow: hidden;
           font-family: americanTypewriter;
         }
@@ -303,6 +237,20 @@ export default customElements.define(
           transition: opacity ease-in 120ms;
         }
 
+        [slot='drawer-content'] {
+          padding: 20px;
+          box-sizing: border-box;
+        }
+
+        [slot='drawer-content'] custom-selector {
+          height: auto;
+        }
+
+        [slot='drawer-footer'] {
+          padding: 20px;
+          box-sizing: border-box;
+        }
+
         custom-drawer-item.custom-selected {
           background: var(--md-sys-color-secondary);
           color: var(--md-sys-color-on-secondary);
@@ -312,8 +260,7 @@ export default customElements.define(
           --custom-icon-color: var(--md-sys-color-on-secondary);
         }
 
-        ::slotted(:not(.custom-selected):not([non-interactive]):hover)
-          custom-icon {
+        ::slotted(:not(.custom-selected):not([non-interactive]):hover) custom-icon {
           --custom-icon-color: var(--md-sys-color-on-secondary);
         }
 
@@ -326,29 +273,35 @@ export default customElements.define(
           text-transform: capitalize;
           width: 100%;
         }
-      `,
-    ];
+
+        ${scrollbar}
+      `
+    ]
 
     render() {
       return html`
-        <link rel="preload" href="./assets/banner-dark.svg" as="image" />
+        <link
+          rel="preload"
+          href="./assets/banner-dark.svg"
+          as="image" />
         ${icons}
         <custom-theme load-symbols="false"></custom-theme>
         <span
           class="backdrop"
-          @click="${() => (this.#drawerLayout.drawerOpen = false)}"
-        ></span>
+          @click="${() => (this.#drawerLayout.drawerOpen = false)}"></span>
 
-        <custom-drawer-layout .drawerOpen=${this.menuShown}>
+        <custom-drawer-layout .drawer-open=${this.menuShown}>
           <flex-container slot="drawer-content">
-            <span>
-              <img alt="logo" loading="lazy" src="./assets/sciccors-dark.svg"
+            <span style="display:block;">
+              <img
+                alt="logo"
+                loading="lazy"
+                src="./assets/sciccors-dark.svg"
             /></span>
 
             <custom-selector
               attr-for-selected="data-route"
-              @selected=${({ detail }) => this.select(detail)}
-            >
+              @selected=${({ detail }) => this.select(detail)}>
               <custom-drawer-item data-route="home">
                 home
                 <flex-it></flex-it>
@@ -373,18 +326,15 @@ export default customElements.define(
                 <custom-icon icon="groups"></custom-icon>
               </custom-drawer-item>
             </custom-selector>
-
-            <flex-it></flex-it>
-            <darkmode-element slot="drawer-footer"></darkmode-element>
           </flex-container>
 
+          <darkmode-element slot="drawer-footer"></darkmode-element>
           <md-branded-fab
             branded-fab
             extended
             label="gratis advies"
             name="advies"
-            class="fab"
-          >
+            class="fab">
             <md-icon slot="icon">contact_support</md-icon>
           </md-branded-fab>
           <main slot="content">
@@ -396,8 +346,8 @@ export default customElements.define(
             </custom-pages>
           </main>
         </custom-drawer-layout>
-      `;
+      `
       // <img src="./assets/banner.jpg">
     }
   }
-);
+)

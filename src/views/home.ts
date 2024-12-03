@@ -1,6 +1,7 @@
-import { LitElement, html, css } from 'lit';
-import '@vandeurenglenn/flex-elements/it.js';
-import '@vandeurenglenn/flex-elements/wrap-between.js';
+import { LitElement, html, css } from 'lit'
+import '@vandeurenglenn/flex-elements/it.js'
+import '@vandeurenglenn/flex-elements/wrap-between.js'
+import { scrollbar } from '../mixins/styles.js'
 
 export default customElements.define(
   'home-view',
@@ -9,46 +10,40 @@ export default customElements.define(
       return {
         condensed: {
           type: Boolean,
-          reflect: true,
-        },
-      };
+          reflect: true
+        }
+      }
     }
 
     darkmode({ detail }) {
       if (detail === 'dark') {
-        this.renderRoot.querySelector(`img[alt="logo"]`).src =
-          './assets/sciccors-dark.svg';
-        this.renderRoot.querySelector(`img[alt="banner"]`).src =
-          './assets/banner-dark.svg';
+        this.renderRoot.querySelector(`img[alt="logo"]`).src = './assets/sciccors-dark.svg'
+        this.renderRoot.querySelector(`img[alt="banner"]`).src = './assets/banner-dark.svg'
       } else {
-        this.renderRoot.querySelector(`img[alt="logo"]`).src =
-          './assets/sciccors.svg';
-        this.renderRoot.querySelector(`img[alt="banner"]`).src =
-          './assets/banner.svg';
+        this.renderRoot.querySelector(`img[alt="logo"]`).src = './assets/sciccors.svg'
+        this.renderRoot.querySelector(`img[alt="banner"]`).src = './assets/banner.svg'
       }
     }
 
     constructor() {
-      super();
+      super()
 
-      this.onscroll = this.#onscroll.bind(this);
+      this.onscroll = this.#onscroll.bind(this)
     }
     async connectedCallback() {
-      super.connectedCallback();
-      await this.updateComplete;
-      document.addEventListener('theme-change', this.darkmode.bind(this));
+      super.connectedCallback()
+      await this.updateComplete
+      document.addEventListener('theme-change', this.darkmode.bind(this))
       this.darkmode({
-        detail: localStorage.getItem('selected-theme') || 'light',
-      });
+        detail: localStorage.getItem('selected-theme') || 'light'
+      })
     }
 
     #onscroll(event) {
-      event.preventDefault();
-      const { height } = this.renderRoot
-        .querySelector('header.big')
-        .getBoundingClientRect();
-      if (this.scrollTop > height - 54) this.condensed = true;
-      else this.condensed = false;
+      event.preventDefault()
+      const { height } = this.renderRoot.querySelector('header.big').getBoundingClientRect()
+      if (this.scrollTop > height - 54) this.condensed = true
+      else this.condensed = false
     }
 
     static styles = css`
@@ -207,7 +202,9 @@ export default customElements.define(
       flex-wrap-between {
         max-width: 960px;
       }
-    `;
+
+      ${scrollbar}
+    `
 
     render() {
       return html`
@@ -219,72 +216,74 @@ export default customElements.define(
         ? html`<link
             rel="preload"
             as="image"
-            href="./assets/banner-dark.svg"
-          />`
-        : html`<link rel="preload" as="image" href="./assets/banner.svg" />`
+            href="./assets/banner-dark.svg" />`
+        : html`<link
+            rel="preload"
+            as="image"
+            href="./assets/banner.svg" />`
     }
-      
-      
+
+
       <header class="big">
         <img alt="banner" src="./assets/banner.svg">
       </header>
 
       <header class="small">
-        
+
         <flex-it></flex-it>
         <img alt="logo" loading="lazy" src="./assets/sciccors.svg">
         <flex-it></flex-it>
         <!-- <md-filled-button label="SHOP"></md-filled-button>-->
-       
-        
- 
+
+
+
         </span>
       </header>
         <flex-wrap-between>
           <section class="examples">
           <img alt="example2" class="example2" loading="lazy" src="./assets/example2.webp">
-          <img alt="example1" class="example1" loading="lazy" src="./assets/example1.webp">  
+          <img alt="example1" class="example1" loading="lazy" src="./assets/example1.webp">
           </section>
 
           <section class="examples">
-          <img alt="example1" class="example1" loading="lazy" src="./assets/example1.webp">  
-          <img alt="example2" class="example2" loading="lazy" src="./assets/example2.webp">
-          </section>
-
-          <section class="examples">
-          <img alt="example2" class="example2" loading="lazy" src="./assets/example2.webp">
-          <img alt="example1" class="example1" loading="lazy" src="./assets/example1.webp">  
-          </section>
-  
-          <section class="examples">
-          <img alt="example1" class="example1" loading="lazy" src="./assets/example1.webp">  
+          <img alt="example1" class="example1" loading="lazy" src="./assets/example1.webp">
           <img alt="example2" class="example2" loading="lazy" src="./assets/example2.webp">
           </section>
 
           <section class="examples">
           <img alt="example2" class="example2" loading="lazy" src="./assets/example2.webp">
-          <img alt="example1" class="example1" loading="lazy" src="./assets/example1.webp">  
+          <img alt="example1" class="example1" loading="lazy" src="./assets/example1.webp">
           </section>
 
           <section class="examples">
-          <img alt="example1" class="example1" loading="lazy" src="./assets/example1.webp">  
+          <img alt="example1" class="example1" loading="lazy" src="./assets/example1.webp">
           <img alt="example2" class="example2" loading="lazy" src="./assets/example2.webp">
           </section>
-          
+
           <section class="examples">
           <img alt="example2" class="example2" loading="lazy" src="./assets/example2.webp">
-          <img alt="example1" class="example1" loading="lazy" src="./assets/example1.webp">  
+          <img alt="example1" class="example1" loading="lazy" src="./assets/example1.webp">
           </section>
-  
+
           <section class="examples">
-          <img alt="example1" class="example1" loading="lazy" src="./assets/example1.webp">  
+          <img alt="example1" class="example1" loading="lazy" src="./assets/example1.webp">
+          <img alt="example2" class="example2" loading="lazy" src="./assets/example2.webp">
+          </section>
+
+          <section class="examples">
+          <img alt="example2" class="example2" loading="lazy" src="./assets/example2.webp">
+          <img alt="example1" class="example1" loading="lazy" src="./assets/example1.webp">
+          </section>
+
+          <section class="examples">
+          <img alt="example1" class="example1" loading="lazy" src="./assets/example1.webp">
           <img alt="example2" class="example2" loading="lazy" src="./assets/example2.webp">
           </section>
         </flex-wrap-between>
-       
-       
-    `;
+
+
+    `
       // <img alt="banner" loading="lazy" src="./assets/banner.webp">
     }
   }
-);
+)
