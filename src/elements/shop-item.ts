@@ -1,14 +1,19 @@
-import { LitElement, html, css } from 'lit';
-import './shop-item-bar.js';
+import { LitElement, html, css } from 'lit'
+import './shop-item-bar.js'
 
 export class ShopItem extends LitElement {
   static get properties() {
     return {
+      sku: { type: String },
       image: { type: String },
       name: { type: String },
-      price: { type: String },
-    };
+      price: { type: String }
+    }
   }
+  get amount() {
+    return this.shadowRoot.querySelector('shop-item-bar').amount
+  }
+
   static styles = [
     css`
       :host {
@@ -39,8 +44,8 @@ export class ShopItem extends LitElement {
         padding: 0px 22px 0 12px;
         box-sizing: border-box;
       }
-    `,
-  ];
+    `
+  ]
 
   render() {
     return html`
@@ -52,7 +57,7 @@ export class ShopItem extends LitElement {
       </flex-row>
       <flex-it></flex-it>
       <shop-item-bar></shop-item-bar>
-    `;
+    `
   }
 }
-customElements.define('shop-item', ShopItem);
+customElements.define('shop-item', ShopItem)

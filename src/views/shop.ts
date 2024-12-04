@@ -8,6 +8,8 @@ import '@material/web/icon/icon.js'
 import '@vandeurenglenn/flex-elements/it.js'
 import '@vandeurenglenn/flex-elements/wrap-evenly.js'
 import { scrollbar } from '../mixins/styles.js'
+import { ShopItem } from '../elements/shop-item.js'
+import { ShopCart } from '../elements/shop/cart.js'
 
 export default customElements.define(
   'shop-view',
@@ -20,48 +22,76 @@ export default customElements.define(
       this.#darkmode({
         detail: localStorage.getItem('selected-theme') || 'light'
       })
+      this.shadowRoot.addEventListener('click', (event: Event) => {
+        const target = event.target as ShopItem
+        console.log()
+        const button = event.composedPath()[0] as HTMLElement
+        console.log(button.dataset?.dataAction)
+
+        if (target.tagName === 'SHOP-ITEM' && button.dataset?.action === 'add-to-cart') {
+          console.log('add to cart')
+
+          const cart = document.querySelector('app-shell').shadowRoot.querySelector('shop-cart') as ShopCart
+
+          cart.addItem({
+            sku: target.sku,
+            name: target.name,
+            price: target.price,
+            amount: target.amount
+          })
+        }
+      })
       this.items = [
         {
+          sku: '1',
           name: 'some shop item name',
           image: './assets/example2.webp',
           price: '100 eur'
         },
         {
+          sku: '2',
           name: 'some shop item name',
           image: './assets/example2.webp',
           price: '100 eur'
         },
         {
+          sku: '3',
           name: 'some shop item name',
           image: './assets/example2.webp',
           price: '100 eur'
         },
         {
+          sku: '4',
           name: 'some shop item name',
           image: './assets/example2.webp',
           price: '100 eur'
         },
         {
+          sku: '5',
           name: 'some shop item name',
           image: './assets/example2.webp',
           price: '100 eur'
         },
         {
+          sku: '6',
           name: 'some shop item name',
           image: './assets/example2.webp',
           price: '100 eur'
         },
         {
+          sku: '7',
           name: 'some shop item name',
           image: './assets/example2.webp',
           price: '100 eur'
         },
         {
+          sku: '8',
           name: 'some shop item name',
           image: './assets/example2.webp',
           price: '100 eur'
         },
         {
+          sku: '9',
           name: 'some shop item name',
           image: './assets/example2.webp',
           price: '100 eur'
@@ -234,35 +264,23 @@ export default customElements.define(
 
     render() {
       return html`
-
-
-
-      <header class="small">
-        <flex-it></flex-it>
-        <!-- <md-filled-button label="SHOP"></md-filled-button>-->
-        <md-icon-button>
-          <md-icon>shopping_cart</md-icon>
-        </md-icon-button>
-        </span>
-      </header>
+        <header class="small">
+          <search-input></search-input>
+        </header>
         <flex-wrap-evenly>
           ${map(
             this.items,
             (item) => html`
               <shop-item
+                .sku=${item.sku}
                 .image=${item.image}
                 .name=${item.name}
                 .price=${item.price}>
               </shop-item>
             `
           )}
-
-
         </flex-wrap-evenly>
-
-        <search-input></search-input>
-
-    `
+      `
       // <img alt="banner" loading="lazy" src="./assets/banner.webp">
     }
   }

@@ -1,13 +1,12 @@
-import { LitElement, html, css } from 'lit';
-import '@material/web/iconbutton/icon-button.js';
+import { LitElement, html, css } from 'lit'
+import '@material/web/iconbutton/icon-button.js'
 
 export class ShopItemBar extends LitElement {
-  #amount;
+  #amount
   static get properties() {
     return {
-      image: { type: String },
-      amount: { type: Number },
-    };
+      amount: { type: Number }
+    }
   }
 
   static styles = [
@@ -27,43 +26,39 @@ export class ShopItemBar extends LitElement {
       mwc-button {
         pointer-events: auto;
       }
-    `,
-  ];
+    `
+  ]
 
   get max() {
-    return this.getAttribute('max') || 50;
+    return this.getAttribute('max') || 50
   }
 
   set amount(value) {
-    if (value === 0) return;
-    if (value === this.max) return;
-    this.#amount = value;
-    this.requestUpdate();
+    if (value === 0) return
+    if (value === this.max) return
+    this.#amount = value
+    this.requestUpdate()
   }
 
   get amount() {
-    return this.#amount;
+    return this.#amount
   }
 
   constructor() {
-    super();
-    this.amount = 1;
+    super()
+    this.amount = 1
   }
 
   render() {
     return html`
-      <md-icon-button @click="${() => (this.amount += 1)}"
-        ><md-icon>add</md-icon></md-icon-button
-      >
-      <md-icon-button @click="${() => (this.amount -= 1)}"
-        ><md-icon>remove</md-icon></md-icon-button
-      >
+      <md-icon-button @click="${() => (this.amount += 1)}"><md-icon>add</md-icon></md-icon-button>
+      <md-icon-button @click="${() => (this.amount -= 1)}"><md-icon>remove</md-icon></md-icon-button>
       <flex-it></flex-it>
       <custom-button
+        data-action="add-to-cart"
         type="tonal"
-        .label="add ${this.amount} to cart"
-      ></custom-button>
-    `;
+        .label="add ${this.amount} to cart"></custom-button>
+    `
   }
 }
-customElements.define('shop-item-bar', ShopItemBar);
+customElements.define('shop-item-bar', ShopItemBar)

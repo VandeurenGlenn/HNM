@@ -6,7 +6,7 @@
     "moduleDetection": "auto",
     "esModuleInterop": true,
     "outDir": "www",
-    "declaration": true,
+    "declaration": false,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "types": ["html", "rollup-plugin-material-symbols"]

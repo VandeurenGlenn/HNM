@@ -3,12 +3,15 @@ import '@vandeurenglenn/lite-elements/drawer-layout.js'
 import '@vandeurenglenn/lite-elements/pages.js'
 import '@vandeurenglenn/lite-elements/theme.js'
 import '@vandeurenglenn/lite-elements/selector.js'
+import '@vandeurenglenn/flex-elements/row.js'
+import '@vandeurenglenn/flex-elements/it.js'
 
 import './elements/darkmode/element.js'
 import '@material/web/fab/branded-fab.js'
 import { query, LiteElement, property } from '@vandeurenglenn/lite'
 import { scrollbar } from './mixins/styles.js'
 import icons from './icons.js'
+import './elements/shop/cart.js'
 
 export default customElements.define(
   'app-shell',
@@ -126,10 +129,11 @@ export default customElements.define(
           --md-sys-color-inverse-surface: var(--md-sys-color-inverse-surface-light);
           --md-sys-color-inverse-on-surface: var(--md-sys-color-inverse-on-surface-light);
           --md-sys-color-inverse-primary: var(--md-sys-color-inverse-primary-light);
-          --md-sys-color-shadow: var(--md-sys-color-shadow-light);
           --md-sys-color-surface-tint: var(--md-sys-color-surface-tint-light);
           --md-sys-color-outline-variant: var(--md-sys-color-outline-variant-light);
           --md-sys-color-scrim: var(--md-sys-color-scrim-light);
+          --md-sys-color-surface-container-highest: var(--md-sys-color-surface-container-highest-light);
+          --md-sys-color-shadow: var(--md-sys-color-shadow-light);
         }
 
         :host([darkmode]) {
@@ -160,10 +164,11 @@ export default customElements.define(
           --md-sys-color-inverse-surface: var(--md-sys-color-inverse-surface-dark);
           --md-sys-color-inverse-on-surface: var(--md-sys-color-inverse-on-surface-dark);
           --md-sys-color-inverse-primary: var(--md-sys-color-inverse-primary-dark);
-          --md-sys-color-shadow: var(--md-sys-color-shadow-dark);
           --md-sys-color-surface-tint: var(--md-sys-color-surface-tint-dark);
           --md-sys-color-outline-variant: var(--md-sys-color-outline-variant-dark);
           --md-sys-color-scrim: var(--md-sys-color-scrim-dark);
+          --md-sys-color-surface-container-highest: var(--md-sys-color-surface-container-highest-dark);
+          --md-sys-color-shadow: #52596b;
         }
         :host {
           overflow-y: auto;
@@ -284,13 +289,22 @@ export default customElements.define(
           rel="preload"
           href="./assets/banner-dark.svg"
           as="image" />
+
         ${icons}
-        <custom-theme load-symbols="false"></custom-theme>
+
+        <custom-theme
+          load-symbols="false"
+          load-font="false"></custom-theme>
+
         <span
           class="backdrop"
           @click="${() => (this.#drawerLayout.drawerOpen = false)}"></span>
 
         <custom-drawer-layout .drawer-open=${this.menuShown}>
+          <span slot="top-app-bar-end">
+            <shop-cart></shop-cart>
+          </span>
+
           <flex-container slot="drawer-content">
             <span style="display:block;">
               <img

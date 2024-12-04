@@ -1,6 +1,6 @@
-import '@vandeurenglenn/lite-elements/icon.js';
-import '@vandeurenglenn/lite-elements/icon-set.js';
-import { html } from '@vandeurenglenn/lite';
+import '@vandeurenglenn/lite-elements/icon.js'
+import '@vandeurenglenn/lite-elements/icon-set.js'
+import { html } from '@vandeurenglenn/lite'
 export default html` <custom-icon-set>
   <template>
     <span name="add">@symbol-add</span>
@@ -23,5 +23,6 @@ export default html` <custom-icon-set>
     <span name="shopping_basket">@symbol-shopping_basket</span>
     <span name="linked_services">@symbol-linked_services</span>
     <span name="groups">@symbol-groups</span>
+    <span name="shopping_cart">@symbol-shopping_cart</span>
   </template>
-</custom-icon-set>`;
+</custom-icon-set>`
