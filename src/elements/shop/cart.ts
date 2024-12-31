@@ -42,7 +42,7 @@ export class ShopCart extends LiteElement {
         flex-direction: column;
         position: fixed;
         inset: 0;
-        background-color: var(--md-sys-color-surface-container-highest);
+        background-color: var(--md-sys-color-surface-container);
         z-index: 0;
         box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
         opacity: 0;

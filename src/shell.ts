@@ -335,7 +335,7 @@ export default customElements.define(
               </custom-drawer-item>
 
               <custom-drawer-item data-route="team">
-                team
+                who are we
                 <flex-it></flex-it>
                 <custom-icon icon="groups"></custom-icon>
               </custom-drawer-item>
@@ -356,7 +356,7 @@ export default customElements.define(
               <home-view data-route="home"></home-view>
               <shop-view data-route="shop"></shop-view>
               <services-view data-route="services"></services-view>
-              <team-view data-route="team"></team-view>
+              <team-view data-route="who are we"></team-view>
             </custom-pages>
           </main>
         </custom-drawer-layout>
