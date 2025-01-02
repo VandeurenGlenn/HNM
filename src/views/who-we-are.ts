@@ -11,6 +11,9 @@ export class WhoWeAreView extends LiteElement {
         flex-direction: column;
         align-items: center;
       }
+      flex-container {
+        overflow-y: auto;
+      }
     `
   ]
   render() {
