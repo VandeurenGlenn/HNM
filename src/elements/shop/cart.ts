@@ -37,6 +37,10 @@ export class ShopCart extends LiteElement {
         width: 48px;
         height: 48px;
       }
+
+      custom-button {
+        overflow: hidden;
+      }
       .cart {
         display: flex;
         flex-direction: column;
@@ -83,6 +87,10 @@ export class ShopCart extends LiteElement {
       .empty {
         text-align: center;
       }
+
+      [type='tertiary'] custom-icon {
+        --custom-icon-color: var(--md-sys-color-on-tertiary);
+      }
     `
   ]
   render() {
@@ -109,7 +117,7 @@ export class ShopCart extends LiteElement {
             <flex-container class="cart">
               <header>
                 <custom-icon-button
-                  style="width: fit-content; margin-left: auto;"
+                  style="margin-left: auto;"
                   icon="close"
                   @click=${() => (this.open = false)}></custom-icon-button>
               </header>
@@ -133,7 +141,11 @@ export class ShopCart extends LiteElement {
                       class="go-to-shop"
                       type="tertiary"
                       @click=${() => (location.hash = '#!/shop')}
-                      label="Go to shop"></custom-button>
+                      label="Go to shop">
+                      <custom-icon
+                        slot="icon"
+                        icon="shopping_basket"></custom-icon>
+                    </custom-button>
                   `}
             </flex-container>`
         : html`<custom-icon-button

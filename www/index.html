@@ -2,32 +2,57 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="X-UA-Compatible"
+      content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0" />
     <title>Hello New Me</title>
 
-    <meta name="keywords" content="hello, new, me, hair, systems" />
+    <meta
+      name="keywords"
+      content="hello, new, me, hair, systems" />
     <meta
       name="description"
       lang="en"
-      content="Hello New Me is your hairsystems specialist"
-    />
+      content="Hello New Me is your hairsystems specialist" />
     <meta
       name="description"
       lang="nl"
-      content="Hello New Me is uw hairsystems specialist"
-    />
+      content="Hello New Me is uw hairsystems specialist" />
 
-    <meta name="theme-color" content="#000" />
-    <link rel="icon" href="./favicon.ico" sizes="any" />
-    <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png" />
-    <link rel="manifest" href="./manifest.webmanifest" />
+    <meta
+      name="theme-color"
+      content="#000" />
+    <link
+      rel="icon"
+      href="./favicon.ico"
+      sizes="any" />
+    <link
+      rel="apple-touch-icon"
+      href="./assets/apple-touch-icon.png" />
+    <link
+      rel="manifest"
+      href="./manifest.webmanifest" />
     <script>
       const startServiceWorker = () => {
-        navigator.serviceWorker.register('./sw.js');
-      };
-      navigator.serviceWorker && startServiceWorker();
+        navigator.serviceWorker.register('./sw.js')
+      }
+      navigator.serviceWorker && startServiceWorker()
     </script>
+
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com" />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin="anonymous" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Codystar:wght@300;400&family=Ms+Madi&family=Nothing+You+Could+Do&family=Tiro+Bangla:ital@0;1&display=swap"
+      rel="stylesheet"
+      crossorigin="anonymous" />
   </head>
 
   <body>
@@ -49,34 +74,30 @@
       }
     </style>
     <script>
-      const theme = localStorage.getItem('selected-theme');
+      const theme = localStorage.getItem('selected-theme')
       globalThis.setTheme = async (theme) => {
-        const themeName = theme;
+        const themeName = theme
         // theme = (await import(`./themes/${theme}.js`)).default;
         // const body = document.querySelector('body');
         // for (const [key, value] of Object.entries(theme)) {
         //   body.style.setProperty(`--${key}`, value);
         // }
-        localStorage.setItem('selected-theme', themeName);
+        localStorage.setItem('selected-theme', themeName)
 
-        document.dispatchEvent(
-          new CustomEvent('theme-change', { detail: themeName })
-        );
-      };
-      const dark = window.matchMedia('(prefers-color-scheme: dark)');
+        document.dispatchEvent(new CustomEvent('theme-change', { detail: themeName }))
+      }
+      const dark = window.matchMedia('(prefers-color-scheme: dark)')
 
-      const isDark =
-        localStorage.getItem('selected-theme') === 'dark' || dark.matches;
+      const isDark = localStorage.getItem('selected-theme') === 'dark' || dark.matches
 
       const changeMode = ({ matches }) => {
-        const isDark =
-          localStorage.getItem('selected-theme') === 'dark' || matches;
-        if (isDark) setTheme('dark');
-        else setTheme('light');
-      };
-      dark.addListener(changeMode);
+        const isDark = localStorage.getItem('selected-theme') === 'dark' || matches
+        if (isDark) setTheme('dark')
+        else setTheme('light')
+      }
+      dark.addListener(changeMode)
 
-      setTheme(isDark ? 'dark' : 'light');
+      setTheme(isDark ? 'dark' : 'light')
     </script>
     <!-- <script
       async
@@ -100,7 +121,10 @@
         _waEmbed(wa_btnSetting);
       };
     </script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image-more/3.5.0/dom-to-image-more.min.js"></script>
     <app-shell></app-shell>
-    <script src="./shell.js" type="module"></script>
+    <script
+      src="./shell.js"
+      type="module"></script>
   </body>
 </html>

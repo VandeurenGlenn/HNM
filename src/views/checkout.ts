@@ -1,4 +1,7 @@
 import { LiteElement, html, css, customElement } from '@vandeurenglenn/lite'
+import '@material/web/textfield/outlined-text-field.js'
+import '@material/web/select/outlined-select.js'
+import '@material/web/select/select-option.js'
 import '@vandeurenglenn/flex-elements/container.js'
 
 @customElement('checkout-view')
@@ -7,6 +10,11 @@ export class CheckoutView extends LiteElement {
     css`
       :host {
         display: block;
+      }
+
+      md-outlined-text-field {
+        width: 100%;
+        margin-bottom: 12px;
       }
     `
   ]

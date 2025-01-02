@@ -5,6 +5,7 @@ import '@vandeurenglenn/lite-elements/theme.js'
 import '@vandeurenglenn/lite-elements/selector.js'
 import '@vandeurenglenn/flex-elements/row.js'
 import '@vandeurenglenn/flex-elements/it.js'
+import '@vandeurenglenn/lite-elements/banner.js'
 
 import './elements/darkmode/element.js'
 import '@material/web/fab/branded-fab.js'
@@ -25,13 +26,15 @@ export default customElements.define(
     @query('custom-selector')
     accessor #selector
 
-    @property({ reflect: true }) accessor darkmode
+    @property({ reflect: true, type: Boolean, provides: 'darkMode', attribute: 'dark-mode' }) accessor darkMode
 
-    @property({ reflect: true, attribute: 'menu-shown', Boolean: true })
+    @property({ reflect: true, attribute: 'menu-shown', type: Boolean })
     accessor menuShown
 
-    @property({ reflect: true, attribute: 'is-mobile', Boolean: true })
+    @property({ reflect: true, attribute: 'is-mobile', type: Boolean })
     accessor isMobile
+
+    @property({ type: Boolean }) accessor bannerShown = true
 
     constructor() {
       super()
@@ -55,17 +58,20 @@ export default customElements.define(
       onMedia(media)
 
       document.addEventListener('drawer-menu-click', () => (this.menuShown = !this.menuShown))
-      document.addEventListener('theme-change', this.#darkmode.bind(this))
+      document.addEventListener('theme-change', this.#darkmode)
       this.#hashchange()
     }
 
-    #darkmode({ detail }) {
+    #darkmode = ({ detail }) => {
       if (detail === 'dark') {
         this.shadowRoot.querySelector(`img[alt="logo"]`).src = './assets/sciccors-dark.svg'
+        this.darkMode = true
       } else {
+        this.darkMode = false
         this.shadowRoot.querySelector(`img[alt="logo"]`).src = './assets/sciccors.svg'
       }
-      this.darkmode = detail === 'dark' ? true : false
+      console.log('darkmode', detail)
+      console.log(this.darkMode)
     }
     async #hashchange() {
       if (this.menuShown && this.isMobile) this.menuShown = false
@@ -101,7 +107,7 @@ export default customElements.define(
           text-decoration: none;
         }
 
-        :host(:not([darkmode])) {
+        :host(:not([dark-mode])) {
           --md-sys-color-primary: var(--md-sys-color-primary-light);
           --md-sys-color-on-primary: var(--md-sys-color-on-primary-light);
           --md-sys-color-primary-container: var(--md-sys-color-primary-container-light);
@@ -136,7 +142,7 @@ export default customElements.define(
           --md-sys-color-shadow: var(--md-sys-color-shadow-light);
         }
 
-        :host([darkmode]) {
+        :host([dark-mode]) {
           --md-sys-color-primary: var(--md-sys-color-primary-dark);
           --md-sys-color-on-primary: var(--md-sys-color-on-primary-dark);
           --md-sys-color-primary-container: var(--md-sys-color-primary-container-dark);
@@ -279,6 +285,23 @@ export default customElements.define(
           width: 100%;
         }
 
+        custom-banner {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          z-index: 10000;
+          background: var(--md-sys-color-error);
+          color: var(--md-sys-color-on-error);
+          padding: 12px;
+          box-sizing: border-box;
+          text-align: center;
+          font-size: 16px;
+          height: fit-content;
+        }
+        custom-banner:not([shown]) {
+          display: none;
+        }
         ${scrollbar}
       `
     ]
@@ -299,6 +322,16 @@ export default customElements.define(
         <span
           class="backdrop"
           @click="${() => (this.#drawerLayout.drawerOpen = false)}"></span>
+
+        <custom-banner ?shown=${this.bannerShown === true}
+          >We are still under construction, feel free to look around but no orders will be accepted yet. Thank you for
+          your understanding, we will let you know when we are ready!
+
+          <custom-icon-button
+            icon="close"
+            slot="actions"
+            @click=${() => (this.bannerShown = false)}></custom-icon-button>
+        </custom-banner>
 
         <custom-drawer-layout .drawer-open=${this.menuShown}>
           <span slot="top-app-bar-end">
@@ -328,14 +361,14 @@ export default customElements.define(
                 <custom-icon icon="shopping_basket"></custom-icon>
               </custom-drawer-item>
 
-              <custom-drawer-item data-route="services">
-                services
+              <custom-drawer-item data-route="giftcards">
+                giftcards
                 <flex-it></flex-it>
-                <custom-icon icon="linked_services"></custom-icon>
+                <custom-icon icon="redeem"></custom-icon>
               </custom-drawer-item>
 
-              <custom-drawer-item data-route="team">
-                who are we
+              <custom-drawer-item data-route="who-we-are">
+                wie zijn we
                 <flex-it></flex-it>
                 <custom-icon icon="groups"></custom-icon>
               </custom-drawer-item>
@@ -343,6 +376,7 @@ export default customElements.define(
           </flex-container>
 
           <darkmode-element slot="drawer-footer"></darkmode-element>
+
           <md-branded-fab
             branded-fab
             extended
@@ -355,8 +389,8 @@ export default customElements.define(
             <custom-pages attr-for-selected="data-route">
               <home-view data-route="home"></home-view>
               <shop-view data-route="shop"></shop-view>
-              <services-view data-route="services"></services-view>
-              <team-view data-route="who are we"></team-view>
+              <giftcards-view data-route="giftcards"></giftcards-view>
+              <who-we-are-view data-route="who-we-are"></who-we-are-view>
             </custom-pages>
           </main>
         </custom-drawer-layout>

@@ -1,7 +1,10 @@
 export default class Router {
   static routes = new Map([
     ['home', 'home'],
-    ['shop', 'shop']
+    ['shop', 'shop'],
+    ['giftcards', 'giftcards'],
+    ['checkout', 'checkout'],
+    ['who-we-are', 'who-we-are']
   ])
 
   constructor(host) {

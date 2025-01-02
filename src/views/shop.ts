@@ -24,7 +24,6 @@ export default customElements.define(
       })
       this.shadowRoot.addEventListener('click', (event: Event) => {
         const target = event.target as ShopItem
-        console.log()
         const button = event.composedPath()[0] as HTMLElement
         console.log(button.dataset?.dataAction)
 
@@ -41,62 +40,13 @@ export default customElements.define(
           })
         }
       })
-      this.items = [
-        {
-          sku: '1',
-          name: 'some shop item name',
-          image: './assets/example2.webp',
-          price: '100 eur'
-        },
-        {
-          sku: '2',
-          name: 'some shop item name',
-          image: './assets/example2.webp',
-          price: '100 eur'
-        },
-        {
-          sku: '3',
-          name: 'some shop item name',
-          image: './assets/example2.webp',
-          price: '100 eur'
-        },
-        {
-          sku: '4',
-          name: 'some shop item name',
-          image: './assets/example2.webp',
-          price: '100 eur'
-        },
-        {
-          sku: '5',
-          name: 'some shop item name',
-          image: './assets/example2.webp',
-          price: '100 eur'
-        },
-        {
-          sku: '6',
-          name: 'some shop item name',
-          image: './assets/example2.webp',
-          price: '100 eur'
-        },
-        {
-          sku: '7',
-          name: 'some shop item name',
-          image: './assets/example2.webp',
-          price: '100 eur'
-        },
-        {
-          sku: '8',
-          name: 'some shop item name',
-          image: './assets/example2.webp',
-          price: '100 eur'
-        },
-        {
-          sku: '9',
-          name: 'some shop item name',
-          image: './assets/example2.webp',
-          price: '100 eur'
-        }
-      ]
+      const response = await fetch('http://localhost:3005/api/products')
+      console.log({ response })
+
+      this.items = await response.json()
+
+      // console.log(this.items)
+      // this.items = await response.json()
     }
 
     #darkmode({ detail }) {
@@ -268,17 +218,20 @@ export default customElements.define(
           <search-input></search-input>
         </header>
         <flex-wrap-evenly>
-          ${map(
-            this.items,
-            (item) => html`
-              <shop-item
-                .sku=${item.sku}
-                .image=${item.image}
-                .name=${item.name}
-                .price=${item.price}>
-              </shop-item>
-            `
-          )}
+          ${this.items
+            ? map(
+                Object.entries(this.items),
+                ([key, item]) => html`
+                  <shop-item
+                    .key=${key}
+                    .sku=${item.sku}
+                    .image=${item.image}
+                    .name=${item.name}
+                    .price=${item.price}>
+                  </shop-item>
+                `
+              )
+            : 'Loading...'}
         </flex-wrap-evenly>
       `
       // <img alt="banner" loading="lazy" src="./assets/banner.webp">

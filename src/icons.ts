@@ -24,5 +24,7 @@ export default html` <custom-icon-set>
     <span name="linked_services">@symbol-linked_services</span>
     <span name="groups">@symbol-groups</span>
     <span name="shopping_cart">@symbol-shopping_cart</span>
+    <span name="shopping_bag">@symbol-shopping_bag</span>
+    <span name="redeem">@symbol-redeem</span>
   </template>
 </custom-icon-set>`

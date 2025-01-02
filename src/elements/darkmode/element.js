@@ -26,6 +26,9 @@ export default customElements.define(
 
     #click() {
       globalThis.setTheme(this.#toggleElement.selected ? 'dark' : 'light')
+      document.dispatchEvent(
+        new CustomEvent('theme-change', { detail: this.#toggleElement.selected ? 'dark' : 'light' })
+      )
     }
 
     static styles = css`

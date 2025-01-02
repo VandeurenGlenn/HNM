@@ -92,11 +92,6 @@ export default customElements.define(
         align-items: center;
       }
 
-      h1 {
-        margin: 0;
-        font-size: 24px;
-      }
-
       .examples {
         display: flex;
         flex-direction: column;
@@ -203,13 +198,30 @@ export default customElements.define(
         max-width: 960px;
       }
 
+      .summary {
+        padding: 12px;
+        max-width: 720px;
+      }
+
+      .home-image {
+        max-width: 100%;
+        max-height: 240px;
+      }
+
+      h1 {
+        text-align: center;
+        margin: 0;
+      }
+
+      p {
+        text-align: center;
+      }
+
       ${scrollbar}
     `
 
     render() {
       return html`
-    <link rel="preload" as="image" href="./assets/example2.webp">
-    <link rel="preload" as="image" href="./assets/example1.webp">
 
     ${
       localStorage.getItem('theme') === 'dark'
@@ -228,6 +240,7 @@ export default customElements.define(
         <img alt="banner" src="./assets/banner.svg">
       </header>
 
+
       <header class="small">
 
         <flex-it></flex-it>
@@ -239,47 +252,19 @@ export default customElements.define(
 
         </span>
       </header>
-        <flex-wrap-between>
-          <section class="examples">
-          <img alt="example2" class="example2" loading="lazy" src="./assets/example2.webp">
-          <img alt="example1" class="example1" loading="lazy" src="./assets/example1.webp">
-          </section>
 
-          <section class="examples">
-          <img alt="example1" class="example1" loading="lazy" src="./assets/example1.webp">
-          <img alt="example2" class="example2" loading="lazy" src="./assets/example2.webp">
-          </section>
+      <h1>Get used to, looking good.</h1>
+      <flex-row class="summary">
+      <!--<img alt="homeimage" class="home-image" loading="lazy" src="./assets/home.webp">-->
+      <flex-column>
+          <p> HNM is een jonge, sterk groeiende onderneming die gespecialiseerd is in het maken van haarsystemen op maat.</p>
+          <p> Onze haarsystemen zijn voorzien van een vocht en luchtdoorlatend gaas waardoor onaangename geurtjes wegblijven en ervoor zorgt dat de hoofdhuid kan blijven ademen.</p>
+          <p> Hebt u last van haaruitval, stress of hebt u te maken met traumatische verwondingen, wij zijn er voor u!</p>
+          <p> Onze haarsystemen zijn van hoge kwaliteit en zijn gemaakt van 100% echt haar.</p>
 
-          <section class="examples">
-          <img alt="example2" class="example2" loading="lazy" src="./assets/example2.webp">
-          <img alt="example1" class="example1" loading="lazy" src="./assets/example1.webp">
-          </section>
+      </flex-column>
+      </flex-row>
 
-          <section class="examples">
-          <img alt="example1" class="example1" loading="lazy" src="./assets/example1.webp">
-          <img alt="example2" class="example2" loading="lazy" src="./assets/example2.webp">
-          </section>
-
-          <section class="examples">
-          <img alt="example2" class="example2" loading="lazy" src="./assets/example2.webp">
-          <img alt="example1" class="example1" loading="lazy" src="./assets/example1.webp">
-          </section>
-
-          <section class="examples">
-          <img alt="example1" class="example1" loading="lazy" src="./assets/example1.webp">
-          <img alt="example2" class="example2" loading="lazy" src="./assets/example2.webp">
-          </section>
-
-          <section class="examples">
-          <img alt="example2" class="example2" loading="lazy" src="./assets/example2.webp">
-          <img alt="example1" class="example1" loading="lazy" src="./assets/example1.webp">
-          </section>
-
-          <section class="examples">
-          <img alt="example1" class="example1" loading="lazy" src="./assets/example1.webp">
-          <img alt="example2" class="example2" loading="lazy" src="./assets/example2.webp">
-          </section>
-        </flex-wrap-between>
 
 
     `
