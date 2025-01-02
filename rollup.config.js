@@ -5,6 +5,7 @@ import { cpSync } from 'fs'
 import { readdir, unlink } from 'fs/promises'
 import { join } from 'path'
 import materialSymbols from 'rollup-plugin-material-symbols'
+import { generateSW } from 'rollup-plugin-workbox'
 const cleanWWW = async () => {
   return {
     name: 'clean-www', // this name will show up in warnings and errors
@@ -40,7 +41,15 @@ export default [
         placeholderPrefix: 'symbol'
       }),
       terser({ keep_classnames: true }),
-      typescript()
+      typescript(),
+      generateSW({
+        swDest: 'www/sw.js',
+        globDirectory: 'www',
+        globPatterns: ['**/*.{html,js,css}'],
+        cleanupOutdatedCaches: true,
+        clientsClaim: true,
+        skipWaiting: true
+      })
     ]
   },
   {

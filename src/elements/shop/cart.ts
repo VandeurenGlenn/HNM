@@ -129,6 +129,7 @@ export class ShopCart extends LiteElement {
                       <shop-cart-item
                         .sku=${sku}
                         .name=${item.name}
+                        .from=${item.from}
                         .image=${item.image}
                         .amount=${item.amount}
                         .price=${item.price}>

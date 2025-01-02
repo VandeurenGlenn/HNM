@@ -5,8 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "precache": "workbox generateSW workbox-config.cjs",
-    "deploy": "npm run build && npm run precache",
+    "deploy": "npm run build",
     "serve": "node server.js",
     "watch": "rollup -c -w",
     "build": "rollup -c",
@@ -43,8 +42,7 @@
     "custom-svg-icon": "^1.0.1",
     "custom-svg-iconset": "^1.0.1",
     "dom-to-image-more": "^3.5.0",
-    "lit": "^3.2.1",
-    "workbox-precaching": "^7.3.0"
+    "lit": "^3.2.1"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^16.0.0",
@@ -58,7 +56,7 @@
     "rimraf": "^6.0.1",
     "rollup": "^4.29.1",
     "rollup-plugin-material-symbols": "^2.1.6",
-    "tslib": "^2.8.1",
-    "workbox-cli": "^7.3.0"
+    "rollup-plugin-workbox": "^8.1.1",
+    "tslib": "^2.8.1"
   }
 }

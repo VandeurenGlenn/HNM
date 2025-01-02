@@ -6,6 +6,7 @@ class ShopCartItem extends LiteElement {
   @property({ type: Number }) accessor price = 0
   @property({ type: Number }) accessor amount = 1
   @property({ type: String }) accessor sku = ''
+  @property({ type: String }) accessor from = ''
 
   static styles = [
     css`
@@ -22,6 +23,7 @@ class ShopCartItem extends LiteElement {
     return html`
       <div>
         <h2>${this.name}</h2>
+        ${this.from ? html`<p>From: ${this.from}</p>` : ''}
         <p>Price: ${this.price}</p>
         <p>amount: ${this.amount}</p>
       </div>
