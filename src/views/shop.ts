@@ -214,9 +214,6 @@ export default customElements.define(
 
     render() {
       return html`
-        <header class="small">
-          <search-input></search-input>
-        </header>
         <flex-wrap-evenly>
           ${this.items
             ? map(
