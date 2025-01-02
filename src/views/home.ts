@@ -259,7 +259,9 @@ export default customElements.define(
       <flex-column>
           <p> HNM is een jonge, sterk groeiende onderneming die gespecialiseerd is in het maken van haarsystemen op maat.</p>
           <p> Onze haarsystemen zijn voorzien van een vocht en luchtdoorlatend gaas waardoor onaangename geurtjes wegblijven en ervoor zorgt dat de hoofdhuid kan blijven ademen.</p>
-          <p> Hebt u last van haaruitval, stress of hebt u te maken met traumatische verwondingen, wij zijn er voor u!</p>
+          <p>Verder zijn ze niet enkel geschikt voor mannen die kampen met vervroegt haaruitval, maar ook voor vrouwen en kinderen waarbij haaruitval genetische is bepaald.
+Zelfs zijn ze ontworpen en geschikt na traumatische verwondingen zoals brandwonden op de hoofdhuid die levenslange haargroei hebben te niet gedaan.
+Ook stress is een gekende factor!</p>
           <p> Onze haarsystemen zijn van hoge kwaliteit en zijn gemaakt van 100% echt haar.</p>
 
       </flex-column>
