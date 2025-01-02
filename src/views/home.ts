@@ -253,7 +253,7 @@ export default customElements.define(
         </span>
       </header>
 
-      <h1>Get used to, looking good.</h1>
+      <h1>Get used to, feeling good.</h1>
       <flex-row class="summary">
       <!--<img alt="homeimage" class="home-image" loading="lazy" src="./assets/home.webp">-->
       <flex-column>
