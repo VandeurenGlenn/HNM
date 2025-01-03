@@ -14,6 +14,7 @@ export class FooterElement extends LiteElement {
         text-align: center;
         width: 100%;
         box-sizing: border-box;
+        margin-top: 48px;
       }
       .footer-content {
         max-width: 1200px;
