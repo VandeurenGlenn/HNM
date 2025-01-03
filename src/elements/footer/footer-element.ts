@@ -9,9 +9,11 @@ export class FooterElement extends LiteElement {
         display: flex;
         justify-content: center;
         padding: 40px 20px;
-        background-color: var(--color-primary);
-        color: var(--color-on-primary);
+        background-color: var(--md-sys-color-tertiary);
+        color: var(--md-sys-color-on-tertiary);
         text-align: center;
+        width: 100%;
+        box-sizing: border-box;
       }
       .footer-content {
         max-width: 1200px;
@@ -29,8 +31,7 @@ export class FooterElement extends LiteElement {
       .info {
         margin: 20px 0;
       }
-      .links a,
-      .social a {
+      a {
         color: var(--color-on-primary);
         text-decoration: none;
         margin: 0 10px;
@@ -57,27 +58,19 @@ export class FooterElement extends LiteElement {
     return html`
       <div class="footer-content">
         <img
-          src=${this.darkMode ? './assets/banner-dark.svg' : './assets/banner.svg'}
+          src="./assets/banner-tertiary.svg"
           alt="HNM Logo"
           class="logo" />
-        <div class="links">
-          <a href="/about">About Us</a> | <a href="/contact">Contact</a> |
-          <a href="/privacy">Privacy Policy</a>
-        </div>
+
+        <h1>Hello New Me</h1>
         <div class="social">
           <p>Follow us on:</p>
-          <a
+          <!--<a
             href="https://facebook.com"
             target="_blank"
             >Facebook</a
           >
-          |
-          <a
-            href="https://twitter.com"
-            target="_blank"
-            >Twitter</a
-          >
-          |
+          |-->
           <a
             href="https://instagram.com"
             target="_blank"
@@ -85,11 +78,9 @@ export class FooterElement extends LiteElement {
           >
         </div>
         <div class="info">
-          <p>Ondernemingsnummer: BE 0802.208.410</p>
-          <p>Volledige naam: Hello New Me</p>
-          <p>Adres: Beringenbaan 43, 3290 Diest</p>
-          <p>Oprichting: 30-05-2023</p>
-          <p>Hoofdactiviteit: Haarverzorging</p>
+          <p>BE 0802.208.410</p>
+          <p>Beringenbaan 43, 3290 Diest</p>
+          <a href="email:info@hellonewme.be">info@hellonewme.be</a>
         </div>
         <div class="footer-bottom">
           <p>&copy; 2024 HNM. All rights reserved.</p>

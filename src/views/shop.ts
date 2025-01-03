@@ -10,6 +10,7 @@ import '@vandeurenglenn/flex-elements/wrap-evenly.js'
 import { scrollbar } from '../mixins/styles.js'
 import { ShopItem } from '../elements/shop-item.js'
 import { ShopCart } from '../elements/shop/cart.js'
+import './../elements/footer/footer-element.js'
 
 export default customElements.define(
   'shop-view',
@@ -68,6 +69,8 @@ export default customElements.define(
           width: 100%;
           align-items: center;
           padding: 12px;
+
+          overflow-y: auto;
           box-sizing: border-box;
         }
 
@@ -198,7 +201,6 @@ export default customElements.define(
           gap: 12px;
           max-width: 960px;
           width: 100%;
-          overflow-y: auto;
         }
 
         shop-item {
@@ -230,8 +232,8 @@ export default customElements.define(
               )
             : 'Loading...'}
         </flex-wrap-evenly>
+        <footer-element></footer-element>
       `
-      // <img alt="banner" loading="lazy" src="./assets/banner.webp">
     }
   }
 )

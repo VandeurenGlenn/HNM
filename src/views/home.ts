@@ -3,6 +3,7 @@ import '@vandeurenglenn/flex-elements/it.js'
 import '@vandeurenglenn/flex-elements/wrap-between.js'
 import { scrollbar } from '../mixins/styles.js'
 import './../elements/zooming-image.js'
+import './../elements/footer/footer-element.js'
 
 export default customElements.define(
   'home-view',
@@ -308,10 +309,9 @@ export default customElements.define(
         </flex-column>
       </flex-row>
 
-
+<footer-element></footer-element>
 
     `
-      // <img alt="banner" loading="lazy" src="./assets/banner.webp">
     }
   }
 )

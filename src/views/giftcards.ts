@@ -5,6 +5,7 @@ import './../elements/giftcard/giftcard-back.js'
 import '@vandeurenglenn/flex-elements/container.js'
 import '@material/web/textfield/outlined-text-field.js'
 import { ShopCart } from '../elements/shop/cart.js'
+import './../elements/footer/footer-element.js'
 @customElement('giftcards-view')
 export class GiftcardsView extends LiteElement {
   @property({ type: Boolean, consumes: 'darkMode' }) accessor darkMode
@@ -156,6 +157,7 @@ export class GiftcardsView extends LiteElement {
           <p>De giftcard kun je aankopen in onze winkel of in onze <a href="/#!/shop">webshop</a>.</p>
         </section>
       </flex-container>
+      <footer-element></footer-element>
     `
   }
 }
