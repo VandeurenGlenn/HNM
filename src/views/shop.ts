@@ -41,7 +41,7 @@ export default customElements.define(
           })
         }
       })
-      const response = await fetch('/api/products')
+      const response = await fetch('https://admin.hellonewme.be/api/products')
       console.log({ response })
 
       this.items = await response.json()
