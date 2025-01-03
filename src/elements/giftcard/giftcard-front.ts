@@ -11,9 +11,6 @@ export class GiftcardFront extends LiteElement {
       :host {
         display: flex;
         flex-direction: column;
-        width: 816px;
-        height: 382px;
-
         padding: 24px;
         box-sizing: border-box;
         font-family: 'Roboto', sans-serif;
@@ -22,6 +19,8 @@ export class GiftcardFront extends LiteElement {
         color: var(--md-sys-color-on-surface);
         align-items: center;
         justify-content: center;
+        width: 409px;
+        min-height: 191px;
 
         background-color: var(--md-sys-color-surface);
       }
@@ -37,8 +36,8 @@ export class GiftcardFront extends LiteElement {
         position: absolute;
         top: 24px;
         right: 24px;
-        width: 100px;
-        height: 100px;
+        width: 48px;
+        height: 48px;
       }
 
       .codystar {
@@ -46,18 +45,31 @@ export class GiftcardFront extends LiteElement {
         font-weight: 600;
         font-style: normal;
         letter-spacing: 6px;
-      }
-
-      .codystar-regular {
-        font-family: 'Codystar', serif;
-        font-weight: 400;
-        font-style: normal;
+        font-size: 18px;
       }
       .codystar-2 {
-        font-size: 30px;
+        font-size: 18px;
 
         text-underline-offset: 16px;
         letter-spacing: 6px;
+      }
+      @media (min-width: 1200px) {
+        :host {
+          width: 816px;
+          min-height: 382px;
+        }
+        .codystar {
+          font-size: 30px;
+        }
+
+        .codystar-2 {
+          font-size: 30px;
+        }
+
+        .qr {
+          width: 100px;
+          height: 100px;
+        }
       }
     `
   ]
