@@ -293,7 +293,7 @@ export default customElements.define(
       </header>
 
       <flex-row class="summary">
-        <zooming-image src="./assets/products.jpeg"></zooming-image>
+        <!-- <zooming-image src="./assets/products.jpeg"></zooming-image> -->
         <!--<img alt="homeimage" class="home-image" loading="lazy" src="./assets/home.webp">-->
         <flex-column>
 
