@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "deploy": "npm run build",
+    "deploy": "export NODE_ENV=production && rollup -c",
     "serve": "node server.js",
     "watch": "rollup -c -w",
     "build": "rollup -c",

@@ -6,6 +6,7 @@ import '@vandeurenglenn/lite-elements/selector.js'
 import '@vandeurenglenn/flex-elements/row.js'
 import '@vandeurenglenn/flex-elements/it.js'
 import '@vandeurenglenn/lite-elements/banner.js'
+import '@vandeurenglenn/lite-elements/notification.js'
 
 import './elements/darkmode/element.js'
 import '@material/web/fab/branded-fab.js'
@@ -13,6 +14,7 @@ import { query, LiteElement, property } from '@vandeurenglenn/lite'
 import { scrollbar } from './mixins/styles.js'
 import icons from './icons.js'
 import './elements/shop/cart.js'
+import { CustomNotification } from '@vandeurenglenn/lite-elements/notification.js'
 
 export default customElements.define(
   'app-shell',
@@ -60,6 +62,18 @@ export default customElements.define(
       document.addEventListener('drawer-menu-click', () => (this.menuShown = !this.menuShown))
       document.addEventListener('theme-change', this.#darkmode)
       this.#hashchange()
+    }
+
+    notifyServiceWorkerUpdate() {
+      // if ('serviceWorker' in navigator) {
+      //   navigator.serviceWorker.controller?.postMessage({ type: 'SKIP_WAITING' })
+      // }
+      const notification = document.createElement('custom-notification') as CustomNotification
+      notification.title = 'New version available'
+      notification.message = 'click to refresh'
+      notification.onclick = () => location.reload()
+      document.body.appendChild(notification)
+      console.log('New version available, click to refresh')
     }
 
     #darkmode = ({ detail }) => {
@@ -190,6 +204,13 @@ export default customElements.define(
             'Segoe UI Emoji', 'Segoe UI Symbol';
           overflow: hidden;
           font-family: americanTypewriter;
+        }
+
+        custom-notification {
+          position: absolute;
+          bottom: 12px;
+          left: 12px;
+          z-index: 10001;
         }
 
         main {

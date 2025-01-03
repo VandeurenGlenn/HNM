@@ -2,6 +2,7 @@ import { LitElement, html, css } from 'lit'
 import '@vandeurenglenn/flex-elements/it.js'
 import '@vandeurenglenn/flex-elements/wrap-between.js'
 import { scrollbar } from '../mixins/styles.js'
+import './../elements/zooming-image.js'
 
 export default customElements.define(
   'home-view',
@@ -198,9 +199,37 @@ export default customElements.define(
         max-width: 960px;
       }
 
+      p {
+        text-align: center;
+      }
+
       .summary {
+        display: flex;
+        flex-direction: column;
         padding: 12px;
-        max-width: 720px;
+        box-sizing: border-box;
+        max-width: 1200px;
+      }
+
+      .summary h2 {
+        margin-top: 0;
+      }
+
+      .summary p {
+        text-align: left;
+      }
+
+      .summary[right] {
+        text-align: right;
+        flex-direction: row-reverse;
+      }
+
+      .summary flex-column {
+        box-sizing: border-box;
+      }
+
+      .summary[right] {
+        justify-content: flex-end;
       }
 
       .home-image {
@@ -213,8 +242,13 @@ export default customElements.define(
         margin: 0;
       }
 
-      p {
-        text-align: center;
+      @media (min-width: 1200px) {
+        .summary {
+          flex-direction: row;
+        }
+        .summary flex-column {
+          margin-left: 48px;
+        }
       }
 
       ${scrollbar}
@@ -253,18 +287,20 @@ export default customElements.define(
         </span>
       </header>
 
-      <h1>Get used to, feeling good.</h1>
       <flex-row class="summary">
-      <!--<img alt="homeimage" class="home-image" loading="lazy" src="./assets/home.webp">-->
-      <flex-column>
-          <p> HNM is een jonge, sterk groeiende onderneming die gespecialiseerd is in het maken van haarsystemen op maat.</p>
-          <p> Onze haarsystemen zijn voorzien van een vocht en luchtdoorlatend gaas waardoor onaangename geurtjes wegblijven en ervoor zorgt dat de hoofdhuid kan blijven ademen.</p>
-          <p>Verder zijn ze niet enkel geschikt voor mannen die kampen met vervroegt haaruitval, maar ook voor vrouwen en kinderen waarbij haaruitval genetische is bepaald.
-Zelfs zijn ze ontworpen en geschikt na traumatische verwondingen zoals brandwonden op de hoofdhuid die levenslange haargroei hebben te niet gedaan.
-Ook stress is een gekende factor!</p>
-          <p> Onze haarsystemen zijn van hoge kwaliteit en zijn gemaakt van 100% echt haar.</p>
+        <zooming-image src="./assets/products.jpeg"></zooming-image>
+        <!--<img alt="homeimage" class="home-image" loading="lazy" src="./assets/home.webp">-->
+        <flex-column>
 
-      </flex-column>
+      <h2>Get used to, feeling good.</h2>
+            <p> HNM is een jonge, sterk groeiende onderneming die gespecialiseerd is in het maken van haarsystemen op maat.</p>
+            <p> Onze haarsystemen zijn voorzien van een vocht en luchtdoorlatend gaas waardoor onaangename geurtjes wegblijven en ervoor zorgt dat de hoofdhuid kan blijven ademen.</p>
+            <p>Verder zijn ze niet enkel geschikt voor mannen die kampen met vervroegt haaruitval, maar ook voor vrouwen en kinderen waarbij haaruitval genetische is bepaald.
+  Zelfs zijn ze ontworpen en geschikt na traumatische verwondingen zoals brandwonden op de hoofdhuid die levenslange haargroei hebben te niet gedaan.
+  Ook stress is een gekende factor!</p>
+            <p> Onze haarsystemen zijn van hoge kwaliteit en zijn gemaakt van 100% echt haar.</p>
+
+        </flex-column>
       </flex-row>
 
 

@@ -28,6 +28,8 @@ export class GiftcardsView extends LiteElement {
       flex-container {
         align-items: center;
         max-width: 960px;
+        overflow-x: hidden;
+        overflow-y: auto;
       }
 
       section {
@@ -113,7 +115,7 @@ export class GiftcardsView extends LiteElement {
     return html`
       <small-header></small-header>
       <flex-container>
-        <h2>Opzoek naar een tof en nuttig cadeau?</h2>
+        <h2>Opzoek naar een tof cadeau?</h2>
 
         <giftcard-front
           .qr=${'./assets/https___hellonewme.be.png'}
