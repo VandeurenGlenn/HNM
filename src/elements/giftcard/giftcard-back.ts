@@ -29,7 +29,8 @@ export class GiftcardBack extends LiteElement {
         justify-content: center;
         background-color: var(--md-sys-color-surface);
         width: 409px;
-        height: 100%;
+
+        min-height: 191px;
         max-height: 191px;
       }
 

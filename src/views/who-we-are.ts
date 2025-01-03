@@ -1,6 +1,7 @@
 import { LiteElement, html, css, customElement, property } from '@vandeurenglenn/lite'
 import '@vandeurenglenn/flex-elements/container.js'
 import './../elements/header/small-header.js'
+import './../elements/footer/footer-element.js'
 
 @customElement('who-we-are-view')
 export class WhoWeAreView extends LiteElement {
@@ -69,6 +70,8 @@ export class WhoWeAreView extends LiteElement {
 
         <p>Heeft u interesse of wilt u graag een vrijblijvend gesprek? Contacteer ons vrijblijvend.</p>
       </flex-container>
+
+      <footer-element></footer-element>
     `
   }
 }
