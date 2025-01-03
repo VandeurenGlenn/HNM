@@ -11,7 +11,7 @@ export class GiftcardFront extends LiteElement {
       :host {
         display: flex;
         flex-direction: column;
-        padding: 24px;
+        padding: 12px;
         box-sizing: border-box;
         font-family: 'Roboto', sans-serif;
         font-size: 16px;
@@ -20,7 +20,8 @@ export class GiftcardFront extends LiteElement {
         align-items: center;
         justify-content: center;
         width: 409px;
-        min-height: 191px;
+        height: 100%;
+        max-height: 191px;
 
         background-color: var(--md-sys-color-surface);
       }
@@ -34,8 +35,8 @@ export class GiftcardFront extends LiteElement {
 
       .qr {
         position: absolute;
-        top: 24px;
-        right: 24px;
+        top: 12px;
+        right: 12px;
         width: 48px;
         height: 48px;
       }
@@ -69,6 +70,8 @@ export class GiftcardFront extends LiteElement {
         .qr {
           width: 100px;
           height: 100px;
+          top: 24px;
+          right: 24px;
         }
       }
     `

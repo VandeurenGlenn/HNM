@@ -16,10 +16,8 @@ export class GiftcardBack extends LiteElement {
       :host {
         display: flex;
         flex-direction: column;
-        width: 816px;
-        height: 382px;
 
-        padding: 24px;
+        padding: 12px;
         box-sizing: border-box;
         font-family: 'Roboto', sans-serif;
         font-size: 16px;
@@ -30,6 +28,13 @@ export class GiftcardBack extends LiteElement {
         align-items: center;
         justify-content: center;
         background-color: var(--md-sys-color-surface);
+        width: 409px;
+        height: 100%;
+        max-height: 191px;
+      }
+
+      h1 {
+        margin-top: 0;
       }
 
       .back {
@@ -43,17 +48,12 @@ export class GiftcardBack extends LiteElement {
         font-weight: 600;
         font-style: normal;
         letter-spacing: 6px;
-      }
-
-      .tiro-bangla-regular-italic {
-        font-family: 'Tiro Bangla', serif;
-        font-weight: 400;
-        font-style: italic;
+        font-size: 16px;
       }
 
       .amount {
         position: absolute;
-        font-size: 32px;
+        font-size: 20px;
         font-weight: 600;
         font-style: normal;
         letter-spacing: 6px;
@@ -67,13 +67,15 @@ export class GiftcardBack extends LiteElement {
         font-family: 'Nothing You Could Do', serif;
         font-weight: 400;
         font-style: normal;
+
+        font-size: 18px;
       }
 
       .ms-madi-regular {
         font-family: 'Ms Madi', serif;
         font-weight: 400;
-        font-size: 32px;
         font-style: normal;
+        font-size: 20px;
       }
 
       .signature {
@@ -82,22 +84,55 @@ export class GiftcardBack extends LiteElement {
 
       img {
         position: absolute;
-        top: 24px;
-        left: 24px;
-        width: 100px;
-        height: 100px;
+        top: 12px;
+        left: 12px;
+        width: 50px;
+        height: 50px;
       }
 
       .logo {
         top: auto;
         left: auto;
-        bottom: 24px;
-        right: 24px;
+        bottom: 12px;
+        right: 12px;
         transform: rotate(134deg);
       }
       p {
         width: 100%;
         text-align: center;
+      }
+
+      @media (min-width: 1200px) {
+        :host {
+          width: 816px;
+          min-height: 382px;
+          height: 100%;
+          max-height: 382px;
+        }
+        .tiro-bangla {
+          font-size: 32px;
+        }
+        .nothing-you-could-do {
+          font-size: 36px;
+        }
+
+        .ms-madi-regular {
+          font-size: 32px;
+        }
+
+        .qr {
+          width: 100px;
+          height: 100px;
+          top: 24px;
+          right: 24px;
+        }
+        .amount {
+          font-size: 32px;
+        }
+        .logo {
+          bottom: 24px;
+          right: 24px;
+        }
       }
     `
   ]
@@ -105,6 +140,7 @@ export class GiftcardBack extends LiteElement {
     return html`
       <custom-elevation level="2"></custom-elevation>
       <img
+        class="qr"
         src=${this.qr}
         alt="https://hellonewme.be" />
 

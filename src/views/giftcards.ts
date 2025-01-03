@@ -19,6 +19,7 @@ export class GiftcardsView extends LiteElement {
         flex-direction: column;
         align-items: center;
         overflow-y: auto;
+        overflow-x: hidden;
       }
 
       flex-row img {
@@ -28,8 +29,6 @@ export class GiftcardsView extends LiteElement {
       flex-container {
         align-items: center;
         max-width: 960px;
-        overflow-x: hidden;
-        overflow-y: auto;
       }
 
       section {
