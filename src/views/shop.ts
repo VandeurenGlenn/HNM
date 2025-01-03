@@ -41,7 +41,7 @@ export default customElements.define(
           })
         }
       })
-      const response = await fetch('http://localhost:3005/api/products')
+      const response = await fetch('/api/products')
       console.log({ response })
 
       this.items = await response.json()
