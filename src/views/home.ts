@@ -206,17 +206,15 @@ export default customElements.define(
       .summary {
         display: flex;
         flex-direction: column;
-        padding: 12px;
+        padding: 12px 24px;
         box-sizing: border-box;
         max-width: 1200px;
       }
 
       .summary h2 {
-        margin-top: 0;
-      }
-
-      .summary p {
-        text-align: left;
+        width: 100%;
+        text-align: center;
+        margin-top: 36px;
       }
 
       .summary[right] {
@@ -248,6 +246,13 @@ export default customElements.define(
         }
         .summary flex-column {
           margin-left: 48px;
+        }
+        .summary h2 {
+          text-align: left;
+          margin-top: 0;
+        }
+        .summary p {
+          text-align: left;
         }
       }
 

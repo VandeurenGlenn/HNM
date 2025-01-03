@@ -26,13 +26,13 @@ export class ZoomingImage extends LiteElement {
           transform: scale(1) translateX(0);
         }
         25% {
-          transform: scale(2) translateX(-30%);
+          transform: scale(2) translateX(-25%);
         }
         50% {
-          transform: scale(2) translateX(25%);
+          transform: scale(2.5) translateX(0);
         }
         75% {
-          transform: scale(1.2) translateX(25%);
+          transform: scale(2) translateX(25%);
         }
         100% {
           transform: scale(1) translateX(0);
