@@ -17,7 +17,7 @@ export class ZoomingImage extends LiteElement {
       img {
         width: 100%;
         height: 100%;
-        aspect-ratio: 16 / 9;
+
         transition: transform 0.5s ease-in-out;
         animation: zoomMove 20s infinite;
       }
