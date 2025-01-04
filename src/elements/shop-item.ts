@@ -1,5 +1,6 @@
 import { LitElement, html, css } from 'lit'
 import './shop-item-bar.js'
+import { translate } from '@lit-shop/translate'
 
 export class ShopItem extends LitElement {
   static get properties() {
@@ -51,7 +52,7 @@ export class ShopItem extends LitElement {
     return html`
       <img src="${this.image}" />
       <flex-row>
-        <h4>${this.name}</h4>
+        <h4>${translate(this.name)}</h4>
         <flex-it></flex-it>
         <strong>${this.price}</strong>
       </flex-row>

@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/VandeurenGlenn/HNM#readme",
   "dependencies": {
+    "@lit-shop/translate": "^1.0.7",
     "@material-symbols/svg-400": "^0.27.2",
     "@material/mwc-button": "^0.27.0",
     "@material/mwc-drawer": "^0.27.0",
@@ -36,13 +37,15 @@
     "@vandeurenglenn/flex-elements": "^1.3.2",
     "@vandeurenglenn/lit-elements": "^0.3.36",
     "@vandeurenglenn/lite": "^0.2.55",
-    "@vandeurenglenn/lite-elements": "^0.3.60",
+    "@vandeurenglenn/lite-elements": "^0.3.61",
     "custom-element-decorator": "^0.6.0",
     "custom-pages": "^0.12.1",
     "custom-svg-icon": "^1.0.1",
     "custom-svg-iconset": "^1.0.1",
     "dom-to-image-more": "^3.5.0",
-    "lit": "^3.2.1"
+    "firebase": "^11.1.0",
+    "lit": "^3.2.1",
+    "translate": "^3.0.1"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^16.0.0",

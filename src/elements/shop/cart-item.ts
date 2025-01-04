@@ -1,3 +1,4 @@
+import { translate } from '@lit-shop/translate'
 import { LiteElement, html, css, property, customElement } from '@vandeurenglenn/lite'
 
 @customElement('shop-cart-item')
@@ -22,7 +23,7 @@ class ShopCartItem extends LiteElement {
   render() {
     return html`
       <div>
-        <h2>${this.name}</h2>
+        <h2>${translate(this.name)}</h2>
         ${this.from ? html`<p>From: ${this.from}</p>` : ''}
         <p>Price: ${this.price}</p>
         <p>amount: ${this.amount}</p>

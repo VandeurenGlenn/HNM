@@ -35,7 +35,18 @@
     <link
       rel="manifest"
       href="./manifest.webmanifest" />
-    <!-- @build:sw -->
+    
+  <script type="module">
+    try {
+      window.registration = await navigator.serviceWorker.register('/sw.js');
+      registration.onupdatefound = () => {
+        document.querySelector('app-shell').notifyServiceWorkerUpdate();
+      };
+      console.log('Registration successful, scope is:', registration.scope);
+    } catch (error) {
+      console.log('Service worker registration failed, error:', error);
+    }
+  </script>
 
     <link
       rel="preconnect"

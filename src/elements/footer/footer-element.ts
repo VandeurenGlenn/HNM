@@ -59,7 +59,7 @@ export class FooterElement extends LiteElement {
     return html`
       <div class="footer-content">
         <img
-          src="./assets/banner-tertiary.svg"
+          src=${this.darkMode ? './assets/banner-tertiary.svg' : './assets/banner-dark.svg'}
           alt="HNM Logo"
           class="logo" />
 

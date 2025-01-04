@@ -1,5 +1,5 @@
 import { LiteElement, html, css, customElement, property } from '@vandeurenglenn/lite'
-import './../elements/header/small-header.js'
+
 import './../elements/giftcard/giftcard-front.js'
 import './../elements/giftcard/giftcard-back.js'
 import '@vandeurenglenn/flex-elements/container.js'
@@ -11,7 +11,7 @@ export class GiftcardsView extends LiteElement {
   @property({ type: Boolean, consumes: 'darkMode' }) accessor darkMode
   @property({ type: String }) accessor to = 'Kaat'
   @property({ type: String }) accessor from = 'Tom'
-  @property({ type: String }) accessor amount = 50
+  @property({ type: Number }) accessor amount = 50
 
   static styles = [
     css`
@@ -113,7 +113,6 @@ export class GiftcardsView extends LiteElement {
 
   render() {
     return html`
-      <small-header></small-header>
       <flex-container>
         <h2>Opzoek naar een tof cadeau?</h2>
 

@@ -4,6 +4,8 @@ export default class Router {
     ['shop', 'shop'],
     ['giftcards', 'giftcards'],
     ['checkout', 'checkout'],
+    ['login', 'login'],
+    ['account', 'account'],
     ['who-we-are', 'who-we-are']
   ])
 

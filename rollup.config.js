@@ -1,10 +1,12 @@
 import nodeResolve from '@rollup/plugin-node-resolve'
 import terser from '@rollup/plugin-terser'
 import typescript from '@rollup/plugin-typescript'
-import { readdir, unlink, readFile, writeFile, cp } from 'fs/promises'
+import { log } from 'console'
+import { readdir, unlink, readFile, writeFile, cp, opendir, mkdir } from 'fs/promises'
 import { join } from 'path'
 import materialSymbols from 'rollup-plugin-material-symbols'
 import { generateSW } from 'rollup-plugin-workbox'
+import translate from 'translate'
 
 const cleanWWW = async () => {
   return {
@@ -52,6 +54,50 @@ await cp('./node_modules/@vandeurenglenn/lite-elements/exports/themes', 'www/the
 const views = (await readdir('./src/views')).map((view) => `./src/views/${view}`)
 const themes = (await readdir('./src/themes')).map((theme) => `./src/themes/${theme}`)
 
+const translationsMap = {}
+
+const translatePlugin = () => {
+  return {
+    name: 'translatePlugin',
+    transform: async (code, id) => {
+      const regex = new RegExp(/(?:\$\{translate\(\')(.+)(?:\'\)\})|(?:\$\{translate\(\")(.+)(?:\"\)\})/, 'g')
+      const _matches = code.match(regex) || []
+      console.log(_matches)
+      if (_matches.length > 0) {
+        translationsMap['nl'] = translationsMap['nl'] || {}
+
+        for (let i = 0; i < _matches.length; i++) {
+          const match = _matches[i].replace(regex, '$1')
+          const translation = await translate(match, { from: 'en', to: 'nl' })
+          translationsMap['nl'][match] = translation
+        }
+        console.log(translationsMap)
+        return code
+      }
+    },
+    generateBundle: async () => {
+      const response = await fetch('https://admin.hellonewme.be/api/products')
+      const products = await response.json()
+      for (const [key, product] of Object.entries(products)) {
+        const name = await translate(product.name, { from: 'en', to: 'nl' })
+        const description = await translate(product.description, { from: 'en', to: 'nl' })
+        translationsMap['nl'] = translationsMap['nl'] || {}
+        translationsMap['nl'][product.name] = name
+        translationsMap['nl'][product.description] = description
+      }
+      try {
+        fd = await opendir('www/translations')
+        fd.close()
+      } catch (error) {
+        await mkdir('www/translations', { recursive: true })
+      }
+      for (const lang in translationsMap) {
+        writeFile(`www/translations/${lang}.js`, `export default ${JSON.stringify(translationsMap[lang], null, 2)}`)
+      }
+    }
+  }
+}
+
 const plugins = [
   cleanWWW(),
   nodeResolve(),
@@ -73,7 +119,8 @@ if (isProduction) {
       skipWaiting: true
     }),
 
-    terser({ keep_classnames: true })
+    terser({ keep_classnames: true }),
+    translatePlugin()
   )
 }
 export default [

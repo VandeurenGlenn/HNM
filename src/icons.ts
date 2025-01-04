@@ -26,5 +26,10 @@ export default html` <custom-icon-set>
     <span name="shopping_cart">@symbol-shopping_cart</span>
     <span name="shopping_bag">@symbol-shopping_bag</span>
     <span name="redeem">@symbol-redeem</span>
+    <span name="local_shipping">@symbol-local_shipping</span>
+    <span name="mail">@symbol-mail</span>
+    <span name="password">@symbol-password</span>
+    <span name="visibility">@symbol-visibility</span>
+    <span name="visibility_off">@symbol-visibility_off</span>
   </template>
 </custom-icon-set>`
