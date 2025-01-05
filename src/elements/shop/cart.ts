@@ -7,23 +7,25 @@ export class ShopCart extends LiteElement {
 
   @property({ reflect: true, type: Boolean }) accessor open = false
 
+  @property({ type: Object }) accessor products
+
   @property({ type: Number }) accessor totalAmount = 0
 
   addItem(item) {
-    if (this.items[item.sku]) {
-      this.items[item.sku].amount += item.amount
+    if (this.items[item.EAN]) {
+      this.items[item.EAN].amount += item.amount
 
       this.totalAmount = Object.values(this.items).reduce((acc, item) => acc + item.amount, 0)
       this.requestRender()
       return
     }
-    this.items[item.sku] = item
+    this.items[item.EAN] = item
     this.totalAmount = Object.values(this.items).reduce((acc, item) => acc + item.amount, 0)
     this.requestRender()
   }
 
-  removeItem(sku) {
-    delete this.items[sku]
+  removeItem(EAN) {
+    delete this.items[EAN]
   }
 
   onChange(propertyKey: string, value: any): void {
@@ -101,6 +103,7 @@ export class ShopCart extends LiteElement {
         entries,
         ([sku, item]) => html`
           <shop-cart-item
+            .EAN=${item.EAN}
             .sku=${sku}
             .name=${item.name}
             .image=${item.image}

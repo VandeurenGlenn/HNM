@@ -101,6 +101,27 @@ export default css`
     font-family: americanTypewriter;
   }
 
+  .avatar {
+    width: 98px;
+    height: 98px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .user-info {
+    box-sizing: border-box;
+    padding: 12px 24px;
+    margin-bottom: 16px;
+  }
+
+  flex-container {
+    width: 100%;
+  }
+
+  .user-info h3 {
+    margin-bottom: 0;
+  }
+
   main {
     overflow-y: auto;
     display: flex;

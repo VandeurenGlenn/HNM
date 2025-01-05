@@ -34,6 +34,9 @@ export default customElements.define(
         console.log(button.dataset?.dataAction)
 
         if (target.tagName === 'SHOP-ITEM' && button.dataset?.action === 'add-to-cart') {
+          event.stopImmediatePropagation()
+          event.preventDefault()
+          event.stopPropagation()
           console.log('add to cart')
 
           const cart = document.querySelector('app-shell').shadowRoot.querySelector('shop-cart') as ShopCart
@@ -46,8 +49,6 @@ export default customElements.define(
           })
         }
       })
-      // console.log(this.products)
-      // this.items = await response.json()
     }
 
     #darkmode({ detail }) {

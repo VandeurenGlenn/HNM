@@ -9,10 +9,6 @@ export class ShopItem extends LiteElement {
   @property({ type: String }) accessor key
   @property({ type: Boolean, consumes: true }) accessor darkMode
 
-  get amount() {
-    return this.shadowRoot.querySelector('shop-item-bar').amount
-  }
-
   onChange(propertyKey: string, value: any): void {
     if (propertyKey === 'darkMode') {
       if (value) {
@@ -21,6 +17,10 @@ export class ShopItem extends LiteElement {
         this.placeholder = './assets/sciccors.svg'
       }
     }
+  }
+
+  get amount() {
+    return this.shadowRoot.querySelector('shop-item-bar').amount
   }
 
   static styles = [
@@ -97,7 +97,10 @@ export class ShopItem extends LiteElement {
           >
         </flex-row>
         <flex-it></flex-it>
-        <shop-item-bar ?is-mobile=${this.isMobile}></shop-item-bar>
+        <shop-item-bar
+          ?is-mobile=${this.isMobile}
+          .EAN=${this.product.SKUs[0].EAN}
+          .key=${this.key}></shop-item-bar>
       </a>
     `
   }

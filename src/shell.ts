@@ -20,6 +20,7 @@ import firebase, { get, off, set } from './firebase.js'
 import { setupTranslations, translate } from '@lit-shop/translate'
 import { PromoHero } from './elements/promo-hero.js'
 import { ref } from 'firebase/database'
+import { ShopCart } from './elements/shop/cart.js'
 
 export default customElements.define(
   'app-shell',
@@ -89,6 +90,13 @@ export default customElements.define(
 
           console.log('User is signed out')
         }
+
+        document.addEventListener('add-to-cart', (event) => {
+          const cart = document.querySelector('app-shell').shadowRoot.querySelector('shop-cart') as ShopCart
+          console.log('add to cart', event.detail)
+
+          cart.addItem(event.detail)
+        })
       })
 
       globalThis.onhashchange = this.#hashchange.bind(this)
@@ -296,16 +304,45 @@ export default customElements.define(
           </flex-row>
 
           <flex-container slot="drawer-content">
-            <span style="display:block;">
-              <img
-                alt="logo"
-                loading="lazy"
-                src=${this.darkMode ? './assets/sciccors-dark.svg' : './assets/sciccors.svg'}
-            /></span>
+            ${this.user
+              ? html`
+                  <flex-column
+                    class="user-info"
+                    center>
+                    ${this.user?.photoURL
+                      ? html`<img
+                          src=${this.user.photoURL}
+                          class="avatar" />`
+                      : ''}
+                    <h3>Hello New ${this.userInfo?.firstName}</h3>
+                  </flex-column>
+                `
+              : html` <span style="display:block;">
+                  <img
+                    alt="logo"
+                    loading="lazy"
+                    src=${this.darkMode ? './assets/sciccors-dark.svg' : './assets/sciccors.svg'}
+                /></span>`}
 
             <custom-selector
               attr-for-selected="data-route"
               @selected=${({ detail }) => this.select(detail)}>
+              ${this.user
+                ? html`
+                    <custom-drawer-item data-route="orders">
+                      ${translate('orders')}
+                      <flex-it></flex-it>
+                      <custom-icon icon="orders"></custom-icon>
+                    </custom-drawer-item>
+                    <custom-drawer-item data-route="account">
+                      ${translate('profile')}
+                      <flex-it></flex-it>
+                      <custom-icon icon="account_circle"></custom-icon>
+                    </custom-drawer-item>
+
+                    <custom-divider></custom-divider>
+                  `
+                : ''}
               <custom-drawer-item data-route="home">
                 ${translate('home')}
                 <flex-it></flex-it>
@@ -329,22 +366,6 @@ export default customElements.define(
                 <flex-it></flex-it>
                 <custom-icon icon="groups"></custom-icon>
               </custom-drawer-item>
-
-              ${this.user
-                ? html`
-                    <custom-divider></custom-divider>
-                    <custom-drawer-item data-route="orders">
-                      ${translate('orders')}
-                      <flex-it></flex-it>
-                      <custom-icon icon="orders"></custom-icon>
-                    </custom-drawer-item>
-                    <custom-drawer-item data-route="account">
-                      ${translate('profile')}
-                      <flex-it></flex-it>
-                      <custom-icon icon="account_circle"></custom-icon>
-                    </custom-drawer-item>
-                  `
-                : ''}
             </custom-selector>
           </flex-container>
 

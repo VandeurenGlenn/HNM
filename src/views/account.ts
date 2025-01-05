@@ -73,9 +73,11 @@ export class AccountView extends LiteElement {
       <flex-container>
         <h1>${translate('profile')}</h1>
         ${this.user
-          ? html` <img
-                src=${this.user.photoURL}
-                alt=${this.user.displayName} />
+          ? html` ${this.user?.photoURL
+                ? html`<img
+                    src=${this.user?.photoURL}
+                    alt=${this.user.displayName} /> `
+                : ''}
               <p class="displayName">${this.user.displayName}</p>
               <md-outlined-text-field
                 required
