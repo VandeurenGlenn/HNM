@@ -5,9 +5,22 @@ import { translate } from '@lit-shop/translate'
 export class ShopItem extends LiteElement {
   @property({ type: Object }) accessor product
   @property({ type: Boolean, attribute: 'is-mobile', consumes: true }) accessor isMobile
+  @property({ type: String }) accessor placeholder = './assets/sciccors.svg'
   @property({ type: String }) accessor key
+  @property({ type: Boolean, consumes: true }) accessor darkMode
+
   get amount() {
     return this.shadowRoot.querySelector('shop-item-bar').amount
+  }
+
+  onChange(propertyKey: string, value: any): void {
+    if (propertyKey === 'darkMode') {
+      if (value) {
+        this.placeholder = './assets/sciccors-dark.svg'
+      } else {
+        this.placeholder = './assets/sciccors.svg'
+      }
+    }
   }
 
   static styles = [
@@ -67,7 +80,7 @@ export class ShopItem extends LiteElement {
     if (!this.product) return html`<p>Loading</p>`
     return html`
       <a href="/#!/shop?product=${this.key}">
-        <img src="${this.product.image}" />
+        <img src=${this.product?.image ? this.product.image : this.placeholder} />
         <flex-row>
           <h4>${translate(this.product.name)}</h4>
         </flex-row>
