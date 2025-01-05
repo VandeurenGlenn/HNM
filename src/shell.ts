@@ -17,6 +17,7 @@ import './elements/shop/cart.js'
 import { CustomNotification } from '@vandeurenglenn/lite-elements/notification.js'
 import firebase, { get, set } from './firebase.js'
 import { setupTranslations, translate } from '@lit-shop/translate'
+import { PromoHero } from './elements/promo-hero.js'
 
 export default customElements.define(
   'app-shell',
@@ -58,7 +59,7 @@ export default customElements.define(
           console.log('User is signed in')
 
           const snap = await get(`users/${user.uid}`)
-          if (!snap || !snap.exists) {
+          if (!snap) {
             await set(`users/${user.uid}`, {
               email: user.email,
               displayName: user.displayName,
@@ -70,7 +71,11 @@ export default customElements.define(
           } else if (location.hash === '#!/login') location.hash = '#!/home'
         } else {
           this.user = undefined
+          const hero = document.createElement('promo-hero') as PromoHero
+          document.body.appendChild(hero)
+          hero.open = true
           this.shadowRoot.querySelector('custom-button[label="logout"]').label = 'login'
+
           console.log('User is signed out')
         }
       })
@@ -223,8 +228,6 @@ export default customElements.define(
             </custom-pages>
           </main>
         </custom-drawer-layout>
-
-        <promo-hero></promo-hero>
       `
       // <img src="./assets/banner.jpg">
     }

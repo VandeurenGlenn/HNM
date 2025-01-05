@@ -31,5 +31,7 @@ export default html` <custom-icon-set>
     <span name="password">@symbol-password</span>
     <span name="visibility">@symbol-visibility</span>
     <span name="visibility_off">@symbol-visibility_off</span>
+    <span name="contact_support">@symbol-contact_support</span>
+    <span name="save">@symbol-save</span>
   </template>
 </custom-icon-set>`

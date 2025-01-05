@@ -4,7 +4,7 @@ import '@vandeurenglenn/lite-elements/icon-button.js'
 
 @customElement('promo-hero')
 export class PromoHero extends LiteElement {
-  @property({ type: Boolean, reflect: true }) accessor open = true
+  @property({ type: Boolean, reflect: true }) accessor open
 
   @property({ type: Boolean, consumes: true, attribute: 'is-mobile', reflect: true }) accessor isMobile
   static styles = [
