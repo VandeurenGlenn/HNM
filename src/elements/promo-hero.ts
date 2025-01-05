@@ -6,7 +6,6 @@ import '@vandeurenglenn/lite-elements/icon-button.js'
 export class PromoHero extends LiteElement {
   @property({ type: Boolean, reflect: true }) accessor open
 
-  @property({ type: Boolean, consumes: true, attribute: 'is-mobile', reflect: true }) accessor isMobile
   static styles = [
     css`
       :host {
@@ -48,11 +47,6 @@ export class PromoHero extends LiteElement {
 
       h2 {
         margin-top: 6px;
-      }
-
-      :host([is-mobile]) .container {
-        border-radius: 0;
-        margin: 0 12px;
       }
 
       custom-button {

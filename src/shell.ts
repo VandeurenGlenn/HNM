@@ -64,7 +64,6 @@ export default customElements.define(
 
       firebase.auth.onAuthStateChanged(async (user) => {
         if (user) {
-          this.shadowRoot.querySelector('custom-button[label="login"]').label = 'logout'
           this.user = user
           console.log('User is signed in')
 
@@ -86,8 +85,7 @@ export default customElements.define(
           this.removePropertyProvider('userInfo')
           const hero = document.createElement('promo-hero') as PromoHero
           document.body.appendChild(hero)
-          hero.open = true
-          this.shadowRoot.querySelector('custom-button[label="logout"]').label = 'login'
+          requestAnimationFrame(() => (hero.open = true))
 
           console.log('User is signed out')
         }
@@ -138,10 +136,6 @@ export default customElements.define(
 
     async #select(selected, query?) {
       !customElements.get(`${selected}-view`) && (await import(`./${selected}.js`))
-
-      console.log('selected', selected)
-      console.log('user', this.user)
-
       const params = new URLSearchParams(query).keys()
 
       if (selected === 'shop') {
@@ -297,7 +291,7 @@ export default customElements.define(
 
         <custom-drawer-layout .drawer-open=${this.menuShown}>
           <flex-row slot="top-app-bar-end">
-            <custom-button label="login"></custom-button>
+            <custom-button .label=${this.user ? 'logout' : 'login'}></custom-button>
             <shop-cart></shop-cart>
           </flex-row>
 
