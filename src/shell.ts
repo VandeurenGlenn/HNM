@@ -336,10 +336,9 @@ export default customElements.define(
                 <custom-icon icon="groups"></custom-icon>
               </custom-drawer-item>
 
-              <custom-divider></custom-divider>
-
               ${this.user
                 ? html`
+                    <custom-divider></custom-divider>
                     <custom-drawer-item data-route="orders">
                       ${translate('orders')}
                       <flex-it></flex-it>
