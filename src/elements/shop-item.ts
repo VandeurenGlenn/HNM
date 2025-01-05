@@ -4,7 +4,8 @@ import { translate } from '@lit-shop/translate'
 @customElement('shop-item')
 export class ShopItem extends LiteElement {
   @property({ type: Object }) accessor product
-
+  @property({ type: Boolean, attribute: 'is-mobile', consumes: true }) accessor isMobile
+  @property({ type: String }) accessor key
   get amount() {
     return this.shadowRoot.querySelector('shop-item-bar').amount
   }
@@ -13,8 +14,8 @@ export class ShopItem extends LiteElement {
     css`
       :host {
         display: inline-flex;
-        width: 100%;
-        height: 100%;
+        width: 300px;
+        height: 300px;
 
         overflow: hidden;
         color: var(--md-sys-color-color-on-surface);
@@ -46,13 +47,18 @@ export class ShopItem extends LiteElement {
         align-items: center;
         position: relative;
         box-sizing: border-box;
-        border: 1px solid #555;
-        border-radius: 24px;
         text-decoration: none;
         color: inherit;
         overflow: hidden;
         width: inherit;
         height: inherit;
+        max-width: inherit;
+      }
+
+      :host([is-mobile]) {
+        max-width: 210px;
+        width: 100%;
+        height: 375px;
       }
     `
   ]
@@ -60,11 +66,12 @@ export class ShopItem extends LiteElement {
   render() {
     if (!this.product) return html`<p>Loading</p>`
     return html`
-      <a href="/#!/shop?product=${this.product.key}">
+      <a href="/#!/shop?product=${this.key}">
         <img src="${this.product.image}" />
         <flex-row>
           <h4>${translate(this.product.name)}</h4>
-          <flex-it></flex-it>
+        </flex-row>
+        <flex-row>
           <strong
             >${Number(this.product['SKUs'][0].price).toLocaleString('nl-BE', {
               style: 'currency',
@@ -73,7 +80,7 @@ export class ShopItem extends LiteElement {
           >
         </flex-row>
         <flex-it></flex-it>
-        <shop-item-bar></shop-item-bar>
+        <shop-item-bar ?is-mobile=${this.isMobile}></shop-item-bar>
       </a>
     `
   }

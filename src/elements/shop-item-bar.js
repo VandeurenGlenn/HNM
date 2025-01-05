@@ -26,6 +26,11 @@ export class ShopItemBar extends LitElement {
       mwc-button {
         pointer-events: auto;
       }
+
+      :host([is-mobile]) {
+        height: 100px;
+        flex-direction: column;
+      }
     `
   ]
 
@@ -51,8 +56,14 @@ export class ShopItemBar extends LitElement {
 
   render() {
     return html`
-      <md-icon-button @click="${() => (this.amount += 1)}"><md-icon>add</md-icon></md-icon-button>
-      <md-icon-button @click="${() => (this.amount -= 1)}"><md-icon>remove</md-icon></md-icon-button>
+      <flex-row>
+        <custom-icon-button
+          icon="add"
+          @click="${() => (this.amount += 1)}"></custom-icon-button>
+        <custom-icon-button
+          icon="remove"
+          @click="${() => (this.amount -= 1)}"></custom-icon-button>
+      </flex-row>
       <flex-it></flex-it>
       <custom-button
         data-action="add-to-cart"

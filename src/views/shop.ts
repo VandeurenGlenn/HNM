@@ -21,6 +21,8 @@ export default customElements.define(
 
     @property({ type: String, consumes: 'product' }) accessor selectedProduct
 
+    @property({ type: Boolean, consumes: true, attribute: 'is-mobile' }) accessor isMobile
+
     async connectedCallback() {
       document.addEventListener('theme-change', this.#darkmode.bind(this))
       this.#darkmode({
@@ -66,7 +68,6 @@ export default customElements.define(
           flex-direction: column;
           width: 100%;
           align-items: center;
-          padding: 12px;
 
           overflow-y: auto;
           box-sizing: border-box;
@@ -75,13 +76,18 @@ export default customElements.define(
           gap: 12px;
           max-width: 960px;
           width: 100%;
+          box-sizing: border-box;
+
+          padding: 12px;
         }
 
         shop-item {
-          width: 300px;
-          height: 300px;
-
           margin-bottom: 12px;
+        }
+
+        :host([is-mobile]) flex-wrap-evenly {
+          padding: 0;
+          gap: 2px;
         }
 
         ${scrollbar}
@@ -93,12 +99,26 @@ export default customElements.define(
         return html` <h1>Loading...</h1> `
       }
       if (this.selectedProduct) {
-        return html` <shop-product .product=${this.products[this.selectedProduct]}> </shop-product> `
+        return html`
+          <shop-product
+            .product=${this.products[this.selectedProduct]}
+            .key=${this.selectedProduct}>
+          </shop-product>
+        `
       }
       return html`
         <flex-wrap-evenly>
           ${this.products
-            ? map(Object.entries(this.products), ([key, item]) => html` <shop-item .product=${item}> </shop-item> `)
+            ? map(
+                Object.entries(this.products),
+                ([key, item]) =>
+                  html`
+                    <shop-item
+                      .product=${item}
+                      .key=${key}>
+                    </shop-item>
+                  `
+              )
             : 'Loading...'}
         </flex-wrap-evenly>
         <footer-element></footer-element>
