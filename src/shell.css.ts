@@ -101,13 +101,6 @@ export default css`
     font-family: americanTypewriter;
   }
 
-  custom-notification {
-    position: absolute;
-    bottom: 12px;
-    left: 12px;
-    z-index: 10001;
-  }
-
   main {
     overflow-y: auto;
     display: flex;
