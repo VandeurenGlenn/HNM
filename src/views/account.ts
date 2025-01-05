@@ -27,6 +27,20 @@ export class AccountView extends LiteElement {
       flex-row {
         width: 100%;
       }
+      flex-container {
+        align-items: center;
+      }
+
+      img {
+        border-radius: 24px;
+        width: 100px;
+        height: 100px;
+        margin-bottom: 12px;
+      }
+      .displayName {
+        margin-bottom: 24px;
+        font-size: 24px;
+      }
     `
   ]
 
@@ -58,12 +72,11 @@ export class AccountView extends LiteElement {
     return html`
       <flex-container>
         <h1>${translate('profile')}</h1>
-        <h3>${translate('personalInformation')}</h3>
         ${this.user
           ? html` <img
                 src=${this.user.photoURL}
                 alt=${this.user.displayName} />
-              <p>${this.user.displayName}</p>
+              <p class="displayName">${this.user.displayName}</p>
               <md-outlined-text-field
                 required
                 disabled
@@ -81,7 +94,6 @@ export class AccountView extends LiteElement {
             label=${translate('surname')}
             value=${this.userInfo?.surname}></md-outlined-text-field>
         </flex-row>
-        <h3>${translate('address')}</h3>
         <md-outlined-text-field
           required
           label=${translate('street')}
