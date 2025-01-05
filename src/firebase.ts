@@ -28,7 +28,8 @@ import {
   limitToLast as _limitToLast,
   onChildAdded as _onChildAdded,
   onChildRemoved as _onChildRemoved,
-  onChildChanged as _onChildChanged
+  onChildChanged as _onChildChanged,
+  off as _off
 } from 'firebase/database'
 import { getStorage, ref as fileref, uploadBytes as _uploadBytes, getDownloadURL } from 'firebase/storage'
 
@@ -67,7 +68,7 @@ export const push = async (path: string, value: FirebaseDatabaseFormat): Promise
   const snap = await _push(ref(database, path), value)
   return snap.key
 }
-
+export const off = async (path: string, cb) => _off(ref(database, path), cb)
 export const set = async (path: string, value: FirebaseDatabaseFormat) => _set(ref(database, path), value)
 
 export const remove = async (path: string): Promise<void> => _remove(ref(database, path))

@@ -11,7 +11,7 @@ import { get, set } from '../firebase.js'
 @customElement('account-view')
 export class AccountView extends LiteElement {
   @property({ type: Object, consumes: 'user' }) accessor user: UserCredential['user']
-  @property({ type: Object }) accessor userInfo: any
+  @property({ type: Object, consumes: 'userInfo' }) accessor userInfo: any
 
   static styles = [
     css`
@@ -53,13 +53,6 @@ export class AccountView extends LiteElement {
       postalCode: inputs[5].value,
       city: inputs[6].value
     })
-  }
-
-  async onChange(propertyKey: string, value: any) {
-    if (propertyKey === 'user' && value) {
-      this.userInfo = await get(`users/${value.uid}`)
-      console.log(this.userInfo)
-    }
   }
   render() {
     return html`

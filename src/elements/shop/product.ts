@@ -1,8 +1,9 @@
-import { LiteElement, html, css, property, customElement } from '@vandeurenglenn/lite'
-import './shop-item-bar.js'
+import { LiteElement, html, css, customElement, property } from '@vandeurenglenn/lite'
+import '../shop-item-bar.js'
 import { translate } from '@lit-shop/translate'
-@customElement('shop-item')
-export class ShopItem extends LiteElement {
+
+@customElement('shop-product')
+export class ShopProduct extends LiteElement {
   @property({ type: Object }) accessor product
 
   get amount() {
@@ -12,10 +13,11 @@ export class ShopItem extends LiteElement {
   static styles = [
     css`
       :host {
-        display: inline-flex;
-        width: 100%;
+        display: flex;
+        flex-direction: column;
         height: 100%;
-
+        width: 100%;
+        align-items: center;
         overflow: hidden;
         color: var(--md-sys-color-color-on-surface);
       }
@@ -30,9 +32,6 @@ export class ShopItem extends LiteElement {
         font-weight: 400;
         box-sizing: border-box;
         margin: 0;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
       }
       flex-row {
         width: 100%;
@@ -40,19 +39,9 @@ export class ShopItem extends LiteElement {
         box-sizing: border-box;
       }
 
-      a {
-        display: inline-flex;
-        flex-direction: column;
-        align-items: center;
-        position: relative;
-        box-sizing: border-box;
-        border: 1px solid #555;
-        border-radius: 24px;
-        text-decoration: none;
-        color: inherit;
-        overflow: hidden;
-        width: inherit;
-        height: inherit;
+      flex-container {
+        height: 100%;
+        width: 100%;
       }
     `
   ]
@@ -60,21 +49,17 @@ export class ShopItem extends LiteElement {
   render() {
     if (!this.product) return html`<p>Loading</p>`
     return html`
-      <a href="/#!/shop?product=${this.product.key}">
+      <flex-container>
         <img src="${this.product.image}" />
+        <p>${translate(this.product.description)}</p>
         <flex-row>
           <h4>${translate(this.product.name)}</h4>
           <flex-it></flex-it>
-          <strong
-            >${Number(this.product['SKUs'][0].price).toLocaleString('nl-BE', {
-              style: 'currency',
-              currency: 'EUR'
-            })}</strong
-          >
+          <strong>${this.product['SKUs'][0].price}</strong>
         </flex-row>
         <flex-it></flex-it>
         <shop-item-bar></shop-item-bar>
-      </a>
+      </flex-container>
     `
   }
 }

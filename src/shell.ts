@@ -8,6 +8,7 @@ import '@vandeurenglenn/flex-elements/row.js'
 import '@vandeurenglenn/flex-elements/it.js'
 import '@vandeurenglenn/lite-elements/banner.js'
 import '@vandeurenglenn/lite-elements/notification.js'
+import '@vandeurenglenn/lite-elements/divider.js'
 import './elements/promo-hero.js'
 import './elements/darkmode/element.js'
 import '@material/web/fab/branded-fab.js'
@@ -15,13 +16,16 @@ import { query, LiteElement, property } from '@vandeurenglenn/lite'
 import icons from './icons.js'
 import './elements/shop/cart.js'
 import { CustomNotification } from '@vandeurenglenn/lite-elements/notification.js'
-import firebase, { get, set } from './firebase.js'
+import firebase, { get, off, set } from './firebase.js'
 import { setupTranslations, translate } from '@lit-shop/translate'
 import { PromoHero } from './elements/promo-hero.js'
+import { ref } from 'firebase/database'
 
 export default customElements.define(
   'app-shell',
   class AppShell extends LiteElement {
+    #propertyProviders = []
+
     @query('custom-drawer-layout')
     accessor #drawerLayout
 
@@ -34,6 +38,12 @@ export default customElements.define(
     @property({ reflect: true, type: Boolean, consumes: 'darkMode', attribute: 'dark-mode' }) accessor darkMode
 
     @property({ type: Object, provides: true }) accessor user
+
+    @property({ type: Object, provides: true }) accessor userInfo
+
+    @property({ type: Object, provides: true }) accessor orders
+    @property({ type: Object, provides: true }) accessor products
+    @property({ type: Object, provides: true, batchDelay: 200 }) accessor product
 
     @property({ reflect: true, attribute: 'menu-shown', type: Boolean })
     accessor menuShown
@@ -59,18 +69,21 @@ export default customElements.define(
           console.log('User is signed in')
 
           const snap = await get(`users/${user.uid}`)
-          if (!snap) {
-            await set(`users/${user.uid}`, {
-              email: user.email,
-              displayName: user.displayName,
-              photoURL: user.photoURL
-            })
+          console.log('snap', snap)
 
-            console.log('User added to database')
+          if (!snap) {
             location.hash = '#!/account'
-          } else if (location.hash === '#!/login') location.hash = '#!/home'
+            return
+          } else if (location.hash === '#!/login') {
+            location.hash = '#!/home'
+          }
+          this.propertyProviders['userInfo'] = [{ name: 'userInfo', type: 'object', ref: `users/${user.uid}` }]
+          this.handlePropertyProvider(`userInfo`)
         } else {
           this.user = undefined
+          this.userInfo = undefined
+
+          this.removePropertyProvider('userInfo')
           const hero = document.createElement('promo-hero') as PromoHero
           document.body.appendChild(hero)
           hero.open = true
@@ -118,13 +131,37 @@ export default customElements.define(
 
     async #hashchange() {
       if (this.menuShown && this.isMobile) this.menuShown = false
-      const parts = location.hash.split('#!/')
-      this.#select(parts[1])
+      const parts = location.hash.split('?')
+
+      this.#select(parts[0].split('#!/')[1], parts[1])
     }
 
-    async #select(selected) {
+    async #select(selected, query?) {
+      !customElements.get(`${selected}-view`) && (await import(`./${selected}.js`))
+
+      console.log('selected', selected)
+      console.log('user', this.user)
+
+      const params = new URLSearchParams(query).keys()
+
+      if (selected === 'shop') {
+        this.handlePropertyProvider('products')
+        this.product = undefined
+        for (const param of params) {
+          const value = new URLSearchParams(query).get(param)
+          this[param] = value
+        }
+      }
+
+      if (selected === 'orders' && this.user) {
+        this.propertyProviders['orders'] = [{ name: 'orders', type: 'object', ref: `orders/${this.user.uid}` }]
+        this.handlePropertyProvider(`orders`)
+      }
+      if (selected === 'account' && this.user) {
+        this.propertyProviders['userInfo'] = [{ name: 'userInfo', type: 'object', ref: `users/${this.user.uid}` }]
+        this.handlePropertyProvider(`userInfo`)
+      }
       requestAnimationFrame(async () => {
-        !customElements.get(`${selected}-view`) && (await import(`./${selected}.js`))
         this.#pages.select(selected)
         this.#selector.select(selected)
       })
@@ -135,6 +172,100 @@ export default customElements.define(
     }
 
     static styles = [style]
+
+    propertyProviders = {
+      products: [{ name: 'products', type: 'object' }]
+    }
+
+    removePropertyProvider(propertyProvider) {
+      if (this.#propertyProviders.includes(propertyProvider)) {
+        this.#propertyProviders = this.#propertyProviders.filter((provider) => provider !== propertyProvider)
+        off(propertyProvider, (e) => console.log('off', e))
+        delete this[propertyProvider]
+      }
+    }
+
+    setupPropertyProvider(
+      propertyProvider,
+      type = 'array',
+      options: {
+        events?: { onChildChanged?: (val) => {}; onChildRemoved?: (val) => {}; onChildAdded?: (val) => {} }
+        ref?: string
+      } = {}
+    ) {
+      return new Promise(async (resolve, reject) => {
+        const { events } = options
+        const ref = options.ref || propertyProvider
+
+        this.#propertyProviders.push(propertyProvider)
+
+        if (!this[propertyProvider]) this[propertyProvider] = type === 'object' ? {} : []
+
+        const deleteOrReplace = async (propertyProvider, snap, task = 'replace') => {
+          const val = await snap.val()
+          if (type === 'array') {
+            if (typeof val === 'object' && !Array.isArray(val)) val.key = snap.key
+            let i = -1
+
+            for (const item of this[propertyProvider]) {
+              i += 1
+              if (item.key === snap.key) break
+            }
+
+            if (task === 'replace') this[propertyProvider].splice(i, 1, val)
+            else this[propertyProvider].splice(i, 1)
+            this[propertyProvider] = [...this[propertyProvider]]
+          } else if (type === 'object') {
+            if (task === 'replace') this[propertyProvider][snap.key] = val
+            else delete this[propertyProvider][snap.key]
+            this[propertyProvider] = { ...this[propertyProvider] }
+          }
+
+          if (task === 'replace') events?.onChildChanged?.(val)
+          else events?.onChildRemoved?.(val)
+        }
+
+        firebase.onChildAdded(ref, async (snap) => {
+          const val = await snap.val()
+
+          if (type === 'array') {
+            if (typeof val === 'object' && !Array.isArray(val)) val.key = snap.key
+            if (!this[propertyProvider]) {
+              this[propertyProvider] = [val]
+            } else if (!this[propertyProvider].includes(val)) {
+              this[propertyProvider].push(val)
+            }
+            this[propertyProvider] = [...this[propertyProvider]]
+          } else if (type === 'object') {
+            if (!this[propertyProvider]) this[propertyProvider] = {}
+            this[propertyProvider][snap.key] = val
+            this[propertyProvider] = { ...this[propertyProvider] }
+          }
+          events?.onChildAdded?.(val)
+          resolve(this[propertyProvider])
+        })
+
+        setTimeout(async () => {
+          resolve(true)
+        }, 1000)
+
+        firebase.onChildChanged(ref, (snap) => deleteOrReplace(propertyProvider, snap, 'replace'))
+        firebase.onChildRemoved(ref, (snap) => deleteOrReplace(propertyProvider, snap, 'delete'))
+      })
+    }
+
+    handlePropertyProvider(propertyProvider) {
+      if (this.propertyProviders[propertyProvider]) {
+        for (const input of this.propertyProviders[propertyProvider]) {
+          let propertyKey
+          if (typeof input === 'object') propertyKey = input.name
+          else propertyKey = input
+
+          if (!this.#propertyProviders.includes(propertyKey))
+            return this.setupPropertyProvider(propertyKey, input?.type, { events: input?.events, ref: input?.ref })
+        }
+      }
+    }
 
     render() {
       return html`
@@ -204,6 +335,23 @@ export default customElements.define(
                 <flex-it></flex-it>
                 <custom-icon icon="groups"></custom-icon>
               </custom-drawer-item>
+
+              <custom-divider></custom-divider>
+
+              ${this.user
+                ? html`
+                    <custom-drawer-item data-route="orders">
+                      ${translate('orders')}
+                      <flex-it></flex-it>
+                      <custom-icon icon="orders"></custom-icon>
+                    </custom-drawer-item>
+                    <custom-drawer-item data-route="account">
+                      ${translate('profile')}
+                      <flex-it></flex-it>
+                      <custom-icon icon="account_circle"></custom-icon>
+                    </custom-drawer-item>
+                  `
+                : ''}
             </custom-selector>
           </flex-container>
 
@@ -225,6 +373,7 @@ export default customElements.define(
               <giftcards-view data-route="giftcards"></giftcards-view>
               <who-we-are-view data-route="who-we-are"></who-we-are-view>
               <account-view data-route="account"></account-view>
+              <orders-view data-route="orders"></orders-view>
             </custom-pages>
           </main>
         </custom-drawer-layout>

@@ -11,12 +11,15 @@ import { scrollbar } from '../mixins/styles.js'
 import { ShopItem } from '../elements/shop-item.js'
 import { ShopCart } from '../elements/shop/cart.js'
 import './../elements/footer/footer-element.js'
+import './../elements/shop/product.js'
+import '@vandeurenglenn/flex-elements/container.js'
 
 export default customElements.define(
   'shop-view',
   class ShopView extends LiteElement {
-    @property({ type: Array })
-    accessor items
+    @property({ type: Object, consumes: true }) accessor products
+
+    @property({ type: String, consumes: 'product' }) accessor selectedProduct
 
     async connectedCallback() {
       document.addEventListener('theme-change', this.#darkmode.bind(this))
@@ -41,12 +44,7 @@ export default customElements.define(
           })
         }
       })
-      const response = await fetch('https://admin.hellonewme.be/api/products')
-      console.log({ response })
-
-      this.items = await response.json()
-
-      // console.log(this.items)
+      // console.log(this.products)
       // this.items = await response.json()
     }
 
@@ -73,130 +71,6 @@ export default customElements.define(
           overflow-y: auto;
           box-sizing: border-box;
         }
-
-        header {
-          display: flex;
-          width: 100%;
-          justify-content: center;
-          align-items: center;
-          padding: 12px;
-          box-sizing: border-box;
-        }
-
-        main {
-          display: flex;
-          flex-direction: column;
-          width: 100%;
-          align-items: center;
-          padding: 6px 12px;
-        }
-
-        main,
-        header {
-          box-sizing: border-box;
-        }
-
-        header,
-        section,
-        img {
-          max-width: 960px;
-          width: 100%;
-        }
-        header span {
-          display: flex;
-          align-items: center;
-        }
-
-        h1 {
-          margin: 0;
-          font-size: 24px;
-        }
-
-        .examples {
-          display: flex;
-          flex-direction: column;
-        }
-
-        .examples .left,
-        .examples .right {
-          width: calc(100% / 2);
-        }
-
-        .left {
-          padding-right: 3px;
-        }
-
-        .right {
-          padding-left: 3px;
-        }
-
-        .left img,
-        .right img {
-          padding-top: 3px;
-        }
-
-        main,
-        header {
-          box-sizing: border-box;
-        }
-
-        header span,
-        section,
-        img {
-          max-width: 960px;
-          width: 100%;
-        }
-        header span {
-          display: flex;
-          align-items: flex-end;
-        }
-
-        header.small {
-          position: sticky;
-          padding: 12px;
-          min-height: 76px;
-          max-height: 76px;
-          height: 100%;
-          box-sizing: border-box;
-          z-index: 100;
-          will-change: margin;
-        }
-
-        image {
-          will-change: padding;
-        }
-
-        header.small img {
-          width: 54px;
-          transition: opacity ease-out 60ms;
-        }
-
-        :host([condensed]) header.small {
-          top: 0;
-          background: var(--main-background-color);
-          position: sticky;
-        }
-
-        .examples {
-          box-sizing: border-box;
-          max-width: calc(100% / 2 - 2px);
-        }
-
-        .example1 {
-          max-height: 220px;
-        }
-
-        .example1,
-        .example2 {
-          will-change: padding;
-          padding-top: 4px;
-        }
-
-        .filler {
-          display: flex;
-          width: 32px;
-        }
-
         flex-wrap-evenly {
           gap: 12px;
           max-width: 960px;
@@ -215,21 +89,16 @@ export default customElements.define(
     ]
 
     render() {
+      if (!this.products || Object.keys(this.products).length === 0) {
+        return html` <h1>Loading...</h1> `
+      }
+      if (this.selectedProduct) {
+        return html` <shop-product .product=${this.products[this.selectedProduct]}> </shop-product> `
+      }
       return html`
         <flex-wrap-evenly>
-          ${this.items
-            ? map(
-                Object.entries(this.items),
-                ([key, item]) => html`
-                  <shop-item
-                    .key=${key}
-                    .sku=${item.sku}
-                    .image=${item.image}
-                    .name=${item.name}
-                    .price=${item.price}>
-                  </shop-item>
-                `
-              )
+          ${this.products
+            ? map(Object.entries(this.products), ([key, item]) => html` <shop-item .product=${item}> </shop-item> `)
             : 'Loading...'}
         </flex-wrap-evenly>
         <footer-element></footer-element>

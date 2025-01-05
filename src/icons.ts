@@ -33,5 +33,7 @@ export default html` <custom-icon-set>
     <span name="visibility_off">@symbol-visibility_off</span>
     <span name="contact_support">@symbol-contact_support</span>
     <span name="save">@symbol-save</span>
+    <span name="account_circle">@symbol-account_circle</span>
+    <span name="orders">@symbol-orders</span>
   </template>
 </custom-icon-set>`
