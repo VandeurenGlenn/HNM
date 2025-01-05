@@ -75,7 +75,7 @@ export default customElements.define(
             location.hash = '#!/account'
             return
           } else if (location.hash === '#!/login') {
-            location.hash = '#!/home'
+            location.hash = '#!/shop'
           }
           this.propertyProviders['userInfo'] = [{ name: 'userInfo', type: 'object', ref: `users/${user.uid}` }]
           this.handlePropertyProvider(`userInfo`)

@@ -5,6 +5,7 @@ import { translate } from '@lit-shop/translate'
 @customElement('shop-product')
 export class ShopProduct extends LiteElement {
   @property({ type: Object }) accessor product
+  @property({ type: String }) accessor key
 
   get amount() {
     return this.shadowRoot.querySelector('shop-item-bar').amount
