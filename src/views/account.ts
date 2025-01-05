@@ -81,6 +81,7 @@ export class AccountView extends LiteElement {
                 required
                 disabled
                 label="email"
+                autocomplete="current-email new-email, email"
                 value=${this.user.email}></md-outlined-text-field>`
           : ''}
 
@@ -88,32 +89,39 @@ export class AccountView extends LiteElement {
           <md-outlined-text-field
             required
             label=${translate('first name')}
+            autocomplete="given-name"
             value=${this.userInfo?.firstName}></md-outlined-text-field>
           <md-outlined-text-field
             required
+            autocomplete="family-name"
             label=${translate('surname')}
             value=${this.userInfo?.surname}></md-outlined-text-field>
         </flex-row>
         <md-outlined-text-field
           required
+          autocomplete="shipping street-address"
           label=${translate('street')}
           class="street"
           value=${this.userInfo?.street}></md-outlined-text-field>
 
         <md-outlined-text-field
           required
+          autocomplete="shipping address-line2"
           label=${translate('houseNumber')}
           class="houseNumber"
           value=${this.userInfo?.houseNumber}></md-outlined-text-field>
 
         <flex-row>
           <md-outlined-text-field
+            autocomplete="section-user1 shipping postal-code"
             required
             label=${translate('postalCode')}
             value=${this.userInfo?.postalCode}
             class="postalCode"></md-outlined-text-field>
           <md-outlined-text-field
+            autocomplete="country"
             required
+            type="text"
             label=${translate('city')}
             value=${this.userInfo?.city}
             class="city"></md-outlined-text-field>

@@ -73,6 +73,10 @@ export class ShopItem extends LiteElement {
         width: 100%;
         height: 375px;
       }
+
+      :host([is-mobile]) img {
+        height: calc(100% - 160px);
+      }
     `
   ]
 
