@@ -37,8 +37,8 @@ export class PromoHero extends LiteElement {
         z-index: 10002;
         position: relative;
         border-radius: 8px;
-        background-color: var(--md-sys-color-surface-variant);
-        color: var(--md-sys-color-on-surface-variant);
+        background-color: var(--md-sys-color-surface);
+        color: var(--md-sys-color-on-surface);
       }
 
       flex-column {
@@ -66,6 +66,10 @@ export class PromoHero extends LiteElement {
         right: 12px;
         top: 12px;
       }
+
+      [icon='redeem'] {
+        --custom-icon-size: 64px;
+      }
     `
   ]
   render() {
@@ -75,12 +79,11 @@ export class PromoHero extends LiteElement {
           icon="close"
           @click=${() => this.remove()}></custom-icon-button>
 
-        <h2>Lancerings korting</h2>
+        <h2>ACTIE!</h2>
 
         <flex-column>
-          <p>Maak een account en schrijf je in voor onze nieuwsbrief</p>
-
-          <p>ontvang 10% korting bij je eerste bestelling!</p>
+          <custom-icon icon="redeem"> </custom-icon>
+          <p>schrijf je nu in voor onze nieuwsbrief en ontvang 10% korting op uw eerste aankoop in de onlineshop</p>
 
           <custom-button
             type="tertiary"
