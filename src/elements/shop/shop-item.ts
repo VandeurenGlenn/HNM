@@ -7,6 +7,7 @@ export class ShopItem extends LiteElement {
   @property({ type: Boolean, attribute: 'is-mobile', consumes: true }) accessor isMobile
   @property({ type: String }) accessor placeholder = './assets/sciccors.svg'
   @property({ type: String }) accessor key
+  @property({ type: String }) accessor image
   @property({ type: Boolean, consumes: true }) accessor darkMode
 
   onChange(propertyKey: string, value: any): void {
@@ -69,13 +70,13 @@ export class ShopItem extends LiteElement {
       }
 
       :host([is-mobile]) {
-        max-width: 210px;
+        max-width: 190px;
         width: 100%;
-        height: 375px;
+        height: 190px;
       }
 
       :host([is-mobile]) img {
-        height: calc(100% - 160px);
+        height: calc(100% - 48px);
       }
     `
   ]
@@ -84,7 +85,7 @@ export class ShopItem extends LiteElement {
     if (!this.product) return html`<p>Loading</p>`
     return html`
       <a href="/#!/shop?product=${this.key}">
-        <img src=${this.product?.image ? this.product.image : this.placeholder} />
+        <img src=${this.product?.images ? this.product.images[0] : this.placeholder} />
         <flex-row>
           <h4>${translate(this.product.name)}</h4>
         </flex-row>
@@ -96,11 +97,6 @@ export class ShopItem extends LiteElement {
             })}</strong
           >
         </flex-row>
-        <flex-it></flex-it>
-        <shop-item-bar
-          ?is-mobile=${this.isMobile}
-          .EAN=${this.product.SKUs[0].EAN}
-          .key=${this.key}></shop-item-bar>
       </a>
     `
   }

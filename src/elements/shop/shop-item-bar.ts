@@ -1,11 +1,11 @@
-import { LiteElement, html, css, customElement, property } from '@vandeurenglenn/lite'
+import { LiteElement, html, css, customElement, property, query } from '@vandeurenglenn/lite'
 import '@material/web/iconbutton/icon-button.js'
 
 @customElement('shop-item-bar')
 export class ShopItemBar extends LiteElement {
   @property({ type: Number }) accessor amount = 1
-  @property({ type: String }) accessor EAN
   @property({ type: String }) accessor key
+  @property({ type: String }) accessor EAN
 
   static styles = [
     css`
@@ -53,6 +53,7 @@ export class ShopItemBar extends LiteElement {
             this.amount -= 1
           }}></custom-icon-button>
       </flex-row>
+
       <flex-it></flex-it>
       <custom-button
         data-action="add-to-cart"
