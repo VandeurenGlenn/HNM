@@ -85,7 +85,10 @@ export class ShopItem extends LiteElement {
     if (!this.product) return html`<p>Loading</p>`
     return html`
       <a href="/#!/shop?product=${this.key}">
-        <img src=${this.product?.images ? this.product.images[0] : this.placeholder} />
+        <img
+          src=${this.product?.images
+            ? `https://api.hellonewme.be/api/image?firebaseKey=${this.product.images[0]}`
+            : this.placeholder} />
         <flex-row>
           <h4>${translate(this.product.name)}</h4>
         </flex-row>
