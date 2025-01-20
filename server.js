@@ -1,6 +1,7 @@
 import Koa from 'koa'
 import koaStatic from 'koa-static'
 import compress from 'koa-compress'
+import open from 'open'
 
 const server = new Koa()
 
@@ -11,3 +12,5 @@ server.use((ctx) => {
   // ctx.set('Content-Type', 'text/plain')
 })
 server.listen(2020)
+open('http://localhost:2020')
+console.log('Server running at http://localhost:2020')
