@@ -1,0 +1,21 @@
+{
+  "autorun": true,
+  "terminals": [
+    {
+      "name": "command",
+      "description": "The command terminal",
+      "focus": true,
+      "persist": false
+    },
+    {
+      "name": "watch",
+      "persist": false,
+      "commands": ["npm run watch"]
+    },
+    {
+      "name": "server",
+      "persist": false,
+      "commands": ["npm run serve"]
+    }
+  ]
+}
