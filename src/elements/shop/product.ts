@@ -19,6 +19,7 @@ export type SKU = {
 @customElement('shop-product')
 export class ShopProduct extends LiteElement {
   @property({ type: Object }) accessor product
+  @property({ type: Object, consumes: true }) accessor carts
   @property({ type: String }) accessor key
   @property({ type: String }) accessor placeholder = './assets/sciccors.svg'
   @property({ type: Boolean, consumes: true }) accessor darkMode
@@ -121,6 +122,20 @@ export class ShopProduct extends LiteElement {
         <h3>${translate(this.product.name)}</h3>
         <p>${translate(this.product.description)}</p>
 
+        <p>${translate('stock')}: ${this.product.SKUs[0].stock}</p>
+        <p>
+          ${translate('reserved')}:
+          ${this.carts
+            ? Object.values(this.carts).reduce((amount, items) => {
+                console.log('items', items)
+
+                if (items[this.key]) {
+                  return amount + items[this.key].amount
+                }
+                return amount
+              }, 0)
+            : '0'}
+        </p>
         <flex-it></flex-it>
         <shop-item-bar
           .key=${this.key}

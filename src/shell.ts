@@ -58,6 +58,8 @@ export default customElements.define(
 
     @property({ type: Boolean }) accessor bannerShown = true
 
+    @property({ type: Object, consumes: true }) accessor carts
+
     async firstRender() {
       if (navigator.language !== 'en') {
         try {
@@ -106,6 +108,27 @@ export default customElements.define(
           console.log('add to cart', event.detail)
 
           cart.addItem(event.detail)
+        })
+
+        document.addEventListener('remove-from-cart', (event) => {
+          const cart = document.querySelector('app-shell').shadowRoot.querySelector('shop-cart') as ShopCart
+          console.log('remove from cart', event.detail)
+
+          cart.removeItem(event.detail)
+        })
+
+        document.addEventListener('decrease-amount', (event) => {
+          const cart = document.querySelector('app-shell').shadowRoot.querySelector('shop-cart') as ShopCart
+          console.log('remove from cart', event.detail)
+
+          cart.decreaseAmount(event.detail)
+        })
+
+        document.addEventListener('increase-amount', (event) => {
+          const cart = document.querySelector('app-shell').shadowRoot.querySelector('shop-cart') as ShopCart
+          console.log('remove from cart', event.detail)
+
+          cart.increaseAmount(event.detail)
         })
       })
 
@@ -158,6 +181,7 @@ export default customElements.define(
       const params = new URLSearchParams(query).keys()
 
       this.handlePropertyProvider(`products`)
+      this.handlePropertyProvider(`carts`)
       if (selected === 'shop') {
         this.product = undefined
         for (const param of params) {
@@ -183,7 +207,8 @@ export default customElements.define(
     static styles = [style]
 
     propertyProviders = {
-      products: [{ name: 'products', type: 'object' }]
+      products: [{ name: 'products', type: 'object' }],
+      carts: [{ name: 'carts', type: 'object' }]
     }
 
     removePropertyProvider(propertyProvider) {

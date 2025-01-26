@@ -40,7 +40,7 @@ export class ShopCart extends LiteElement {
 
     const items = this.cartItems
 
-    if (items[item.EAN]) {
+    if (items?.[item.EAN]) {
       items[item.EAN].amount += item.amount
     } else {
       items[item.EAN] = item
@@ -52,6 +52,22 @@ export class ShopCart extends LiteElement {
     const items = this.cartItems
     delete items[EAN]
     await firebase.set(`carts/${firebase.auth.currentUser.uid}`, items)
+  }
+
+  async decreaseAmount(EAN) {
+    const items = this.cartItems
+    if (items[EAN].amount > 1) {
+      items[EAN].amount--
+    } else if (items[EAN].amount === 1) {
+      delete items[EAN]
+    }
+    await firebase.set(`carts/${firebase.auth.currentUser.uid}`, items)
+  }
+
+  increaseAmount(EAN) {
+    const items = this.cartItems
+    items[EAN].amount++
+    firebase.set(`carts/${firebase.auth.currentUser.uid}`, items)
   }
 
   async onChange(propertyKey: string, value: any) {
