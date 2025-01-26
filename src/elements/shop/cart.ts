@@ -60,25 +60,9 @@ export class ShopCart extends LiteElement {
       (propertyKey === 'cartItems' && this.products && value) ||
       (propertyKey === 'products' && this.cartItems && value)
     ) {
-      for (const item of Object.values(this.cartItems)) {
-        const product = this.products[item.key]
-
-        if (!product) {
-          console.error('Product not found')
-          return
-        }
-
-        const cartItem = {
-          ...item,
-          name: product.name,
-          price: product.SKUs.find((sku) => sku.EAN === item.EAN).price
-        }
-        this.cartItems[item.EAN] = cartItem
-        await firebase.set(`carts/${firebase.auth.currentUser.uid}`, this.cartItems)
-      }
       this.totalAmount = Object.values(this.cartItems).reduce((acc, item) => acc + item.amount, 0)
       this.totalPrice = Object.values(this.cartItems).reduce((acc, item) => acc + item.amount * item.price, 0)
-      this.requestRender()
+      // this.requestRender()
     }
   }
 
