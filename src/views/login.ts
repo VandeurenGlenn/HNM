@@ -26,7 +26,8 @@ export class LoginView extends LiteElement {
 
         color: var(--md-sys-color-on-surface-variant);
         border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
         max-width: 400px;
         width: 100%;
         text-align: center;
@@ -57,7 +58,6 @@ export class LoginView extends LiteElement {
   render() {
     return html`
       <flex-container>
-        <custom-elevation level="2"></custom-elevation>
         <h2>Login</h2>
         <md-outlined-text-field
           label="Email"

@@ -62,16 +62,17 @@ const translatePlugin = () => {
     transform: async (code, id) => {
       const regex = new RegExp(/(?:\$\{translate\(\')(.+)(?:\'\)\})|(?:\$\{translate\(\")(.+)(?:\"\)\})/, 'g')
       const _matches = code.match(regex) || []
-      console.log(_matches)
       if (_matches.length > 0) {
         translationsMap['nl'] = translationsMap['nl'] || {}
 
         for (let i = 0; i < _matches.length; i++) {
           const match = _matches[i].replace(regex, '$1')
+          // Skip if already translated
+          if (translationsMap['nl'][match]) continue
+
           const translation = await translate(match, { from: 'en', to: 'nl' })
           translationsMap['nl'][match] = translation
         }
-        console.log(translationsMap)
         return code
       }
     },

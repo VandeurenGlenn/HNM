@@ -37,12 +37,18 @@ export class ShopProduct extends LiteElement {
         this.placeholder = './assets/sciccors.svg'
       }
     }
+    console.log('propertyKey', propertyKey, 'value', value)
 
-    if (propertyKey === 'product' && value.SKUs) {
+    if ((propertyKey === 'product' && value.SKUs) || (propertyKey === 'SKUs' && this.product)) {
+      console.log('product', this.product)
+      console.log('SKUs', this.SKUs)
+
+      await this.selectElement.updateComplete
       this.currentEAN = value.SKUs[0].EAN
       this.currentPrice = value.SKUs[0].price
-      await this.selectElement.updateComplete
       this.selectElement.select(this.currentEAN)
+      this.key = this.product.key
+      this.requestRender()
     }
   }
 

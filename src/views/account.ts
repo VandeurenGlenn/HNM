@@ -7,6 +7,7 @@ import '@material/web/fab/fab.js'
 import '@vandeurenglenn/lite-elements/icon.js'
 import { UserCredential } from 'firebase/auth'
 import { get, set } from '../firebase.js'
+import { UserInfo } from '../types.js'
 
 @customElement('account-view')
 export class AccountView extends LiteElement {
@@ -19,6 +20,7 @@ export class AccountView extends LiteElement {
         display: flex;
         flex-direction: column;
         align-items: center;
+        overflow-y: auto;
       }
       md-outlined-text-field {
         width: 100%;
@@ -26,6 +28,7 @@ export class AccountView extends LiteElement {
       }
       flex-row {
         width: 100%;
+        gap: 12px;
       }
       flex-container {
         align-items: center;
@@ -40,6 +43,9 @@ export class AccountView extends LiteElement {
       .displayName {
         margin-bottom: 24px;
         font-size: 24px;
+      }
+      h2 {
+        width: 100%;
       }
     `
   ]
@@ -58,22 +64,32 @@ export class AccountView extends LiteElement {
     }
     if (errors) return
 
-    await set(`users/${this.user.uid}`, {
+    const user: UserInfo = {
       email: this.user.email,
-      firstName: inputs[1].value,
-      surname: inputs[2].value,
-      street: inputs[3].value,
-      houseNumber: inputs[4].value,
-      postalCode: inputs[5].value,
-      city: inputs[6].value
-    })
+      firstName: inputs[2].value,
+      lastName: inputs[3].value,
+      phoneNumber: inputs[1].value,
+      address: {
+        street: inputs[4].value,
+        houseNumber: inputs[5].value,
+        postalCode: inputs[6].value,
+        city: inputs[7].value,
+        country: inputs[8].value
+      },
+      company: {
+        name: inputs[9].value,
+        BTW: inputs[10].value
+      }
+    }
+    await set(`users/${this.user.uid}`, user)
   }
   render() {
     return html`
       <flex-container>
         <h1>${translate('profile')}</h1>
         ${this.user
-          ? html` ${this.user?.photoURL
+          ? html`
+              ${this.user?.photoURL
                 ? html`<img
                     src=${this.user?.photoURL}
                     alt=${this.user.displayName} /> `
@@ -84,7 +100,14 @@ export class AccountView extends LiteElement {
                 disabled
                 label="email"
                 autocomplete="current-email new-email, email"
-                value=${this.user.email}></md-outlined-text-field>`
+                value=${this.user.email}></md-outlined-text-field>
+
+              <md-outlined-text-field
+                required
+                label=${translate('phoneNumber')}
+                autocomplete="mobile"
+                value=${this.userInfo?.phoneNumber}></md-outlined-text-field>
+            `
           : ''}
 
         <flex-row>
@@ -96,38 +119,60 @@ export class AccountView extends LiteElement {
           <md-outlined-text-field
             required
             autocomplete="family-name"
-            label=${translate('surname')}
-            value=${this.userInfo?.surname}></md-outlined-text-field>
+            label=${translate('last name')}
+            value=${this.userInfo?.lastName}></md-outlined-text-field>
         </flex-row>
-        <md-outlined-text-field
-          required
-          autocomplete="shipping street-address"
-          label=${translate('street')}
-          class="street"
-          value=${this.userInfo?.street}></md-outlined-text-field>
+        <flex-row>
+          <md-outlined-text-field
+            required
+            autocomplete="shipping street-address"
+            label=${translate('street')}
+            class="street"
+            value=${this.userInfo?.address?.street}></md-outlined-text-field>
 
-        <md-outlined-text-field
-          required
-          autocomplete="shipping address-line2"
-          label=${translate('houseNumber')}
-          class="houseNumber"
-          value=${this.userInfo?.houseNumber}></md-outlined-text-field>
-
+          <md-outlined-text-field
+            required
+            autocomplete="shipping address-line2"
+            label=${translate('house number')}
+            class="houseNumber"
+            value=${this.userInfo?.address?.houseNumber}></md-outlined-text-field>
+        </flex-row>
         <flex-row>
           <md-outlined-text-field
             autocomplete="section-user1 shipping postal-code"
             required
             label=${translate('postalCode')}
-            value=${this.userInfo?.postalCode}
+            value=${this.userInfo?.address?.postalCode}
             class="postalCode"></md-outlined-text-field>
           <md-outlined-text-field
-            autocomplete="country"
+            autocomplete="shipping city"
             required
             type="text"
             label=${translate('city')}
-            value=${this.userInfo?.city}
+            value=${this.userInfo?.address?.city}
             class="city"></md-outlined-text-field>
+
+          <md-outlined-text-field
+            autocomplete="shipping country"
+            required
+            type="text"
+            label=${translate('country')}
+            value=${this.userInfo?.address?.country}
+            class="country"></md-outlined-text-field>
         </flex-row>
+
+        <h2>${translate('company info')}</h2>
+        <flex-row>
+          <md-outlined-text-field
+            autocomplete="shipping company"
+            label=${translate('company name')}
+            value=${this.userInfo?.company?.name}></md-outlined-text-field>
+          <md-outlined-text-field
+            autocomplete="shipping vat"
+            label=${'BTW'}
+            value=${this.userInfo?.company?.BTW}></md-outlined-text-field>
+        </flex-row>
+
         <flex-row style="justify-content: flex-end;">
           <md-fab
             varian="surface"

@@ -19,8 +19,7 @@ export class HomeView extends LiteElement {
 
   #onscroll(event) {
     event.preventDefault()
-    const { height } = this.shadowRoot.querySelector('header.big').getBoundingClientRect()
-    if (this.scrollTop > height - 54) this.condensed = true
+    if (this.scrollTop > 0) this.condensed = true
     else this.condensed = false
   }
 
@@ -123,9 +122,7 @@ export class HomeView extends LiteElement {
         box-sizing: border-box;
         z-index: 100;
         will-change: margin;
-        margin-top: -34px;
         width: 100%;
-        opacity: 0;
         transition: opacity ease-out 60ms;
       }
       header.big img {
@@ -136,15 +133,13 @@ export class HomeView extends LiteElement {
 
       :host([condensed]) small-header {
         top: 0;
+
         background: var(--md-sys-color-background);
         position: sticky;
-        opacity: 1;
-        transition: opacity ease-in 60ms;
       }
 
       :host([condensed]) header.big img {
         opacity: 0;
-        transition: opacity ease-out 16ms;
       }
 
       .examples {
@@ -173,6 +168,9 @@ export class HomeView extends LiteElement {
 
       p {
         text-align: center;
+        font-size: 1.2em;
+        line-height: 1.6;
+        margin-bottom: 16px;
       }
 
       .summary {
@@ -244,21 +242,16 @@ export class HomeView extends LiteElement {
             as="image"
             href="./assets/banner.svg" />`}
 
-      <header class="big">
-        <img
-          alt="banner"
-          src=${this.darkMode ? './assets/banner-dark.svg' : './assets/banner.svg'} />
-      </header>
-
       <small-header .darkMode=${this.darkMode}></small-header>
 
       <flex-row class="summary">
-        <!-- <zooming-image src="./assets/products.jpeg"></zooming-image> -->
+        <zooming-image src="./assets/products.jpeg"></zooming-image>
         <!--<img alt="homeimage" class="home-image" loading="lazy" src="./assets/home.webp">-->
         <flex-column>
           <h2>Get used to, feeling good.</h2>
           <p>
-            HNM is een jonge, sterk groeiende onderneming die gespecialiseerd is in het maken van haarsystemen op maat.
+            Hello New Me is een jonge, sterk groeiende onderneming die gespecialiseerd is in het maken van haarsystemen
+            op maat.
           </p>
           <p>
             Onze haarsystemen zijn voorzien van een vocht en luchtdoorlatend gaas waardoor onaangename geurtjes

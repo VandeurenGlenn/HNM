@@ -13,27 +13,44 @@ export class ShopCartItem extends LiteElement {
   static styles = [
     css`
       :host {
-        display: block;
-        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        padding: 12px 16px;
         border: 1px solid #ccc;
+        margin-bottom: 8px;
+        width: -webkit-fill-available;
+      }
+
+      * {
+        font-weight: 400;
+        box-sizing: border-box;
+        margin: 0;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+
+      strong {
+        font-weight: 600;
+        font-size: 1em;
         margin-bottom: 8px;
       }
     `
   ]
 
-  onChange(propertyKey: string, value: any): void {
-    if (propertyKey === 'EAN') {
-    }
-  }
-
   render() {
     return html`
-      <div>
-        <h2>${translate(this.name)}</h2>
-        ${this.from ? html`<p>From: ${this.from}</p>` : ''}
-        <p>Price: ${this.price}</p>
-        <p>amount: ${this.amount}</p>
-      </div>
+      <strong>${translate(this.name)}</strong>
+      ${this.from ? html`<p>From: ${this.from}</p>` : ''}
+      <p>
+        ${this.amount} x
+        <strong
+          >${Number(this.price).toLocaleString('nl-BE', {
+            style: 'currency',
+            currency: 'EUR'
+          })}</strong
+        >
+      </p>
     `
   }
 }

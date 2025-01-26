@@ -1,35 +1,85 @@
 import { html, css, customElement, LiteElement, property, map } from '@vandeurenglenn/lite'
 import './cart-item.js'
+import { translate } from '@lit-shop/translate'
 
+declare type CartItem = {
+  [EAN: string]: {
+    EAN: string
+    amount: number
+    key: string
+    image: string
+    name: string
+    price: number
+  }
+}
 @customElement('shop-cart')
 export class ShopCart extends LiteElement {
-  @property({ type: Array }) accessor items = {}
+  @property({ type: Object, consumes: true }) accessor products = {}
+  @property({ type: Array, consumes: true }) accessor cartItems: CartItem = {}
 
   @property({ reflect: true, type: Boolean }) accessor open = false
 
-  @property({ type: Object }) accessor products
-
   @property({ type: Number }) accessor totalAmount = 0
+  @property({ type: Number }) accessor totalPrice = 0
 
-  addItem(item) {
-    if (this.items[item.EAN]) {
-      this.items[item.EAN].amount += item.amount
+  async addItem(item) {
+    console.log(item)
+    console.log(this.products)
+    const product = this.products[item.key]
 
-      this.totalAmount = Object.values(this.items).reduce((acc, item) => acc + item.amount, 0)
-      this.requestRender()
+    if (!product) {
+      console.error('Product not found')
       return
     }
-    this.items[item.EAN] = item
-    this.totalAmount = Object.values(this.items).reduce((acc, item) => acc + item.amount, 0)
-    this.requestRender()
+
+    item = {
+      ...item,
+      name: product.name,
+      price: product.SKUs.find((sku) => sku.EAN === item.EAN).price
+    }
+
+    const items = this.cartItems
+
+    if (items[item.EAN]) {
+      items[item.EAN].amount += item.amount
+    } else {
+      items[item.EAN] = item
+    }
+    await firebase.set(`carts/${firebase.auth.currentUser.uid}`, items)
   }
 
-  removeItem(EAN) {
-    delete this.items[EAN]
+  async removeItem(EAN) {
+    const items = this.cartItems
+    delete items[EAN]
+    await firebase.set(`carts/${firebase.auth.currentUser.uid}`, items)
   }
 
-  onChange(propertyKey: string, value: any): void {
+  async onChange(propertyKey: string, value: any) {
     console.log(propertyKey, value)
+    if (
+      (propertyKey === 'cartItems' && this.products && value) ||
+      (propertyKey === 'products' && this.cartItems && value)
+    ) {
+      for (const item of Object.values(this.cartItems)) {
+        const product = this.products[item.key]
+
+        if (!product) {
+          console.error('Product not found')
+          return
+        }
+
+        const cartItem = {
+          ...item,
+          name: product.name,
+          price: product.SKUs.find((sku) => sku.EAN === item.EAN).price
+        }
+        this.cartItems[item.EAN] = cartItem
+        await firebase.set(`carts/${firebase.auth.currentUser.uid}`, this.cartItems)
+      }
+      this.totalAmount = Object.values(this.cartItems).reduce((acc, item) => acc + item.amount, 0)
+      this.totalPrice = Object.values(this.cartItems).reduce((acc, item) => acc + item.amount * item.price, 0)
+      this.requestRender()
+    }
   }
 
   static styles = [
@@ -53,7 +103,32 @@ export class ShopCart extends LiteElement {
         box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
         opacity: 0;
         pointer-events: none;
-        padding: 8px 24px;
+        padding: 8px 24px 24px 24px;
+        font-size: 15px;
+      }
+
+      flex-column {
+        flex: 1;
+        overflow-y: auto;
+      }
+
+      footer {
+        width: 100%;
+        box-sizing: border-box;
+        height: 82px;
+        justify-content: space-between;
+        padding: 12px 0;
+      }
+
+      footer flex-row {
+        height: 26px;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      footer custom-button {
+        width: 100%;
+        margin-top: 12px;
       }
 
       :host([open]) .cart {
@@ -96,23 +171,8 @@ export class ShopCart extends LiteElement {
     `
   ]
   render() {
-    const entries = this.items ? Object.entries(this.items) : []
+    const entries = this.cartItems ? Object.entries(this.cartItems) : []
     console.log(entries)
-    console.log(
-      map(
-        entries,
-        ([sku, item]) => html`
-          <shop-cart-item
-            .EAN=${item.EAN}
-            .sku=${sku}
-            .name=${item.name}
-            .image=${item.image}
-            .amount=${item.amount}
-            .price=${item.price}>
-          </shop-cart-item>
-        `
-      )
-    )
 
     return html`
       ${this.open
@@ -124,33 +184,59 @@ export class ShopCart extends LiteElement {
                   icon="close"
                   @click=${() => (this.open = false)}></custom-icon-button>
               </header>
+              <flex-column>
+                ${
+                  entries.length > 0
+                    ? map(
+                        entries,
+                        ([sku, item]) => html`
+                          <shop-cart-item
+                            .sku=${sku}
+                            .key=${item.key}
+                            .EAN=${item.EAN}
+                            .name=${item.name}
+                            .from=${item.from}
+                            .image=${item.image}
+                            .amount=${item.amount}
+                            .price=${item.price}>
+                          </shop-cart-item>
+                        `
+                      )
+                    : html`
+                        <p class="empty">Your cart is empty</p>
+                        <custom-button
+                          class="go-to-shop"
+                          type="tertiary"
+                          @click=${() => (location.hash = '#!/shop')}
+                          label="Go to shop">
+                          <custom-icon
+                            slot="icon"
+                            icon="shopping_basket"></custom-icon>
+                        </custom-button>
+                      `
+                }
+              </flex-column>
 
-              ${entries.length > 0
-                ? map(
-                    entries,
-                    ([sku, item]) => html`
-                      <shop-cart-item
-                        .sku=${sku}
-                        .name=${item.name}
-                        .from=${item.from}
-                        .image=${item.image}
-                        .amount=${item.amount}
-                        .price=${item.price}>
-                      </shop-cart-item>
-                    `
-                  )
-                : html`
-                    <p class="empty">Your cart is empty</p>
-                    <custom-button
-                      class="go-to-shop"
-                      type="tertiary"
-                      @click=${() => (location.hash = '#!/shop')}
-                      label="Go to shop">
-                      <custom-icon
-                        slot="icon"
-                        icon="shopping_basket"></custom-icon>
-                    </custom-button>
-                  `}
+              <footer>
+                <flex-row>
+                  <p>${translate('total')}</p>
+                  ${this.totalPrice.toLocaleString('nl-BE', {
+                    style: 'currency',
+                    currency: 'EUR'
+                  })}
+                </flex-row>
+
+                <custom-button
+                  type="tonal"
+                  label="Checkout"
+                  @click=${() => {
+                    location.hash = '#!/checkout'
+                    this.open = !this.open
+                  }}>
+                  <custom-icon
+                    slot="icon"
+                    icon="shopping_cart"></custom-icon>
+              </footer>
             </flex-container>`
         : html`<custom-icon-button
               icon="shopping_cart"

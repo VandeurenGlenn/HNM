@@ -65,24 +65,24 @@ export class GiftcardsView extends LiteElement {
     a.remove()
   }
   firstRender(): void {
-    setTimeout(() => {
-      // domtoimage.toSvg(this.shadowRoot.querySelector('giftcard-front')).then((dataUrl) => {
-      //   console.log(dataUrl)
-      //   this.saveAs(dataUrl, 'giftcard-front.svg')
-      // })
-      // domtoimage.toSvg(this.shadowRoot.querySelector('giftcard-back')).then((dataUrl) => {
-      //   console.log(dataUrl)
-      //   this.saveAs(dataUrl, 'giftcard-back.svg')
-      // })
-      // domtoimage.toPng(this.shadowRoot.querySelector('giftcard-front')).then((dataUrl) => {
-      //   console.log(dataUrl)
-      //   this.saveAs(dataUrl, 'giftcard-front.png')
-      // })
-      // domtoimage.toPng(this.shadowRoot.querySelector('giftcard-back')).then((dataUrl) => {
-      //   console.log(dataUrl)
-      //   this.saveAs(dataUrl, 'giftcard-back.png')
-      // })
-    }, 10000)
+    // setTimeout(() => {
+    // domtoimage.toSvg(this.shadowRoot.querySelector('giftcard-front')).then((dataUrl) => {
+    //   console.log(dataUrl)
+    //   this.saveAs(dataUrl, 'giftcard-front.svg')
+    // })
+    // domtoimage.toSvg(this.shadowRoot.querySelector('giftcard-back')).then((dataUrl) => {
+    //   console.log(dataUrl)
+    //   this.saveAs(dataUrl, 'giftcard-back.svg')
+    // })
+    // domtoimage.toPng(this.shadowRoot.querySelector('giftcard-front')).then((dataUrl) => {
+    //   console.log(dataUrl)
+    //   this.saveAs(dataUrl, 'giftcard-front.png')
+    // })
+    // domtoimage.toPng(this.shadowRoot.querySelector('giftcard-back')).then((dataUrl) => {
+    //   console.log(dataUrl)
+    //   this.saveAs(dataUrl, 'giftcard-back.png')
+    // })
+    // }, 10000)
   }
 
   toInput = (event) => {

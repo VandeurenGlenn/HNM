@@ -1,4 +1,7 @@
 export default class Router {
+  selected
+  previousSelected
+
   static routes = new Map([
     ['home', 'home'],
     ['shop', 'shop'],
@@ -35,8 +38,11 @@ export default class Router {
   }
 
   async #select(selected) {
+    this.previousSelected = this.selected
+    this.selected = selected
+    !customElements.get(`${selected}-view`) && (await import(`./${selected}.js`))
+
     requestAnimationFrame(async () => {
-      !customElements.get(`${selected}-view`) && (await import(`./${selected}.js`))
       this.#pages.select(selected)
       this.#selector.select(selected)
     })

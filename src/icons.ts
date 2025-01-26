@@ -36,5 +36,6 @@ export default html` <custom-icon-set>
     <span name="account_circle">@symbol-account_circle</span>
     <span name="orders">@symbol-orders</span>
     <span name="remove">@symbol-remove</span>
+    <span name="payments">@symbol-payments</span>
   </template>
 </custom-icon-set>`

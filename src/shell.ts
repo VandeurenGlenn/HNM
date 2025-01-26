@@ -21,11 +21,13 @@ import { setupTranslations, translate } from '@lit-shop/translate'
 import { PromoHero } from './elements/promo-hero.js'
 import { ref } from 'firebase/database'
 import { ShopCart } from './elements/shop/cart.js'
+import Router from './router.js'
 
 export default customElements.define(
   'app-shell',
   class AppShell extends LiteElement {
     #propertyProviders = []
+    checkingOut = false
 
     @query('custom-drawer-layout')
     accessor #drawerLayout
@@ -45,6 +47,8 @@ export default customElements.define(
     @property({ type: Object, provides: true }) accessor orders
     @property({ type: Object, provides: true }) accessor products
     @property({ type: Object, provides: true, batchDelay: 200 }) accessor product
+
+    @property({ type: Object, provides: true }) accessor cartItems
 
     @property({ reflect: true, attribute: 'menu-shown', type: Boolean })
     accessor menuShown
@@ -75,13 +79,19 @@ export default customElements.define(
             location.hash = '#!/account'
             return
           } else if (location.hash === '#!/login') {
-            location.hash = '#!/shop'
+            if (this.checkingOut) {
+              this.checkingOut = false
+              location.hash = '#!/checkout'
+            } else location.hash = '#!/shop'
           }
           this.propertyProviders['userInfo'] = [{ name: 'userInfo', type: 'object', ref: `users/${user.uid}` }]
+          this.propertyProviders['cartItems'] = [{ name: 'cartItems', type: 'object', ref: `carts/${user.uid}` }]
           this.handlePropertyProvider(`userInfo`)
+          this.handlePropertyProvider(`cartItems`)
         } else {
           this.user = undefined
           this.userInfo = undefined
+          this.cartItems = undefined
 
           this.removePropertyProvider('userInfo')
           const hero = document.createElement('promo-hero') as PromoHero
@@ -118,6 +128,7 @@ export default customElements.define(
           firebase.auth.signOut()
           if (this.#selector.selected === 'account') location.hash = '#!/login'
         } else if (target.tagName === 'CUSTOM-BUTTON' && target.label === 'login') {
+          if (this.#pages.selected === 'checkout') this.checkingOut = true
           location.hash = '#!/login'
         }
       })
@@ -146,8 +157,8 @@ export default customElements.define(
       !customElements.get(`${selected}-view`) && (await import(`./${selected}.js`))
       const params = new URLSearchParams(query).keys()
 
+      this.handlePropertyProvider(`products`)
       if (selected === 'shop') {
-        this.handlePropertyProvider('products')
         this.product = undefined
         for (const param of params) {
           const value = new URLSearchParams(query).get(param)
@@ -158,10 +169,6 @@ export default customElements.define(
       if (selected === 'orders' && this.user) {
         this.propertyProviders['orders'] = [{ name: 'orders', type: 'object', ref: `orders/${this.user.uid}` }]
         this.handlePropertyProvider(`orders`)
-      }
-      if (selected === 'account' && this.user) {
-        this.propertyProviders['userInfo'] = [{ name: 'userInfo', type: 'object', ref: `users/${this.user.uid}` }]
-        this.handlePropertyProvider(`userInfo`)
       }
       requestAnimationFrame(async () => {
         this.#pages.select(selected)
@@ -330,7 +337,7 @@ export default customElements.define(
               ${this.user
                 ? html`
                     <custom-drawer-item data-route="orders">
-                      ${translate('orders')}
+                      ${translate('my orders')}
                       <flex-it></flex-it>
                       <custom-icon icon="orders"></custom-icon>
                     </custom-drawer-item>
@@ -384,6 +391,8 @@ export default customElements.define(
               <login-view data-route="login"></login-view>
               <home-view data-route="home"></home-view>
               <shop-view data-route="shop"></shop-view>
+              <before-checkout-view data-route="before-checkout"></before-checkout-view>
+              <checkout-view data-route="checkout"></checkout-view>
               <giftcards-view data-route="giftcards"></giftcards-view>
               <who-we-are-view data-route="who-we-are"></who-we-are-view>
               <account-view data-route="account"></account-view>
