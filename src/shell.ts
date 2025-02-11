@@ -67,6 +67,9 @@ export default customElements.define(
         } catch (error) {
           console.warn('Could not load translations', error)
         }
+        globalThis.litShop = globalThis.litShop || {}
+        globalThis.litShop.translate = translate
+        globalThis.litShop.shell = this
       }
 
       firebase.auth.onAuthStateChanged(async (user) => {
