@@ -27,31 +27,47 @@ export class ShopCart extends LiteElement {
     console.log(this.products)
     const product = this.products[item.key]
 
-    if (!product) {
+    if (!product && !item.to) {
       console.error('Product not found')
       return
     }
 
-    item = {
-      ...item,
-      name: product.name,
-      price: product.SKUs.find((sku) => sku.EAN === item.EAN).price
-    }
-
-    const items = this.cartItems
-
-    if (items?.[item.EAN]) {
-      items[item.EAN].amount += item.amount
+    const items = this.cartItems || {}
+    if (item.to) {
+      item = {
+        ...item,
+        name: item.to.name,
+        price: item.price
+      }
+      if (items?.[item.sku]) {
+        items[item.sku].amount += item.amount
+      } else {
+        items[item.sku] = item
+      }
     } else {
-      items[item.EAN] = item
+      item = {
+        ...item,
+        name: product.name,
+        price: product.SKUs.find((sku) => sku.EAN === item.EAN).price
+      }
+      if (items?.[item.EAN]) {
+        items[item.EAN].amount += item.amount
+      } else {
+        items[item.EAN] = item
+      }
     }
-    await firebase.set(`carts/${firebase.auth.currentUser.uid}`, items)
+
+    if (firebase.auth.currentUser) await firebase.set(`carts/${firebase.auth.currentUser.uid}`, items)
+    else this.cartItems = items
+    this.requestRender()
   }
 
   async removeItem(EAN) {
     const items = this.cartItems
     delete items[EAN]
-    await firebase.set(`carts/${firebase.auth.currentUser.uid}`, items)
+    if (firebase.auth.currentUser) await firebase.set(`carts/${firebase.auth.currentUser.uid}`, items)
+    else this.cartItems = items
+    this.requestRender()
   }
 
   async decreaseAmount(EAN) {
@@ -61,13 +77,17 @@ export class ShopCart extends LiteElement {
     } else if (items[EAN].amount === 1) {
       delete items[EAN]
     }
-    await firebase.set(`carts/${firebase.auth.currentUser.uid}`, items)
+    if (firebase.auth.currentUser) await firebase.set(`carts/${firebase.auth.currentUser.uid}`, items)
+    else this.cartItems = items
+    this.requestRender()
   }
 
-  increaseAmount(EAN) {
+  async increaseAmount(EAN) {
     const items = this.cartItems
     items[EAN].amount++
-    firebase.set(`carts/${firebase.auth.currentUser.uid}`, items)
+    if (firebase.auth.currentUser) await firebase.set(`carts/${firebase.auth.currentUser.uid}`, items)
+    else this.cartItems = items
+    this.requestRender()
   }
 
   async onChange(propertyKey: string, value: any) {
