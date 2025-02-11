@@ -71,10 +71,32 @@ export class CheckoutView extends LiteElement {
     }
 
     if (errors) return
-    requestAnimationFrame(() => this.completePayment())
+    requestAnimationFrame(() => this.completePayment(selectors[0].value, inputs))
   }
 
-  completePayment = () => {
+  completePayment = async (paymentMethod: string, inputs) => {
+    const items = globalThis.litShop.shell.cartItems
+    console.log('items', items)
+
+    const amount = Object.values(items).reduce((acc: number, item) => acc + Number(item.price), 0)
+    const description = Object.values(items)
+      .map((item) => item.EAN)
+      .join(', ')
+
+    const body = JSON.stringify({ items, amount, description, giftcards: [] })
+    console.log('body', body)
+
+    if (paymentMethod === 'payconiq/bancontact') {
+      const response = await fetch('https://api.hellonewme.be/checkout/payconiq/createPayment', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body
+      })
+      await response.json()
+    }
+
     alert(translate('Payment completed'))
   }
 
