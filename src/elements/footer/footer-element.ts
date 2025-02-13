@@ -9,8 +9,6 @@ export class FooterElement extends LiteElement {
         display: flex;
         justify-content: center;
         padding: 40px 20px;
-        background-color: var(--md-sys-color-tertiary);
-        color: var(--md-sys-color-on-tertiary);
         text-align: center;
         width: 100%;
         box-sizing: border-box;
@@ -51,7 +49,6 @@ export class FooterElement extends LiteElement {
       .footer-bottom {
         margin-top: 20px;
         font-size: 0.9em;
-        color: var(--color-on-primary-light);
       }
     `
   ]
@@ -59,7 +56,7 @@ export class FooterElement extends LiteElement {
     return html`
       <div class="footer-content">
         <img
-          src=${this.darkMode ? './assets/banner-tertiary.svg' : './assets/banner-dark.svg'}
+          src=${this.darkMode ? './assets/banner-dark.svg' : './assets/banner.svg'}
           alt="HNM Logo"
           class="logo" />
 

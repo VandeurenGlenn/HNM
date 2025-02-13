@@ -4,7 +4,7 @@ import '@material/web/select/outlined-select.js'
 import '@material/web/select/select-option.js'
 import '@vandeurenglenn/flex-elements/container.js'
 import { translate } from '@lit-shop/translate'
-import { UserInfo } from '../types.js'
+import { PayconiqPayment, UserInfo } from '../types.js'
 
 @customElement('checkout-view')
 export class CheckoutView extends LiteElement {
@@ -87,17 +87,41 @@ export class CheckoutView extends LiteElement {
     console.log('body', body)
 
     if (paymentMethod === 'payconiq/bancontact') {
-      const response = await fetch('https://api.hellonewme.be/checkout/payconiq/createPayment', {
+      const response = await fetch('http://localhost:3005/checkout/payconiq/createPayment', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body
       })
-      await response.json()
+      const result = (await response.json()) as PayconiqPayment
+      console.log('result', result)
+
+      this.showPayment('payconiq', result._links.deeplink.href, result._links.qrcode.href, result.paymentId)
     }
 
     alert(translate('Payment completed'))
+  }
+
+  showPayment = (paymentMethod: string, deeplink: string, qrcode: string, paymentId: string) => {
+    if (paymentMethod === 'payconiq') {
+      const dialog = document.createElement('dialog')
+      dialog.innerHTML = `
+        <h2>${translate('Pay with Payconiq')}</h2>
+        <p>${translate('Please scan the QR code or click the link to pay')}</p>
+        <img src="${qrcode}" />
+        <flex-row>
+        <a href="${deeplink}"><custom-button label=${translate('Pay with Payconiq')}></custom-button></a>
+        <p>${translate('or')}</p>
+        <a href="https://api.hellonewme.be/checkout/payconiq/cancelPayment?payment=${paymentId}">${translate(
+        'Cancel'
+      )}</a>
+        </flex-row>
+        
+      `
+      document.body.appendChild(dialog)
+      dialog.showModal()
+    }
   }
 
   render() {

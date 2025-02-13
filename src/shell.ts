@@ -356,7 +356,7 @@ export default customElements.define(
                   <img
                     alt="logo"
                     loading="lazy"
-                    src=${this.darkMode ? './assets/sciccors-dark.svg' : './assets/sciccors.svg'}
+                    src=${this.darkMode ? './assets/banner-dark.svg' : './assets/banner.svg'}
                 /></span>`}
 
             <custom-selector
