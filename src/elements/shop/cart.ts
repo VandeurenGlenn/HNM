@@ -22,6 +22,10 @@ export class ShopCart extends LiteElement {
   @property({ type: Number }) accessor totalAmount = 0
   @property({ type: Number }) accessor totalPrice = 0
 
+  async addGiftcard(item) {
+    await this.addItem(item)
+  }
+
   async addItem(item) {
     console.log(item)
     console.log(this.products)
@@ -39,11 +43,7 @@ export class ShopCart extends LiteElement {
         name: item.to.name,
         price: item.price
       }
-      if (items?.[item.sku]) {
-        items[item.sku].amount += item.amount
-      } else {
-        items[item.sku] = item
-      }
+      items[`giftcard-${crypto.randomUUID()}`] = item
     } else {
       item = {
         ...item,
@@ -56,6 +56,8 @@ export class ShopCart extends LiteElement {
         items[item.EAN] = item
       }
     }
+
+    console.log(items)
 
     if (firebase.auth.currentUser) await firebase.set(`carts/${firebase.auth.currentUser.uid}`, items)
     else this.cartItems = items

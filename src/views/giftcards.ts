@@ -152,8 +152,7 @@ export class GiftcardsView extends LiteElement {
           @click=${() => this.addToCart()}
           type="tertiary"></custom-button>
         <section>
-          <p>De giftcard is 1 jaar geldig en kan zelfs gebruikt worden in onze webshop!</p>
-          <p>De giftcard kun je aankopen in onze winkel of in onze <a href="/#!/shop">webshop</a>.</p>
+          <p>De giftcard kan gebruikt worden in onze webshop.</p>
         </section>
       </flex-container>
       <footer-element></footer-element>

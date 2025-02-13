@@ -1,4 +1,5 @@
 import { LiteElement, html, css, customElement, property } from '@vandeurenglenn/lite'
+import { render } from 'lit-html'
 import '@material/web/textfield/outlined-text-field.js'
 import '@material/web/select/outlined-select.js'
 import '@material/web/select/select-option.js'
@@ -83,11 +84,37 @@ export class CheckoutView extends LiteElement {
       .map((item) => item.EAN)
       .join(', ')
 
-    const body = JSON.stringify({ items, amount, description, giftcards: [] })
-    console.log('body', body)
+    const shipping = {
+      firstName: inputs[0].value,
+      lastName: inputs[1].value,
+      address: {
+        street: inputs[2].value,
+        houseNumber: inputs[3].value,
+        city: inputs[4].value,
+        postalCode: inputs[5].value,
+        country: inputs[6].value
+      },
+      phoneNumber: inputs[7].value,
+      email: inputs[8].value,
+      company: {
+        name: inputs[9].value,
+        BTW: inputs[10].value
+      }
+    }
 
+    const orderResponse = await fetch('https://api.hellonewme.be/orders/create', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ items, shipping, user: firebase.auth?.currentUser?.uid || 'anonymous' })
+    })
+    const order = await orderResponse.text()
+    console.log('order', order)
+    const body = JSON.stringify({ items, amount, description, order, giftcards: [] })
+    console.log('body', body)
     if (paymentMethod === 'payconiq/bancontact') {
-      const response = await fetch('http://localhost:3005/checkout/payconiq/createPayment', {
+      const response = await fetch('https://api.hellonewme.be/checkout/payconiq/createPayment', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -97,30 +124,76 @@ export class CheckoutView extends LiteElement {
       const result = (await response.json()) as PayconiqPayment
       console.log('result', result)
 
-      this.showPayment('payconiq', result._links.deeplink.href, result._links.qrcode.href, result.paymentId)
-    }
+      const paymentResult = await this.showPayment(
+        'payconiq',
+        result._links.deeplink.href,
+        result._links.qrcode.href,
+        result.paymentId
+      )
 
-    alert(translate('Payment completed'))
+      if (!paymentResult) {
+        alert(translate('Payment failed'))
+      }
+    }
   }
 
-  showPayment = (paymentMethod: string, deeplink: string, qrcode: string, paymentId: string) => {
+  cancelPayment = async (paymentId: string) => {
+    const response = await fetch('https://api.hellonewme.be/checkout/payconiq/cancelPayment?payment=${paymentId}')
+    const result = await response.text()
+    if (result === 'ok') {
+      alert(translate('Payment cancelled'))
+      document.querySelector('dialog').close()
+      document.querySelector('dialog').remove()
+    }
+  }
+
+  showPayment = async (paymentMethod: string, deeplink: string, qrcode: string, paymentId: string) => {
+    const cancelPayment = async (paymentId: string) => {
+      const response = await fetch('https://api.hellonewme.be/checkout/payconiq/cancelPayment?payment=${paymentId}')
+      const result = await response.text()
+      console.log('result', result)
+
+      if (result === 'ok') {
+        alert(translate('Payment cancelled'))
+        document.querySelector('dialog').close()
+        document.querySelector('dialog').remove()
+      }
+    }
     if (paymentMethod === 'payconiq') {
       const dialog = document.createElement('dialog')
-      dialog.innerHTML = `
+      const template = html`
         <h2>${translate('Pay with Payconiq')}</h2>
         <p>${translate('Please scan the QR code or click the link to pay')}</p>
-        <img src="${qrcode}" />
-        <flex-row>
-        <a href="${deeplink}"><custom-button label=${translate('Pay with Payconiq')}></custom-button></a>
-        <p>${translate('or')}</p>
-        <a href="https://api.hellonewme.be/checkout/payconiq/cancelPayment?payment=${paymentId}">${translate(
-        'Cancel'
-      )}</a>
-        </flex-row>
-        
+        <img src="${qrcode}&f=SVG" />
+        <flex-column center>
+          <a href="${deeplink}"><custom-button label=${translate('Pay with Payconiq')}></custom-button></a>
+
+          <custom-button
+            @click=${() => cancelPayment(paymentId)}
+            label=${translate('Cancel')}></custom-button>
+        </flex-column>
       `
+      render(template, dialog)
       document.body.appendChild(dialog)
       dialog.showModal()
+      return new Promise(async (resolve) => {
+        const close = () => {
+          resolve(dialog.returnValue)
+
+          dialog.removeEventListener('close', close)
+          dialog.remove()
+        }
+        firebase.onChildChanged(`transactions/${paymentId}`, (snap) => {
+          const payment = snap.val()
+          if (payment.status === 'completed' || payment.status === 'cancelled') {
+            resolve(payment.status === 'completed')
+            dialog.removeEventListener('close', close)
+            dialog.close()
+            dialog.remove()
+          }
+        })
+        dialog.addEventListener('close', close)
+      })
     }
   }
 
