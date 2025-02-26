@@ -4,6 +4,7 @@ import { html } from '@vandeurenglenn/lite'
 export default html` <custom-icon-set>
   <template>
     <span name="add">@symbol-add</span>
+    <span name="clear_all">@symbol-clear_all</span>
     <span name="home">@symbol-home</span>
     <span name="expand_more">@symbol-unfold_more</span>
     <span name="menu">@symbol-menu</span>

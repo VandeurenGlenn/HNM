@@ -104,6 +104,12 @@ export class ShopCart extends LiteElement {
     }
   }
 
+  emptyCart = async () => {
+    if (firebase.auth.currentUser) await firebase.remove(`carts/${firebase.auth.currentUser.uid}`)
+    else this.cartItems = undefined
+    this.requestRender()
+  }
+
   static styles = [
     css`
       :host {
@@ -172,6 +178,14 @@ export class ShopCart extends LiteElement {
         align-items: center;
       }
 
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+        width: 100%;
+      }
+
       @media (min-width: 1200px) {
         .cart {
           left: auto;
@@ -202,9 +216,14 @@ export class ShopCart extends LiteElement {
             <flex-container class="cart">
               <header>
                 <custom-icon-button
-                  style="margin-left: auto;"
                   icon="close"
+                  title=${translate('Close shoppingCart')}
                   @click=${() => (this.open = false)}></custom-icon-button>
+
+                  <custom-icon-button
+                  icon="clear_all"
+                  title=${translate('Empty shoppingCart')}
+                  @click=${() => this.emptyCart()}></custom-icon-button>
               </header>
               <flex-column>
                 ${
