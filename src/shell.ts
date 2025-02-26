@@ -91,8 +91,10 @@ export default customElements.define(
           }
           this.propertyProviders['userInfo'] = [{ name: 'userInfo', type: 'object', ref: `users/${user.uid}` }]
           this.propertyProviders['cartItems'] = [{ name: 'cartItems', type: 'object', ref: `carts/${user.uid}` }]
+          this.propertyProviders['orders'] = [{ name: 'orders', type: 'object', ref: `users/${user.uid}/orders` }]
           this.handlePropertyProvider(`userInfo`)
           this.handlePropertyProvider(`cartItems`)
+          this.handlePropertyProvider(`orders`)
         } else {
           this.user = undefined
           this.userInfo = undefined

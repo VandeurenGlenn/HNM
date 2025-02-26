@@ -166,7 +166,11 @@ export class CheckoutView extends LiteElement {
         <p>${translate('Please scan the QR code or click the link to pay')}</p>
         <img src="${qrcode}&f=SVG" />
         <flex-column center>
-          <a href="${deeplink}"><custom-button label=${translate('Pay with Payconiq')}></custom-button></a>
+          <a href="${deeplink}"
+            ><custom-button
+              type="filled"
+              label=${translate('Pay with Payconiq')}></custom-button
+          ></a>
 
           <custom-button
             @click=${() => cancelPayment(paymentId)}
@@ -272,8 +276,16 @@ export class CheckoutView extends LiteElement {
             <md-outlined-select
               required
               label=${translate('Payment method')}>
-              <md-select-option value="credit-card">${translate('Credit card')}</md-select-option>
-              <md-select-option value="paypal">${translate('Paypal')}</md-select-option>
+              <md-select-option
+                disabled
+                value="credit-card"
+                >${translate('Credit card')}</md-select-option
+              >
+              <md-select-option
+                disabled
+                value="paypal"
+                >${translate('Paypal')}</md-select-option
+              >
 
               <md-select-option value="payconiq/bancontact">payconiq/bancontact</md-select-option>
             </md-outlined-select>

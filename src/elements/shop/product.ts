@@ -128,6 +128,7 @@ export class ShopProduct extends LiteElement {
           ${this.carts
             ? Object.values(this.carts).reduce((amount, items) => {
                 console.log('items', items)
+                console.log('this.key', this.key)
 
                 if (items[this.key]) {
                   return amount + items[this.key].amount
