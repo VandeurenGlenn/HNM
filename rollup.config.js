@@ -7,6 +7,7 @@ import { join } from 'path'
 import materialSymbols from 'rollup-plugin-material-symbols'
 import { generateSW } from 'rollup-plugin-workbox'
 import translate from 'translate'
+import replace from '@rollup/plugin-replace'
 
 const cleanWWW = async () => {
   return {
@@ -52,7 +53,6 @@ await prepareAndCopy()
 
 await cp('./node_modules/@vandeurenglenn/lite-elements/exports/themes', 'www/themes', { recursive: true })
 const views = (await readdir('./src/views')).map((view) => `./src/views/${view}`)
-const themes = (await readdir('./src/themes')).map((theme) => `./src/themes/${theme}`)
 
 const translationsMap = {}
 
@@ -102,6 +102,9 @@ const translatePlugin = () => {
 const plugins = [
   cleanWWW(),
   nodeResolve(),
+  replace({
+    'process.env.NODE_ENV': isProduction
+  }),
   materialSymbols({
     elements: ['md-icon'],
     placeholderPrefix: 'symbol'
@@ -134,14 +137,5 @@ export default [
       }
     ],
     plugins
-  },
-  {
-    input: themes,
-    output: [
-      {
-        dir: 'www/themes',
-        format: 'es'
-      }
-    ]
   }
 ]
