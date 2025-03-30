@@ -2,8 +2,8 @@ import { LiteElement, css, html, customElement, property } from '@vandeurenglenn
 
 @customElement('order-item')
 export class OrderItem extends LiteElement {
-  @property({ type: String }) accessor order = ''
-  @property({ type: String }) accessor status = ''
+  @property({ type: String }) accessor order
+  @property({ type: String }) accessor status
   static styles = [
     css`
       * {

@@ -10,6 +10,11 @@ export class OrdersView extends LiteElement {
       :host {
         display: block;
         justify-content: center;
+        overflow-y: auto;
+      }
+
+      flex-container {
+        margin-top: 24px;
       }
     `
   ]
@@ -29,8 +34,9 @@ export class OrdersView extends LiteElement {
   }
 
   render() {
+    const orders = Object.entries(this.orders || {})
     return html`<flex-container
-      >${this.orders
+      >${orders.length > 0
         ? html`
             ${Object.entries(this.orders).map(
               ([order, value]) =>

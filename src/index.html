@@ -83,6 +83,9 @@
         align-items: center;
         padding: 12px 24px;
         box-sizing: border-box;
+        border-radius: var(--md-sys-shape-corner-large);
+
+        z-index: 10001;
       }
       dialog img {
         margin: 24px;
@@ -100,33 +103,22 @@
       custom-button {
         width: 100%;
       }
+
+      .scrim {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 10000;
+      }
+
+      .scrim.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
     </style>
-    <script>
-      const theme = localStorage.getItem('selected-theme')
-      globalThis.setTheme = async (theme) => {
-        const themeName = theme
-        // theme = (await import(`./themes/${theme}.js`)).default;
-        // const body = document.querySelector('body');
-        // for (const [key, value] of Object.entries(theme)) {
-        //   body.style.setProperty(`--${key}`, value);
-        // }
-        localStorage.setItem('selected-theme', themeName)
-
-        document.dispatchEvent(new CustomEvent('theme-change', { detail: themeName }))
-      }
-      const dark = window.matchMedia('(prefers-color-scheme: dark)')
-
-      const isDark = localStorage.getItem('selected-theme') === 'dark' || dark.matches
-
-      const changeMode = ({ matches }) => {
-        const isDark = localStorage.getItem('selected-theme') === 'dark' || matches
-        if (isDark) setTheme('dark')
-        else setTheme('light')
-      }
-      dark.addListener(changeMode)
-
-      setTheme(isDark ? 'dark' : 'light')
-    </script>
     <!-- <script
       async
       src="https://d2mpatx37cqexb.cloudfront.net/delightchat-whatsapp-widget/embeds/embed.min.js"
@@ -151,6 +143,7 @@
     </script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image-more/3.5.0/dom-to-image-more.min.js"></script>
     <app-shell></app-shell>
+    <div class="scrim hidden"></div>
     <script
       src="./shell.js"
       type="module"></script>

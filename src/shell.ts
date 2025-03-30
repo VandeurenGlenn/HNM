@@ -10,7 +10,6 @@ import '@vandeurenglenn/lite-elements/banner.js'
 import '@vandeurenglenn/lite-elements/notification.js'
 import '@vandeurenglenn/lite-elements/divider.js'
 import './elements/promo-hero.js'
-import './elements/darkmode/element.js'
 import '@material/web/fab/branded-fab.js'
 import { query, LiteElement, property } from '@vandeurenglenn/lite'
 import icons from './icons.js'
@@ -38,7 +37,7 @@ export default customElements.define(
     @query('custom-selector')
     accessor #selector
 
-    @property({ reflect: true, type: Boolean, consumes: 'darkMode', attribute: 'dark-mode' }) accessor darkMode
+    @property({ reflect: true, type: Boolean, provides: 'darkMode', attribute: 'dark-mode' }) accessor darkMode
 
     @property({ type: Object, provides: true }) accessor user
 
@@ -61,6 +60,16 @@ export default customElements.define(
     @property({ type: Object, consumes: true }) accessor carts
 
     async firstRender() {
+      const dark = window.matchMedia('(prefers-color-scheme: dark)')
+
+      const changeMode = ({ matches }) => {
+        if (matches) this.darkMode = true
+        else this.darkMode = false
+      }
+
+      dark.addEventListener('change', changeMode)
+      changeMode(dark)
+
       if (navigator.language !== 'en') {
         try {
           await setupTranslations(navigator.language)
@@ -405,8 +414,6 @@ export default customElements.define(
               </custom-drawer-item>
             </custom-selector>
           </flex-container>
-
-          <darkmode-element slot="drawer-footer"></darkmode-element>
 
           <md-branded-fab
             branded-fab

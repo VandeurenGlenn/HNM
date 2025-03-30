@@ -6,10 +6,16 @@ import '@material/web/select/select-option.js'
 import '@vandeurenglenn/flex-elements/container.js'
 import { translate } from '@lit-shop/translate'
 import { PayconiqPayment, UserInfo } from '../types.js'
+import { CHECKOUT_PAYCONIQ_URL, isProduction } from '../constants.js'
+import { set } from 'firebase/database'
 
 @customElement('checkout-view')
 export class CheckoutView extends LiteElement {
   @property({ type: Object, consumes: true }) accessor userInfo: UserInfo
+
+  @property({ type: String }) accessor currentOrder
+
+  @property({ type: Object, consumes: true }) accessor user
 
   static styles = [
     css`
@@ -47,6 +53,19 @@ export class CheckoutView extends LiteElement {
       }
     `
   ]
+
+  onChange(propertyKey: string, value: any): void {
+    if (propertyKey === 'userInfo') {
+      console.log('userInfo', value)
+
+      if (value?.orders) {
+        const order = value.orders[this.currentOrder]
+
+        order?.status &&
+          document.querySelector('dialog').dispatchEvent(new CustomEvent('close', { detail: order.status }))
+      }
+    }
+  }
 
   handlePay = () => {
     const inputs = this.shadowRoot.querySelectorAll('md-outlined-text-field')
@@ -111,10 +130,11 @@ export class CheckoutView extends LiteElement {
     })
     const order = await orderResponse.text()
     console.log('order', order)
+    this.currentOrder = order
     const body = JSON.stringify({ items, amount, description, order, giftcards: [] })
     console.log('body', body)
     if (paymentMethod === 'payconiq/bancontact') {
-      const response = await fetch('https://api.hellonewme.be/checkout/payconiq/createPayment', {
+      const response = await fetch(CHECKOUT_PAYCONIQ_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -130,72 +150,96 @@ export class CheckoutView extends LiteElement {
         result._links.qrcode.href,
         result.paymentId
       )
-
-      if (!paymentResult) {
-        alert(translate('Payment failed'))
-      }
     }
   }
 
   cancelPayment = async (paymentId: string) => {
-    const response = await fetch('https://api.hellonewme.be/checkout/payconiq/cancelPayment?payment=${paymentId}')
-    const result = await response.text()
-    if (result === 'ok') {
-      alert(translate('Payment cancelled'))
-      document.querySelector('dialog').close()
-      document.querySelector('dialog').remove()
+    console.log('paymentId', paymentId)
+
+    const response = await fetch(
+      isProduction
+        ? `https://api.hellonewme.be/checkout/payconiq/cancelPayment?payment=${paymentId}`
+        : `http://localhost:3005/checkout/payconiq/cancelPayment?payment=${paymentId}`
+    )
+    const result = await response.status
+    if (result === 200) {
+      document.querySelector('dialog').dispatchEvent(new CustomEvent('close', { detail: 'CANCELLED' }))
+    }
+  }
+
+  $renderStatusTemplate = (status: string) => {
+    switch (status) {
+      case 'PAID':
+        return html`<h2>${translate('Payment successful')}</h2>`
+      case 'CANCELLED': {
+        return html`<h2>${translate('Payment cancelled')}</h2>`
+      }
+      case 'EXPIRED': {
+        return html`<h2>${translate('Payment expired')}</h2>`
+      }
     }
   }
 
   showPayment = async (paymentMethod: string, deeplink: string, qrcode: string, paymentId: string) => {
-    const cancelPayment = async (paymentId: string) => {
-      const response = await fetch('https://api.hellonewme.be/checkout/payconiq/cancelPayment?payment=${paymentId}')
-      const result = await response.text()
-      console.log('result', result)
+    console.log(isProduction)
 
-      if (result === 'ok') {
-        alert(translate('Payment cancelled'))
-        document.querySelector('dialog').close()
-        document.querySelector('dialog').remove()
-      }
-    }
     if (paymentMethod === 'payconiq') {
       const dialog = document.createElement('dialog')
+      dialog.setAttribute('current-order', this.currentOrder)
       const template = html`
+        <custom-icon-button
+          icon="close"
+          @click=${() => this.cancelPayment(this.currentOrder)}></custom-icon-button>
         <h2>${translate('Pay with Payconiq')}</h2>
         <p>${translate('Please scan the QR code or click the link to pay')}</p>
-        <img src="${qrcode}&f=SVG" />
+        <img src=${isProduction ? `${qrcode}&f=SVG` : qrcode} />
         <flex-column center>
-          <a href="${deeplink}"
+          <a
+            href=${isProduction ? deeplink : `http://localhost:9090/payconiq/v3/payments/${paymentId}/pay`}
+            target="_blank"
             ><custom-button
               type="filled"
               label=${translate('Pay with Payconiq')}></custom-button
           ></a>
 
           <custom-button
-            @click=${() => cancelPayment(paymentId)}
+            @click=${() => this.cancelPayment(paymentId)}
             label=${translate('Cancel')}></custom-button>
         </flex-column>
       `
       render(template, dialog)
+      const scrim = document.querySelector('.scrim.hidden')
+      if (scrim) scrim.classList.remove('hidden')
       document.body.appendChild(dialog)
       dialog.showModal()
       return new Promise(async (resolve) => {
-        const close = () => {
-          resolve(dialog.returnValue)
+        const close = ({ detail }: CustomEvent) => {
+          resolve(detail)
 
-          dialog.removeEventListener('close', close)
-          dialog.remove()
-        }
-        firebase.onChildChanged(`transactions/${paymentId}`, (snap) => {
-          const payment = snap.val()
-          if (payment.status === 'completed' || payment.status === 'cancelled') {
-            resolve(payment.status === 'completed')
+          const timeout = setTimeout(() => {
             dialog.removeEventListener('close', close)
-            dialog.close()
             dialog.remove()
+            scrim.classList.add('hidden')
+          }, 5000)
+          const closeNow = () => {
+            clearTimeout(timeout)
+            dialog.remove()
+            scrim.classList.add('hidden')
           }
-        })
+          const template = html`
+            <custom-icon-button
+              icon="close"
+              @click=${() => closeNow()}></custom-icon-button>
+            ${this.$renderStatusTemplate(detail)}
+
+            <small style="margin-bottom: 24px;">${translate('This window will automatically close shortly')}</small>
+            <custom-button
+              @click=${() => closeNow()}
+              label=${translate('Close Now')}
+              type="elevated"></custom-button>
+          `
+          render(template, dialog)
+        }
         dialog.addEventListener('close', close)
       })
     }

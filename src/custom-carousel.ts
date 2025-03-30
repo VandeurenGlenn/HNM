@@ -1,50 +1,45 @@
-import { css, html, property, LiteElement } from '@vandeurenglenn/lite';
-import 'custom-pages';
+import { css, html, property, LiteElement } from '@vandeurenglenn/lite'
+import 'custom-pages'
 
-import { map } from 'lit/directives/map.js';
+import { map } from 'lit/directives/map.js'
 
 export default customElements.define(
   'custom-carousel',
   class CustomCarousel extends LiteElement {
-    #next = 0;
-    #current = 0;
-    #timeout;
-    #running = false;
+    #next = 0
+    #current = 0
+    #timeout
+    #running = false
 
     @property()
-    accessor timeout = 7000;
+    accessor timeout = 7000
     @property()
-    accessor images;
+    accessor images
 
     @property()
-    accessor controls;
+    accessor controls
 
     onChange(propertyKey: string, value: any): void {
       if (propertyKey === 'images' && value) {
-        if (!this.#running) this.#run();
-        this.maxIndex = value.length - 1;
+        if (!this.#running) this.#run()
+        this.maxIndex = value.length - 1
       }
     }
 
     get #pages() {
-      return this.shadowRoot.querySelector('custom-pages');
+      return this.shadowRoot.querySelector('custom-pages')
     }
 
     async #run() {
       // await this.requestUpdate()
-      this.#running = true;
-      if (!this.#pages.selected) this.#pages.select('0');
-      else if (
-        !this.#pages.selected.dataset &&
-        Number(this.#pages.selected) < this.maxIndex
-      )
-        this.#pages.next();
-      else if (String(this.maxIndex) === this.#pages.selected?.dataset.index)
-        this.#pages.select('0');
-      else this.#pages?.next();
+      this.#running = true
+      if (!this.#pages.selected) this.#pages.select('0')
+      else if (!this.#pages.selected.dataset && Number(this.#pages.selected) < this.maxIndex) this.#pages.next()
+      else if (String(this.maxIndex) === this.#pages.selected?.dataset.index) this.#pages.select('0')
+      else this.#pages?.next()
       this.#timeout = setTimeout(() => {
-        this.#run();
-      }, this.timeout);
+        this.#run()
+      }, this.timeout)
     }
 
     static styles = [
@@ -78,8 +73,8 @@ export default customElements.define(
         .custom-selected {
           transform: translateX(0);
         }
-      `,
-    ];
+      `
+    ]
 
     #controlsTemplate() {
       return html`
@@ -88,13 +83,15 @@ export default customElements.define(
           <flex-one></flex-one>
           <custom-svg-icon icon="chevron-right"></custom-svg-icon>
         </flex-row>
-      `;
+      `
     }
 
     render() {
-      const controlsTemplate = this.controls ? this.#controlsTemplate : '';
+      const controlsTemplate = this.controls ? this.#controlsTemplate : ''
       return html`
-        <custom-pages default-selected="0" attr-for-selected="data-index">
+        <custom-pages
+          default-selected="0"
+          attr-for-selected="data-index">
           ${this.images
             ? map(
                 this.images,
@@ -105,7 +102,7 @@ export default customElements.define(
             : ''}
         </custom-pages>
         ${controlsTemplate}
-      `;
+      `
     }
   }
-);
+)
