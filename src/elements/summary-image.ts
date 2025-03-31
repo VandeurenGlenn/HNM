@@ -62,7 +62,8 @@ export class SummaryImage extends LiteElement {
     return html`
       <img
         src=${this.src}
-        alt=${this.alt} />
+        alt=${this.alt}
+        loading="lazy" />
       <summary>
         <slot></slot>
       </summary>
