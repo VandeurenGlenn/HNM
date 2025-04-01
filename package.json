@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "deploy": "export NODE_ENV=production && rollup -c",
+    "deploy": "cross-env NODE_ENV=production && rollup -c",
     "serve": "node server.js",
     "watch": "rollup -c -w",
     "build": "rollup -c",
@@ -54,6 +54,7 @@
     "@rollup/plugin-typescript": "^12.1.2",
     "@types/dom-to-image": "^2.6.7",
     "@types/html": "^1.0.4",
+    "cross-env": "^7.0.3",
     "koa": "^2.15.3",
     "koa-compress": "^5.1.1",
     "koa-static": "^5.0.0",
