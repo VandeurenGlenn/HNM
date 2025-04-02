@@ -103,7 +103,7 @@ const plugins = [
   cleanWWW(),
   nodeResolve(),
   replace({
-    'process.env.NODE_ENV': isProduction
+    "process.env.NODE_ENV === 'production'": isProduction
   }),
   materialSymbols({
     elements: ['md-icon'],
