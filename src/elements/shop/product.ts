@@ -67,6 +67,7 @@ export class ShopProduct extends LiteElement {
         align-items: center;
         overflow: hidden;
         color: var(--md-sys-color-color-on-surface);
+        overflow-y: auto;
       }
 
       img {
