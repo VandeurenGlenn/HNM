@@ -7,7 +7,7 @@
   "scripts": {
     "deploy": "cross-env NODE_ENV=production && rollup -c",
     "serve": "node server.js",
-    "watch": "rollup -c -w",
+    "watch": "cross-env NODE_ENV=development && rollup -c -w",
     "build": "rollup -c",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

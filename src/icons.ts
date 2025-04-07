@@ -38,5 +38,6 @@ export default html` <custom-icon-set>
     <span name="orders">@symbol-orders</span>
     <span name="remove">@symbol-remove</span>
     <span name="payments">@symbol-payments</span>
+    <span name="back">@symbol-chevron_left</span>
   </template>
 </custom-icon-set>`

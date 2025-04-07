@@ -100,7 +100,10 @@ export class ShopProduct extends LiteElement {
     if (!this.product) return html`<p>Loading</p>`
     return html`
       <flex-container>
-        <img src=${this.product?.image ? this.product.image : this.placeholder} />
+        <img
+          src=${this.product?.images
+            ? `https://api.hellonewme.be/api/image?firebaseKey=${this.product.images[0]}`
+            : this.placeholder} />
 
         ${this.product.SKUs
           ? html`

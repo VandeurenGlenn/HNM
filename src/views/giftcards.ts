@@ -148,12 +148,19 @@ export class GiftcardsView extends LiteElement {
             value="50"></md-outlined-text-field>
         </flex-row>
         <custom-button
+          disabled
+          label="voeg toe aan winkelmand"
+          type="tertiary"></custom-button>
+
+        <!--
+        <custom-button
+          disabled
           label="voeg toe aan winkelmand"
           @click=${() => this.addToCart()}
           type="tertiary"></custom-button>
-        <section>
-          <p>De giftcard kan gebruikt worden in onze webshop.</p>
-        </section>
+          -->
+
+        <h4>Coming soon!</h4>
       </flex-container>
       <footer-element></footer-element>
     `
